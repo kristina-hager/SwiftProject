@@ -17,6 +17,9 @@
 package com.example.android.wifidirect;
 
 import android.app.Activity;
+import android.widget.EditText;
+import android.widget.TextView;
+import java.io.*;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +31,7 @@ import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +52,7 @@ import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 public class WiFiDirectActivity extends Activity implements ChannelListener, DeviceActionListener {
 
     public static final String TAG = "wifidirectdemo";
+	private static final String LOG_TAG = null;
     private WifiP2pManager manager;
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
@@ -77,6 +82,8 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
+
+        
     }
 
     /** register the BroadcastReceiver with the intent values to be matched */
@@ -227,6 +234,51 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
     }
 
+    public void createFile(View view) {
+        String filename = "myTestFile.txt";
+        EditText editText = (EditText) findViewById(R.id.edit_message);
+        String message = editText.getText().toString();
+        TextView textView = (TextView) findViewById(R.id.view_message);
+        textView.setText(message);
+
+        if(isExternalStorageWritable()) {
+        	File dataDir = getDataStorageDir("WifiDirect_Demo_Dir");
+        	File file = new File(dataDir, filename);
+        	OutputStream out = null;
+        	try {
+        		out = new BufferedOutputStream(new FileOutputStream(file));
+        		out.write(message.getBytes());
+        		textView.setText("Got output Stream");
+        		out.close();
+      
+        	} catch (Exception e){
+        		textView.setText("Couldnt create the output stream.");
+        	}
+     
+
+        } else {
+        	textView.setText("Storage is not writable");
+        }
+        
+    }
+    
+    public File getDataStorageDir(String dataName) {
+        // Get the directory for the user's public documents directory. 
+        File path = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS), dataName);
+        if (!path.mkdirs()) {
+            Log.e(LOG_TAG, "Directory not created");
+        }
+        return path;
+    }
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }  
     @Override
     public void cancelDisconnect() {
 
