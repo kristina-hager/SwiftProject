@@ -62,12 +62,14 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     private BroadcastReceiver receiver = null;
 
     /**
+     * [AR] - Need to keep
      * @param isWifiP2pEnabled the isWifiP2pEnabled to set
      */
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
 
+    /* [AR] - Need to keep */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +88,8 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         
     }
 
-    /** register the BroadcastReceiver with the intent values to be matched */
+    /** register the BroadcastReceiver with the intent values to be matched
+     * [AR] - need to keep */
     @Override
     public void onResume() {
         super.onResume();
@@ -94,6 +97,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         registerReceiver(receiver, intentFilter);
     }
 
+    /* [AR] - need to keep */
     @Override
     public void onPause() {
         super.onPause();
@@ -101,6 +105,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     }
 
     /**
+     * [AR] - Need to keep for now
      * Remove all peers and clear all fields. This is called on
      * BroadcastReceiver receiving a state change event.
      */
@@ -118,6 +123,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     }
 
     @Override
+    /* [AR] - Need to keep */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.action_items, menu);
@@ -127,6 +133,8 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     /*
      * (non-Javadoc)
      * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+     * [AR] - Need to keep, options menu to launch system wireless settings if wireless is disabled
+     * [AR] - or to kick off discovery, an action listener waits to be notified that peers discovered 
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -152,7 +160,9 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                 }
                 final DeviceListFragment fragment = (DeviceListFragment) getFragmentManager()
                         .findFragmentById(R.id.frag_list);
+                /* [AR] - shows a popup progress bar */
                 fragment.onInitiateDiscovery();
+                /* [AR] - Actual discovery kick off */
                 manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
 
                     @Override
@@ -174,6 +184,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     }
 
     @Override
+    /*[AR] - keep so far, don't know how this gets called yet */
     public void showDetails(WifiP2pDevice device) {
         DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
                 .findFragmentById(R.id.frag_detail);
@@ -182,6 +193,11 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     }
 
     @Override
+    /* [AR] - Need to keep, called from DeviceDetailFragment.java when connect
+     * [AR] - button is pressed
+     * (non-Javadoc)
+     * @see com.example.android.wifidirect.DeviceListFragment.DeviceActionListener#connect(android.net.wifi.p2p.WifiP2pConfig)
+     */
     public void connect(WifiP2pConfig config) {
         manager.connect(channel, config, new ActionListener() {
 
@@ -198,6 +214,11 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         });
     }
 
+    /* [AR] - Need to keep, called from DeviceDetailFragment.java when disconnect
+     * [AR] - button is pressed
+     * (non-Javadoc)
+     * @see com.example.android.wifidirect.DeviceListFragment.DeviceActionListener#connect(android.net.wifi.p2p.WifiP2pConfig)
+     */
     @Override
     public void disconnect() {
         final DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
@@ -219,6 +240,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         });
     }
 
+    /* [AR] - Need to keep, not sure what calls this yet. */
     @Override
     public void onChannelDisconnected() {
         // we will try once more
@@ -233,7 +255,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                     Toast.LENGTH_LONG).show();
         }
     }
-
+    /* [AR] - Added this to get some fileIO on the GUI */
     public void readFile(View view) {
         EditText dirNameInput = (EditText) findViewById(R.id.dirNameInput);
         String dirname = dirNameInput.getText().toString();
@@ -261,6 +283,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         
     }
     
+    /*[AR] - Added to support readFile() */
     public File getDataStorageDir(String dataName) {
         // Get the directory for the user's public documents directory. 
         File path = new File(Environment.getExternalStoragePublicDirectory(
@@ -270,7 +293,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
         return path;
     }
-    /* Checks if external storage is available for read and write */
+    /* [AR] - Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -279,6 +302,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         return false;
     }  
     @Override
+    /* [AR] - May not be needed, the only place it appears to be used is commented out. */
     public void cancelDisconnect() {
 
         /*

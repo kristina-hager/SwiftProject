@@ -101,7 +101,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     }
                 });
 
-        mContentView.findViewById(R.id.btn_start_client).setOnClickListener(
+/*[AR]        mContentView.findViewById(R.id.btn_start_client).setOnClickListener(
                 new View.OnClickListener() {
 
                     @Override
@@ -112,7 +112,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                         intent.setType("image/*");
                         startActivityForResult(intent, CHOOSE_FILE_RESULT_CODE);
                     }
-                });
+                });*/
 
         return mContentView;
     }
@@ -162,7 +162,10 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         } else if (info.groupFormed) {
             // The other device acts as the client. In this case, we enable the
             // get file button.
-            mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
+        	/*[AR] - Instead here we want to get the file we want to transfer and perform
+        	 *[AR] - the file transfer
+        	 */
+//            mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
             ((TextView) mContentView.findViewById(R.id.status_text)).setText(getResources()
                     .getString(R.string.client_text));
         }
@@ -173,7 +176,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     /**
      * Updates the UI with device data
-     * 
+     * [AR] Called when a peer device is clicked in the 
+     * [AR] list view, makes a menu appear with a connect/disconnect
+     * [AR] button for that peer
      * @param device the device to be displayed
      */
     public void showDetails(WifiP2pDevice device) {

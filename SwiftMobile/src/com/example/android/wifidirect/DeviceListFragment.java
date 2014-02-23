@@ -47,6 +47,7 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
     View mContentView = null;
     private WifiP2pDevice device;
 
+    /*[AR] - Need to keep, creation stuff */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -54,6 +55,7 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
 
     }
 
+    /*[AR] - Need to keep, creation stuff */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.device_list, null);
@@ -62,11 +64,17 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
 
     /**
      * @return this device
+     * [AR] - Need to keep, called in cancelDisconnect() in WiFiDirectActivity.java
+     * [AR] - which I don't think is used.
      */
     public WifiP2pDevice getDevice() {
         return device;
     }
 
+    /*[AR] - Not sure is used, called in this file by getView();
+     *[AR] - but not clear getView is called on this fragment.
+     * 
+     * */
     private static String getDeviceStatus(int deviceStatus) {
         Log.d(WiFiDirectActivity.TAG, "Peer status :" + deviceStatus);
         switch (deviceStatus) {
@@ -88,6 +96,8 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
 
     /**
      * Initiate a connection with the peer.
+     * [AR] - Keep, get the peer devices from the device list
+     * [AR] - Show the details of the device
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -173,7 +183,7 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
     }
 
     /**
-     * 
+     * [AH] - Need to keep, kicks off discovery
      */
     public void onInitiateDiscovery() {
         if (progressDialog != null && progressDialog.isShowing()) {
