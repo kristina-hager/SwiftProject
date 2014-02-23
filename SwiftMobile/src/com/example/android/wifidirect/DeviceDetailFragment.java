@@ -34,14 +34,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -167,7 +172,29 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         	 */
 //            mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
             ((TextView) mContentView.findViewById(R.id.status_text)).setText(getResources()
-                    .getString(R.string.client_text));
+                    .getString(R.string.client_text) + "[AR] - Need to get file and send it");
+            // [AR] Can we create the code to send the text file here?
+            String dirname = "WiFiDirect_Demo_Dir";
+            String filename = "amytest.txt";
+            if(isExternalStorageWritable()) {
+            	File dataDir = getDataStorageDir(dirname);
+            	File file = new File(dataDir, filename);
+            	BufferedReader in = null;
+            	try {
+            		in = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
+            		String message = in.readLine();
+//[AR] - Update a status message here
+                    ((TextView) mContentView.findViewById(R.id.status_text)).setText(message);
+            		in.close();
+          
+            	} catch (Exception e){
+                    ((TextView) mContentView.findViewById(R.id.status_text)).setText("Could read from file");
+            	}
+            } else {
+                ((TextView) mContentView.findViewById(R.id.status_text)).setText("Storage is note writeable");
+            }
+            
+            
         }
 
         // hide the connect button
@@ -295,6 +322,25 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             return false;
         }
         return true;
+    }
+    
+    /* [AR] - Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+    public File getDataStorageDir(String dataName) {
+        // Get the directory for the user's public documents directory. 
+        File path = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS), dataName);
+        if (!path.mkdirs()) {
+//[AR] need a log here
+
+        }
+        return path;
     }
 
 }
