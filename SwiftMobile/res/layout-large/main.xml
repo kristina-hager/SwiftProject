@@ -2,19 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <EditText android:id="@+id/edit_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/edit_message" />
+    <EditText android:id="@+id/dirNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/dirNameInput" />
+    <EditText android:id="@+id/fileNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/fileNameInput" />
     <TextView android:id="@+id/view_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/view_message"/>
-    <Button android:id="@+id/create_file"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/create_file"
-            android:onClick="createFile"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/view_message"/>
+    <Button android:id="@+id/read_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/read_file"
+        android:onClick="readFile"/>
     <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1"
         android:layout_height="match_parent" android:orientation="horizontal">
         <fragment class="com.example.android.wifidirect.DeviceListFragment"
