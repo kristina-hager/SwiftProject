@@ -15,8 +15,7 @@
     <string name="group_owner_text">"Am I the Group Owner? "</string>
     <string name="label_me">ME</string>
     <string name="label_peers">PEERS</string>
-    <string name="dirNameInput">Enter Log File Directory (Folder in Downloads Dir)</string>
-    <string name="fileNameInput">Enter Log File Name</string>
+    <string name="edit_message">Enter Log Text</string>
     <string name="view_message">Output Text From File</string>
-    <string name="read_file">Read Log File</string>
+    <string name="create_file">Create File</string>
 </resources>

@@ -234,27 +234,28 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
     }
 
-    public void readFile(View view) {
-        EditText dirNameInput = (EditText) findViewById(R.id.dirNameInput);
-        String dirname = dirNameInput.getText().toString();
-        EditText fileNameInput = (EditText) findViewById(R.id.fileNameInput);
-        String filename = fileNameInput.getText().toString();
+    public void createFile(View view) {
+        String filename = "myTestFile.txt";
+        EditText editText = (EditText) findViewById(R.id.edit_message);
+        String message = editText.getText().toString();
         TextView textView = (TextView) findViewById(R.id.view_message);
-
+        textView.setText(message);
 
         if(isExternalStorageWritable()) {
-        	File dataDir = getDataStorageDir(dirname);
+        	File dataDir = getDataStorageDir("WifiDirect_Demo_Dir");
         	File file = new File(dataDir, filename);
-        	BufferedReader in = null;
+        	OutputStream out = null;
         	try {
-        		in = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
-        		String message = in.readLine();
-        		textView.setText(message);
-        		in.close();
+        		out = new BufferedOutputStream(new FileOutputStream(file));
+        		out.write(message.getBytes());
+        		textView.setText("Got output Stream");
+        		out.close();
       
         	} catch (Exception e){
-        		textView.setText("Couldnt get input stream or read from file.");
+        		textView.setText("Couldnt create the output stream.");
         	}
+     
+
         } else {
         	textView.setText("Storage is not writable");
         }
