@@ -190,6 +190,21 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             	} catch (Exception e){
                     ((TextView) mContentView.findViewById(R.id.status_text)).setText("Could read from file");
             	}
+            	/* [AR] Here can we launch the applications file transfer thing?
+            	 * [AR] adding it in to see*/
+                Uri uri = Uri.fromFile(file);
+                ((TextView) mContentView.findViewById(R.id.status_text)).setText(uri.toString());
+                Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
+                serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
+                serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
+                serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
+                        info.groupOwnerAddress.getHostAddress());
+                serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
+                getActivity().startService(serviceIntent);
+
+            	
+            	
+            	
             } else {
                 ((TextView) mContentView.findViewById(R.id.status_text)).setText("Storage is note writeable");
             }
@@ -262,7 +277,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(WiFiDirectActivity.TAG, "Server: connection done");
                 final File f = new File(Environment.getExternalStorageDirectory() + "/"
                         + context.getPackageName() + "/wifip2pshared-" + System.currentTimeMillis()
-                        + ".jpg");
+                        + ".txt");
 
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
@@ -290,7 +305,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 statusText.setText("File copied - " + result);
                 Intent intent = new Intent();
                 intent.setAction(android.content.Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse("file://" + result), "image/*");
+                intent.setDataAndType(Uri.parse("file://" + result), "text/*");
                 context.startActivity(intent);
             }
 
