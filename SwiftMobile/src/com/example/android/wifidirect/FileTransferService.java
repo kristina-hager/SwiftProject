@@ -68,7 +68,10 @@ public class FileTransferService extends IntentService {
                 clientDuration = DeviceDetailFragment.copyFile(is, stream);
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");
                 // log file transfer capture on client side
-                
+                String logFileName = "logfile.txt";
+                if(DeviceDetailFragment.isExternalStorageWritable()){
+                	
+                }
                 
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());

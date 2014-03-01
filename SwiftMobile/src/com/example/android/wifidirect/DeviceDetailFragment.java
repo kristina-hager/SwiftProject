@@ -289,6 +289,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 InputStream inputstream = client.getInputStream();
                 myDuration = copyFile(inputstream, new FileOutputStream(f));
                 serverSocket.close();
+                //[AR]  Write the duration to a log file
+                String serverLogFileString = "servertimelog.txt";
+                if(isExternalStorageWritable()) {
+                	
+                }                
                 return f.getAbsolutePath();
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
@@ -346,14 +351,14 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     }
     
     /* [AR] - Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
+    public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
         return false;
     }
-    public File getDataStorageDir(String dataName) {
+    public static File getDataStorageDir(String dataName) {
         // Get the directory for the user's public documents directory. 
         File path = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOWNLOADS), dataName);
