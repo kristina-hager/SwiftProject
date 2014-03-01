@@ -72,6 +72,7 @@ public class FileTransferService extends IntentService {
                 String logFileName = "logfile.txt";
                 if(DeviceDetailFragment.isExternalStorageWritable()){
                     File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
+                    File file = new File(dataDir, logFileName);
                 	
                 }
                 
