@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,6 +71,7 @@ public class FileTransferService extends IntentService {
                 // log file transfer capture on client side
                 String logFileName = "logfile.txt";
                 if(DeviceDetailFragment.isExternalStorageWritable()){
+                    File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
                 	
                 }
                 

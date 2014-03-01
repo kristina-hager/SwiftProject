@@ -292,7 +292,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 //[AR]  Write the duration to a log file
                 String serverLogFileString = "servertimelog.txt";
                 if(isExternalStorageWritable()) {
-                	
+                    File dataDir = getDataStorageDir("Timelogs");
                 }                
                 return f.getAbsolutePath();
             } catch (IOException e) {
