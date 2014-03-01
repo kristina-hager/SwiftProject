@@ -176,7 +176,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             // [AR] Can we create the code to send the text file here?
             String dirname = "WiFiDirect_Demo_Dir";
             String filename = "amytest.txt";
-            if(isExternalStorageWritable()) {
+            if(isExternalStorageWritable()) { // [AR] - this should only be readable...need to change
             	File dataDir = getDataStorageDir(dirname);
             	File file = new File(dataDir, filename);
             	BufferedReader in = null;
@@ -270,6 +270,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
         @Override
         protected String doInBackground(Void... params) {
+        	long myDuration = -1;
             try {
                 ServerSocket serverSocket = new ServerSocket(8988);
                 Log.d(WiFiDirectActivity.TAG, "Server: Socket opened");
@@ -286,7 +287,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
                 Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
-                copyFile(inputstream, new FileOutputStream(f));
+                myDuration = copyFile(inputstream, new FileOutputStream(f));
                 serverSocket.close();
                 return f.getAbsolutePath();
             } catch (IOException e) {
@@ -322,21 +323,26 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     }
 
-    public static boolean copyFile(InputStream inputStream, OutputStream out) {
+    public static long copyFile(InputStream inputStream, OutputStream out) {
         byte buf[] = new byte[1024];
         int len;
+        long duration = -1;
         try {
+            long time1 = System.nanoTime();
             while ((len = inputStream.read(buf)) != -1) {
                 out.write(buf, 0, len);
 
             }
+            long time2 = System.nanoTime();
             out.close();
             inputStream.close();
+            duration = time2-time1;
+            
         } catch (IOException e) {
             Log.d(WiFiDirectActivity.TAG, e.toString());
-            return false;
+            return duration;
         }
-        return true;
+        return duration;
     }
     
     /* [AR] - Checks if external storage is available for read and write */
