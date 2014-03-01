@@ -40,6 +40,7 @@ import android.widget.TextView;
 import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -291,9 +292,17 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 serverSocket.close();
                 //[AR]  Write the duration to a log file
                 String serverLogFileName = "servertimelog.txt";
+                OutputStream out = null;
                 if(isExternalStorageWritable()) {
                     File dataDir = getDataStorageDir("Timelogs");
                     File file = new File(dataDir, serverLogFileName);
+                    try {
+                        out = new BufferedOutputStream(new FileOutputStream(file));
+                        out.write((Long.toString(myDuration)).getBytes());
+                        out.close();	
+                    } catch (IOException e) {
+                        out.close();                   	
+                    }
                 }                
                 return f.getAbsolutePath();
             } catch (IOException e) {
