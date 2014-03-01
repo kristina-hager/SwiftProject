@@ -10,9 +10,11 @@ import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -72,13 +74,19 @@ public class FileTransferService extends IntentService {
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");
                 // log file transfer capture on client side
                 String logFileName = "clientTimeLog.txt";
-                OutputStream out = null;
+                //OutputStream out = null;
+                BufferedWriter out = null;
                 if(DeviceDetailFragment.isExternalStorageWritable()){
                     File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
                     File file = new File(dataDir, logFileName);
+            		if(!file.exists()){
+            			file.createNewFile();
+            		}
                     try {
-                        out = new BufferedOutputStream(new FileOutputStream(file));
-                        out.write((Long.toString(clientDuration)).getBytes());
+                    	out = new BufferedWriter(new FileWriter(file, true));
+                    	out.write((Long.toString(clientDuration)) + " is client duration.\n");
+                        //out = new BufferedOutputStream(new FileOutputStream(file));
+                        //out.write((Long.toString(clientDuration)).getBytes());
                         out.close();
                     } catch (IOException e) {
                         out.close(); 	
