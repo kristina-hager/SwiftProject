@@ -87,13 +87,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 }
                 progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
                         "Connecting to :" + device.deviceAddress, true, true
-//                        new DialogInterface.OnCancelListener() {
-//
-//                            @Override
-//                            public void onCancel(DialogInterface dialog) {
-//                                ((DeviceActionListener) getActivity()).cancelDisconnect();
-//                            }
-//                        }
+
                         );
                 ((DeviceActionListener) getActivity()).connect(config);
 
@@ -109,22 +103,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     }
                 });
 
-/*[AR]        mContentView.findViewById(R.id.btn_start_client).setOnClickListener(
-                new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        // Allow user to pick an image from Gallery or other
-                        // registered apps
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, CHOOSE_FILE_RESULT_CODE);
-                    }
-                });*/
 
         return mContentView;
     }
-
+//[AR] Need to figure out if this is still needed?
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -168,21 +151,21 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text))
                     .execute();
         } else if (info.groupFormed) {
-            // The other device acts as the client. In this case, we enable the
-            // get file button.
-        	/*[AR] - Instead here we want to get the file we want to transfer and perform
+            // The other device acts as the client. 
+        	/*[AR] - Here we get the file we want to transfer and perform
         	 *[AR] - the file transfer
         	 */
-//            mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
             ((TextView) mContentView.findViewById(R.id.status_text)).setText(getResources()
                     .getString(R.string.client_text) + "[AR] - Need to get file and send it");
-            // [AR] Can we create the code to send the text file here?
+            // [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
+            // the filename must be amytest.txt for now.
             String dirname = "WiFiDirect_Demo_Dir";
             String filename = "amytest.txt";
             if(isExternalStorageWritable()) { // [AR] - this should only be readable...need to change
             	File dataDir = getDataStorageDir(dirname);
             	File file = new File(dataDir, filename);
-            	BufferedReader in = null;
+            	//[AR] - I don't think we need this anymore.
+/*            	BufferedReader in = null;
             	try {
             		in = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
             		String message = in.readLine();
@@ -192,7 +175,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
           
             	} catch (Exception e){
                     ((TextView) mContentView.findViewById(R.id.status_text)).setText("Could read from file");
-            	}
+            	}*/
             	/* [AR] Here can we launch the applications file transfer thing?
             	 * [AR] adding it in to see*/
                 Uri uri = Uri.fromFile(file);
@@ -279,10 +262,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(WiFiDirectActivity.TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(WiFiDirectActivity.TAG, "Server: connection done");
-                final File f = new File(Environment.getExternalStorageDirectory() + "/"
-                        + context.getPackageName() + "/wifip2pshared-" + System.currentTimeMillis()
-                        + ".txt");
-
+                final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), "amytest.txt");
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
                     dirs.mkdirs();
@@ -290,27 +270,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
                 Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
-                myDuration = copyFile(inputstream, new FileOutputStream(f));
+                //[AR] - This call to copy file reads in from the socket and writes to a file
+                copyFile(inputstream, new FileOutputStream(f));
                 serverSocket.close();
-                //[AR]  Write the duration to a log file
-                String serverLogFileName = "servertimelog.txt";
-                BufferedWriter out = null;
-                if(isExternalStorageWritable()) {
-                    File dataDir = getDataStorageDir("Timelogs");
-                    File file = new File(dataDir, serverLogFileName);
-            		if(!file.exists()){
-            			file.createNewFile();
-            		}
-                    try {
-                    //    out = new BufferedOutputStream(new FileOutputStream(file));
-                    //    out.write((Long.toString(myDuration)).getBytes());
-                    	out = new BufferedWriter(new FileWriter(file, true));
-                    	out.write((Long.toString(myDuration)) + " Server duration \n" );
-                        out.close();	
-                    } catch (IOException e) {
-                        out.close();                   	
-                    }
-                }                
                 return f.getAbsolutePath();
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
@@ -346,6 +308,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     }
 
     public static long copyFile(InputStream inputStream, OutputStream out) {
+    	//[AR] - here we return the duration as a long always, but it only
+    	//matters to us when the output stream is a socket connection, not
+    	//an output to a file.  Output stream is only a socket connection
+    	// when called from FileTransferServer.java. We can't tell the difference 
+    	//here, so we always capture it, and return it from this function.
         byte buf[] = new byte[1024];
         int len;
         long duration = -1;

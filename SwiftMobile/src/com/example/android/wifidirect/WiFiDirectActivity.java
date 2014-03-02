@@ -256,7 +256,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
     }
     /* [AR] - Added this to get some fileIO on the GUI */
-    public void readFile(View view) {
+/*    public void readFile(View view) {
         EditText dirNameInput = (EditText) findViewById(R.id.dirNameInput);
         String dirname = dirNameInput.getText().toString();
         EditText fileNameInput = (EditText) findViewById(R.id.fileNameInput);
@@ -283,7 +283,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         
     }
     
-    /*[AR] - Added to support readFile() */
+    
     public File getDataStorageDir(String dataName) {
         // Get the directory for the user's public documents directory. 
         File path = new File(Environment.getExternalStoragePublicDirectory(
@@ -293,14 +293,14 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
         return path;
     }
-    /* [AR] - Checks if external storage is available for read and write */
+    [AR] - Checks if external storage is available for read and write 
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
         return false;
-    }  
+    }*/  
     @Override
     /* [AR] - May not be needed, the only place it appears to be used is commented out. */
     public void cancelDisconnect() {

@@ -72,9 +72,8 @@ public class FileTransferService extends IntentService {
                 }
                 clientDuration = DeviceDetailFragment.copyFile(is, stream);
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");
-                // log file transfer capture on client side
+                // log file transfer capture time to wirelessly send file
                 String logFileName = "clientTimeLog.txt";
-                //OutputStream out = null;
                 BufferedWriter out = null;
                 if(DeviceDetailFragment.isExternalStorageWritable()){
                     File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
@@ -84,9 +83,7 @@ public class FileTransferService extends IntentService {
             		}
                     try {
                     	out = new BufferedWriter(new FileWriter(file, true));
-                    	out.write((Long.toString(clientDuration)) + " is client duration.\n");
-                        //out = new BufferedOutputStream(new FileOutputStream(file));
-                        //out.write((Long.toString(clientDuration)).getBytes());
+                    	out.write((Long.toString(clientDuration)) + " is file transfer duration.\n");
                         out.close();
                     } catch (IOException e) {
                         out.close(); 	
