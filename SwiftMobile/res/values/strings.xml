@@ -17,6 +17,6 @@
     <string name="label_peers">PEERS</string>
     <string name="dirNameInput">WifiDirect_Demo_Dir</string>
     <string name="fileNameInput">amytest.txt</string>
-    <string name="view_message">Do we need to get rid of this?</string>
+    <string name="view_message"></string>
     <string name="read_file">timelog.txt</string>
 </resources>

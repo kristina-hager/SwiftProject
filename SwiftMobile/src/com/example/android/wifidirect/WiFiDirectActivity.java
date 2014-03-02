@@ -17,9 +17,6 @@
 package com.example.android.wifidirect;
 
 import android.app.Activity;
-import android.widget.EditText;
-import android.widget.TextView;
-import java.io.*;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +28,6 @@ import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -52,7 +48,7 @@ import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 public class WiFiDirectActivity extends Activity implements ChannelListener, DeviceActionListener {
 
     public static final String TAG = "wifidirectdemo";
-	private static final String LOG_TAG = null;
+	//not used presently: private static final String LOG_TAG = null;
     private WifiP2pManager manager;
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
