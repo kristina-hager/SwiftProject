@@ -135,7 +135,11 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.atn_direct_enable:
+            /*[AR] - going to comment out because the wireless settings in
+             * the action menu that is launched is not the right one to actually
+             * enable wireless or wifidirect. Maybe we can figure out the right menu later?
+             */
+            /*case R.id.atn_direct_enable:
                 if (manager != null && channel != null) {
 
                     // Since this is the system wireless settings activity, it's
@@ -146,7 +150,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                 } else {
                     Log.e(TAG, "channel or manager is null");
                 }
-                return true;
+                return true;*/
 
             case R.id.atn_direct_discover:
                 if (!isWifiP2pEnabled) {
@@ -247,56 +251,11 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             manager.initialize(this, getMainLooper(), this);
         } else {
             Toast.makeText(this,
-                    "Severe! Channel is probably lost premanently. Try Disable/Re-Enable P2P.",
+                    "Severe! Channel is probably lost permanently. Try Disable/Re-Enable P2P.",
                     Toast.LENGTH_LONG).show();
         }
     }
-    /* [AR] - Added this to get some fileIO on the GUI */
-/*    public void readFile(View view) {
-        EditText dirNameInput = (EditText) findViewById(R.id.dirNameInput);
-        String dirname = dirNameInput.getText().toString();
-        EditText fileNameInput = (EditText) findViewById(R.id.fileNameInput);
-        String filename = fileNameInput.getText().toString();
-        TextView textView = (TextView) findViewById(R.id.view_message);
-
-
-        if(isExternalStorageWritable()) {
-        	File dataDir = getDataStorageDir(dirname);
-        	File file = new File(dataDir, filename);
-        	BufferedReader in = null;
-        	try {
-        		in = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
-        		String message = in.readLine();
-        		textView.setText(message);
-        		in.close();
-      
-        	} catch (Exception e){
-        		textView.setText("Couldnt get input stream or read from file.");
-        	}
-        } else {
-        	textView.setText("Storage is not writable");
-        }
-        
-    }
-    
-    
-    public File getDataStorageDir(String dataName) {
-        // Get the directory for the user's public documents directory. 
-        File path = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS), dataName);
-        if (!path.mkdirs()) {
-            Log.e(LOG_TAG, "Directory not created");
-        }
-        return path;
-    }
-    [AR] - Checks if external storage is available for read and write 
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }*/  
+ 
     @Override
     /* [AR] - May not be needed, the only place it appears to be used is commented out. */
     public void cancelDisconnect() {
