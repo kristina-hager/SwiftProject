@@ -55,40 +55,41 @@ public class FileTransferService extends IntentService {
             long clientDuration = -1;
 
             try {
-                Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
-                socket.bind(null);
-                socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
+            	Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
+            	socket.bind(null);
+            	socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
 
-                Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
-                OutputStream stream = socket.getOutputStream();
-                ContentResolver cr = context.getContentResolver();
-                InputStream is = null;
-                try {
-                    is = cr.openInputStream(Uri.parse(fileUri));
-                } catch (FileNotFoundException e) {
-                    Log.d(WiFiDirectActivity.TAG, e.toString());
-                }
-                clientDuration = DeviceDetailFragment.copyFile(is, stream);
-                Log.d(WiFiDirectActivity.TAG, "Client: Data written");
-                // log file transfer capture time to wirelessly send file
-                String logFileName = "clientTimeLog.txt";
-                BufferedWriter out = null;
-                if(DeviceDetailFragment.isExternalStorageWritable()){
-                    File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
-                    File file = new File(dataDir, logFileName);
-            		if(!file.exists()){
-            			file.createNewFile();
-            		}
-                    try {
-                    	out = new BufferedWriter(new FileWriter(file, true));
-                    	out.write((Long.toString(clientDuration)) + " is file transfer duration.\n");
-                        out.close();
-                    } catch (IOException e) {
-                        out.close(); 	
-                    }
-                	
-                }
-                
+            	Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
+            	OutputStream stream = socket.getOutputStream();
+            	ContentResolver cr = context.getContentResolver();
+            	InputStream is = null;
+            	try {
+            		is = cr.openInputStream(Uri.parse(fileUri));
+            	} catch (FileNotFoundException e) {
+            		Log.e(WiFiDirectActivity.TAG, e.toString());
+            	}
+            	if (is != null) {  //don't try the next bit of code if the file doesn't exist
+            		clientDuration = DeviceDetailFragment.copyFile(is, stream);
+            		Log.d(WiFiDirectActivity.TAG, "Client: Data written");
+            		// log file transfer capture time to wirelessly send file
+            		String logFileName = "clientTimeLog.txt";
+            		BufferedWriter out = null;
+            		if(DeviceDetailFragment.isExternalStorageWritable()){
+            			File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
+            			File file = new File(dataDir, logFileName);
+            			if(!file.exists()){
+            				file.createNewFile();
+            			}
+            			try {
+            				out = new BufferedWriter(new FileWriter(file, true));
+            				out.write((Long.toString(clientDuration)) + " is file transfer duration.\n");
+            				out.close();
+            			} catch (IOException e) {
+            				out.close(); 	
+            			}
+            		} //isExternalStorageWritable
+            	} //is!=null
+            	//\todo - consider adding output message to user indicating file doesn't exist
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
             } finally {
