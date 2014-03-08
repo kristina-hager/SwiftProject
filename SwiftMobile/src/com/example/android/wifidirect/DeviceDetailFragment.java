@@ -99,7 +99,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
         return mContentView;
     }
-//[AR] Need to figure out if this is still needed?
+
+    //[AR] Need to figure out if this is still needed?
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -136,18 +137,23 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         view = (TextView) mContentView.findViewById(R.id.device_info);
         view.setText("Group Owner IP - " + info.groupOwnerAddress.getHostAddress());
 
+        TextView statusTextBox = (TextView) mContentView.findViewById(R.id.status_text);
+        
         // After the group negotiation, we assign the group owner as the file
         // server. The file server is single threaded, single connection server
         // socket.
         if (info.groupFormed && info.isGroupOwner) {
+        	Log.d(TAG, "group is formed and isGroupOwner true - execute FileServerAsyncTask");
             new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text))
                     .execute();
         } else if (info.groupFormed) {
+        	Log.d(TAG, "group is formed and isGroupOwner false. Want to create and send file via FileTransferService");
+        	
             // The other device acts as the client. 
         	/*[AR] - Here we get the file we want to transfer and perform
         	 *[AR] - the file transfer
         	 */
-            ((TextView) mContentView.findViewById(R.id.status_text)).setText(getResources()
+        	statusTextBox.setText(getResources()
                     .getString(R.string.client_text) + "[AR] - Need to get file and send it");
             // [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
             // the filename must be amytest.txt for now.
@@ -156,35 +162,22 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             if(isExternalStorageWritable()) { // [AR] - this should only be readable...need to change
             	File dataDir = getDataStorageDir(dirname);
             	File file = new File(dataDir, filename);
-            	//[AR] - I don't think we need this anymore.
-/*            	BufferedReader in = null;
-            	try {
-            		in = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
-            		String message = in.readLine();
-//[AR] - Update a status message here
-                    ((TextView) mContentView.findViewById(R.id.status_text)).setText(message);
-            		in.close();
-          
-            	} catch (Exception e){
-                    ((TextView) mContentView.findViewById(R.id.status_text)).setText("Could read from file");
-            	}*/
-            	/* [AR] Here can we launch the applications file transfer thing?
-            	 * [AR] adding it in to see*/
-                Uri uri = Uri.fromFile(file);
-                ((TextView) mContentView.findViewById(R.id.status_text)).setText(uri.toString());
-                Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
-                serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
-                serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
-                serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
-                        info.groupOwnerAddress.getHostAddress());
-                serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
-                getActivity().startService(serviceIntent);
-
-            	
-            	
-            	
+            	if (file.exists() && file.isFile()) {
+            		// Try to transfer the file over
+            		Uri uri = Uri.fromFile(file);
+            		statusTextBox.setText("Want to send: " + uri.toString());
+            		Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
+            		serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
+            		serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
+            		serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
+            				info.groupOwnerAddress.getHostAddress());
+            		serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
+            		getActivity().startService(serviceIntent);     
+            	} else {
+            		statusTextBox.setText("File does not exist! " + file.getName());
+            	}
             } else {
-                ((TextView) mContentView.findViewById(R.id.status_text)).setText("Storage is note writeable");
+            	statusTextBox.setText("Storage is not writeable");
             }
             
             
