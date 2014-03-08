@@ -51,6 +51,7 @@ import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
  */
 public class DeviceDetailFragment extends Fragment implements ConnectionInfoListener {
 
+	private static final String TAG = "DeviceDetailFrag";
     protected static final int CHOOSE_FILE_RESULT_CODE = 20;
     private View mContentView = null;
     private WifiP2pDevice device;
@@ -107,7 +108,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         Uri uri = data.getData();
         TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
         statusText.setText("Sending: " + uri);
-        Log.d(WiFiDirectActivity.TAG, "Intent----------- " + uri);
+        Log.d(TAG, "Intent----------- " + uri);
         Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
         serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
         serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
@@ -250,23 +251,23 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         protected String doInBackground(Void... params) {
             try {
                 ServerSocket serverSocket = new ServerSocket(8988);
-                Log.d(WiFiDirectActivity.TAG, "Server: Socket opened");
+                Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
-                Log.d(WiFiDirectActivity.TAG, "Server: connection done");
+                Log.d(TAG, "Server: connection done");
                 final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), "amytest.txt");
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
                     dirs.mkdirs();
                 f.createNewFile();
 
-                Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
+                Log.d(TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
                 //[AR] - This call to copy file reads in from the socket and writes to a file
                 copyFile(inputstream, new FileOutputStream(f));
                 serverSocket.close();
                 return f.getAbsolutePath();
             } catch (IOException e) {
-                Log.e(WiFiDirectActivity.TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
                 return null;
             }
         }
@@ -319,7 +320,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             duration = time2-time1;
             
         } catch (IOException e) {
-            Log.d(WiFiDirectActivity.TAG, e.toString());
+            Log.d(TAG, e.toString());
             return duration;
         }
         return duration;

@@ -25,6 +25,7 @@ import android.util.Log;
  */
 public class FileTransferService extends IntentService {
 
+	private static final String TAG = "FileTransferService";
     private static final int SOCKET_TIMEOUT = 5000;
     public static final String ACTION_SEND_FILE = "com.example.android.wifidirect.SEND_FILE";
     public static final String EXTRAS_FILE_PATH = "file_url";
@@ -55,22 +56,22 @@ public class FileTransferService extends IntentService {
             long clientDuration = -1;
 
             try {
-            	Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
+            	Log.d(TAG, "Opening client socket - ");
             	socket.bind(null);
             	socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
 
-            	Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
+            	Log.d(TAG, "Client socket - " + socket.isConnected());
             	OutputStream stream = socket.getOutputStream();
             	ContentResolver cr = context.getContentResolver();
             	InputStream is = null;
             	try {
             		is = cr.openInputStream(Uri.parse(fileUri));
             	} catch (FileNotFoundException e) {
-            		Log.e(WiFiDirectActivity.TAG, e.toString());
+            		Log.e(TAG, e.toString());
             	}
             	if (is != null) {  //don't try the next bit of code if the file doesn't exist
             		clientDuration = DeviceDetailFragment.copyFile(is, stream);
-            		Log.d(WiFiDirectActivity.TAG, "Client: Data written");
+            		Log.d(TAG, "Client: Data written");
             		// log file transfer capture time to wirelessly send file
             		String logFileName = "clientTimeLog.txt";
             		BufferedWriter out = null;
@@ -91,7 +92,7 @@ public class FileTransferService extends IntentService {
             	} //is!=null
             	//\todo - consider adding output message to user indicating file doesn't exist
             } catch (IOException e) {
-                Log.e(WiFiDirectActivity.TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             } finally {
                 if (socket != null) {
                     if (socket.isConnected()) {
