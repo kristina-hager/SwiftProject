@@ -64,12 +64,12 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                 // Wifi Direct mode is enabled
                 activity.setIsWifiP2pEnabled(true);
+                Log.d(TAG, "P2P state changed - Enabled : " + state);
             } else {
                 activity.setIsWifiP2pEnabled(false);
                 activity.resetData();
-
+                Log.d(TAG, "P2P state changed (reset data) - Disabled : " + state);
             }
-            Log.d(TAG, "P2P state changed - " + state);
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 
             // request available peers from the wifi p2p manager. This is an
@@ -97,16 +97,18 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 DeviceDetailFragment fragment = (DeviceDetailFragment) activity
                         .getFragmentManager().findFragmentById(R.id.frag_detail);
                 manager.requestConnectionInfo(channel, fragment);
+                Log.d(TAG, "P2P connection changed - request connection info");
             } else {
                 // It's a disconnect
                 activity.resetData();
+                Log.d(TAG, "P2P connection changed - disconnect - reset data");
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             DeviceListFragment fragment = (DeviceListFragment) activity.getFragmentManager()
                     .findFragmentById(R.id.frag_list);
             fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));
-
+            Log.d(TAG, "P2P connection - this device changed");
         }
     }
 }

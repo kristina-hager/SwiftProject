@@ -74,25 +74,29 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
 
     /*[AR] - Not sure is used, called in this file by getView();
      *[AR] - but not clear getView is called on this fragment.
-     * 
+     * [KH] - this is called and provides info like "Connected" 
+     * 		  which shows up in "ME" status on top left window
      * */
     private static String getDeviceStatus(int deviceStatus) {
-        Log.d(TAG, "Peer status :" + deviceStatus);
+        String status = null;
         switch (deviceStatus) {
             case WifiP2pDevice.AVAILABLE:
-                return "Available";
+                status = "Available";
             case WifiP2pDevice.INVITED:
-                return "Invited";
+            	status = "Invited";
             case WifiP2pDevice.CONNECTED:
-                return "Connected";
+            	status = "Connected";
             case WifiP2pDevice.FAILED:
-                return "Failed";
+            	status = "Failed";
             case WifiP2pDevice.UNAVAILABLE:
-                return "Unavailable";
+            	status = "Unavailable";
             default:
-                return "Unknown";
+            	status = "Unknown";
 
         }
+        Log.d(TAG, "Device status :" + status);
+        assert(status != null);
+        return status;
     }
 
     /**
