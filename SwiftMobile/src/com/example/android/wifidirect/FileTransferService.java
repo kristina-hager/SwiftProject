@@ -69,7 +69,9 @@ public class FileTransferService extends IntentService {
             	} catch (FileNotFoundException e) {
             		Log.e(TAG, e.toString());
             	}
-            	if (is != null) {  //don't try the next bit of code if the file doesn't exist
+            	//don't try the next bit of code if the file doesn't exist
+            	if (is != null) {
+            		//write data from fileUri to socket
             		clientDuration = DeviceDetailFragment.copyFile(is, stream);
             		Log.d(TAG, "Client: Data written");
             		// log file transfer capture time to wirelessly send file
@@ -84,6 +86,7 @@ public class FileTransferService extends IntentService {
             			try {
             				out = new BufferedWriter(new FileWriter(file, true));
             				out.write((Long.toString(clientDuration)) + " is file transfer duration.\n");
+            				Log.d(TAG,(Long.toString(clientDuration)) + " is file transfer duration.\n");
             				out.close();
             			} catch (IOException e) {
             				out.close(); 	
@@ -105,7 +108,6 @@ public class FileTransferService extends IntentService {
                     }
                 }
             }
-
         }
     }
 }
