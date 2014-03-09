@@ -51,16 +51,19 @@ import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
  */
 public class DeviceDetailFragment extends Fragment implements ConnectionInfoListener {
 
+	public static final int PORT = 8988;
 	private static final String TAG = "DeviceDetailFrag";
     protected static final int CHOOSE_FILE_RESULT_CODE = 20;
     private View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
     ProgressDialog progressDialog = null;
+    TextView statusText;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        statusText = (TextView) mContentView.findViewById(R.id.status_text);
     }
 
     @Override
@@ -79,7 +82,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 }
                 progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
                         "Connecting to :" + device.deviceAddress, true, true
-
                         );
                 ((DeviceActionListener) getActivity()).connect(config);
 
@@ -103,20 +105,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     //[AR] Need to figure out if this is still needed?
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        // User has picked an image. Transfer it to group owner i.e peer using
-        // FileTransferService.
-        Uri uri = data.getData();
-        TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
-        statusText.setText("Sending: " + uri);
-        Log.d(TAG, "Intent----------- " + uri);
-        Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
-        serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
-        serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
-        serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
-                info.groupOwnerAddress.getHostAddress());
-        serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
-        getActivity().startService(serviceIntent);
+    	Log.e(TAG, "Don't expect onActivityResult to be called");
     }
 
     @Override
@@ -136,56 +125,64 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         // InetAddress from WifiP2pInfo struct.
         view = (TextView) mContentView.findViewById(R.id.device_info);
         view.setText("Group Owner IP - " + info.groupOwnerAddress.getHostAddress());
-
-        TextView statusTextBox = (TextView) mContentView.findViewById(R.id.status_text);
         
         // After the group negotiation, we assign the group owner as the file
         // server. The file server is single threaded, single connection server
         // socket.
         if (info.groupFormed && info.isGroupOwner) {
-        	Log.d(TAG, "group is formed and isGroupOwner true - execute FileServerAsyncTask");
-            new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text))
-                    .execute();
+        	Log.d(TAG, "group is formed and isGroupOwner true - execute FileServerAsyncTask" 
+        			+ " which accepts connection and writes data from stream to file");
+        	new FileServerAsyncTask(getActivity(), statusText).execute();
         } else if (info.groupFormed) {
-        	Log.d(TAG, "group is formed and isGroupOwner false. Want to create and send file via FileTransferService");
-        	
+        	Log.d(TAG, "group is formed and isGroupOwner false. " 
+        			+ "Want to create and send file via FileTransferService");
+
             // The other device acts as the client. 
         	/*[AR] - Here we get the file we want to transfer and perform
         	 *[AR] - the file transfer
         	 */
-        	statusTextBox.setText(getResources()
+        	statusText.setText(getResources()
                     .getString(R.string.client_text) + "[AR] - Need to get file and send it");
-            // [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
-            // the filename must be amytest.txt for now.
-            String dirname = "WiFiDirect_Demo_Dir";
-            String filename = "amytest.txt";
-            if(isExternalStorageWritable()) { // [AR] - this should only be readable...need to change
-            	File dataDir = getDataStorageDir(dirname);
-            	File file = new File(dataDir, filename);
-            	if (file.exists() && file.isFile()) {
-            		// Try to transfer the file over
-            		Uri uri = Uri.fromFile(file);
-            		statusTextBox.setText("Want to send: " + uri.toString());
-            		Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
-            		serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
-            		serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
-            		serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
-            				info.groupOwnerAddress.getHostAddress());
-            		serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
-            		getActivity().startService(serviceIntent);     
-            	} else {
-            		statusTextBox.setText("File does not exist! " + file.getName());
-            	}
-            } else {
-            	statusTextBox.setText("Storage is not writeable");
-            }
-            
-            
+            sendFile(info);           
         }
 
         // hide the connect button
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
     }
+
+    /*
+     * send file to other device via wifi-d
+     */
+	private void sendFile(final WifiP2pInfo info) {
+		// [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
+		// the filename must be amytest.txt for now.
+		String dirname = "WiFiDirect_Demo_Dir";
+		String filename = "amytest.txt";
+		// [AR] - this should only be readable...need to change
+		if(isExternalStorageWritable()) { 
+			File dataDir = getDataStorageDir(dirname);
+			File file = new File(dataDir, filename);
+			if (file.exists() && file.isFile()) {
+				// Try to transfer the file over
+				Uri uri = Uri.fromFile(file);
+				statusText.setText("Sending file: " + uri.toString());
+				Log.d(TAG, "Sending file: " + uri.toString());
+				Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
+				serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
+				serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
+				serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
+						info.groupOwnerAddress.getHostAddress());
+				serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, PORT);
+				getActivity().startService(serviceIntent);     
+			} else {
+				statusText.setText("File does not exist! " + file.getName());
+				Log.d(TAG, "File does not exist! " + file.getName());
+			}
+		} else {
+			statusText.setText("Storage is not writeable");
+			Log.d(TAG,"Storage is not writeable");
+		}
+	}
 
     /**
      * Updates the UI with device data
@@ -223,13 +220,14 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     /**
      * A simple server socket that accepts connection and writes some data on
-     * the stream.
+     * the stream. As in, accepts data from stream and writes that data to a file
      */
     public static class FileServerAsyncTask extends AsyncTask<Void, Void, String> {
 
         @SuppressWarnings("unused")
 		private Context context;
         private TextView statusText;
+        private static final String TAG = "FileServerAsync";
 
         /**
          * @param context
@@ -243,7 +241,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         @Override
         protected String doInBackground(Void... params) {
             try {
-                ServerSocket serverSocket = new ServerSocket(8988);
+                ServerSocket serverSocket = new ServerSocket(PORT);
                 Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(TAG, "Server: connection done");
@@ -272,7 +270,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         @Override
         protected void onPostExecute(String result) {
             if (result != null) {
-                statusText.setText("File copied - " + result);
+                statusText.setText("File copied to - " + result);
+                Log.d(TAG,"File copied to - " + result);
                /* Intent intent = new Intent();
                 intent.setAction(android.content.Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse("file://" + result), "text/*");
@@ -287,7 +286,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
          */
         @Override
         protected void onPreExecute() {
-            statusText.setText("Opening a server socket");
+            statusText.setText("Prepared to receive file via socket");
         }
 
     }
@@ -337,5 +336,4 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         }
         return path;
     }
-
 }
