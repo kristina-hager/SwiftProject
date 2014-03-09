@@ -31,6 +31,7 @@ public class FileTransferService extends IntentService {
     public static final String EXTRAS_FILE_PATH = "file_url";
     public static final String EXTRAS_GROUP_OWNER_ADDRESS = "go_host";
     public static final String EXTRAS_GROUP_OWNER_PORT = "go_port";
+    public static final String EXTRAS_LOG_COMMENT = "log_comment";
 
     public FileTransferService(String name) {
         super(name);
@@ -51,6 +52,7 @@ public class FileTransferService extends IntentService {
         if (intent.getAction().equals(ACTION_SEND_FILE)) {
             String fileUri = intent.getExtras().getString(EXTRAS_FILE_PATH);
             String host = intent.getExtras().getString(EXTRAS_GROUP_OWNER_ADDRESS);
+            String logComment = intent.getExtras().getString(EXTRAS_LOG_COMMENT);
             Socket socket = new Socket();
             int port = intent.getExtras().getInt(EXTRAS_GROUP_OWNER_PORT);
             long clientDuration = -1;
@@ -74,24 +76,8 @@ public class FileTransferService extends IntentService {
             		//write data from fileUri to socket
             		clientDuration = DeviceDetailFragment.copyFile(is, stream);
             		Log.d(TAG, "Client: Data written");
-            		// log file transfer capture time to wirelessly send file
-            		String logFileName = "clientTimeLog.txt";
-            		BufferedWriter out = null;
-            		if(DeviceDetailFragment.isExternalStorageWritable()){
-            			File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
-            			File file = new File(dataDir, logFileName);
-            			if(!file.exists()){
-            				file.createNewFile();
-            			}
-            			try {
-            				out = new BufferedWriter(new FileWriter(file, true));
-            				out.write((Long.toString(clientDuration)) + " is file transfer duration.\n");
-            				Log.d(TAG,(Long.toString(clientDuration)) + " is file transfer duration.\n");
-            				out.close();
-            			} catch (IOException e) {
-            				out.close(); 	
-            			}
-            		} //isExternalStorageWritable
+            		logDuration(clientDuration, logComment);
+ 
             	} //is!=null
             	//\todo - consider adding output message to user indicating file doesn't exist
             } catch (IOException e) {
@@ -109,5 +95,27 @@ public class FileTransferService extends IntentService {
                 }
             }
         }
+    }
+    
+    private void logDuration(long duration, String comment) {
+   		// log file transfer capture time to wirelessly send file
+		String logFileName = "clientTimeLog.txt";
+		BufferedWriter out = null;
+		if(DeviceDetailFragment.isExternalStorageWritable()){
+			try {
+			File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
+			File file = new File(dataDir, logFileName);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+
+				out = new BufferedWriter(new FileWriter(file, true));
+				out.write(comment + ": " + (Long.toString(duration)) + " is file transfer duration.\n");
+				Log.d(TAG,comment + ": " + (Long.toString(duration)) + " is file transfer duration.\n");
+				out.close();
+			} catch (IOException e) {
+				Log.d(TAG, "IO Exception writing to log file.");
+			}
+		} //isExternalStorageWritable    	
     }
 }

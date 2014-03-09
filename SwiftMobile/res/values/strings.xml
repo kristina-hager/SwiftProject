@@ -21,4 +21,6 @@
     <string name="fileNameInput">amytest.txt</string>
     <string name="view_message"></string>
     <string name="read_file">timelog.txt</string>
+    <string name="log_comment_edit_text">Log Comments</string>
+    <string name="hint_log_comment">This will be appended to the transfer duration.</string>
 </resources>

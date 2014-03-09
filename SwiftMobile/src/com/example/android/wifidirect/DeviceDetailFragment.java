@@ -42,6 +42,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
@@ -54,7 +55,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
 	public static final int PORT = 8988;
 	private static final String TAG = "DeviceDetailFrag";
-    protected static final int CHOOSE_FILE_RESULT_CODE = 20;
+    //protected static final int CHOOSE_FILE_RESULT_CODE = 20;
     private View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
@@ -62,6 +63,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     TextView statusText;
     Button sendFile;
     Button receiveFile;
+    EditText logComment;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         statusText = (TextView) mContentView.findViewById(R.id.status_text);
         sendFile = (Button) mContentView.findViewById(R.id.btn_send_file);
         receiveFile = (Button) mContentView.findViewById(R.id.btn_receive_file);
+        logComment = (EditText) mContentView.findViewById(R.id.edit_text_log_comment);
     }
 
     @Override
@@ -164,10 +167,12 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         	 */
         	statusText.setText(getResources().getString(R.string.client_text));
         	sendFile.setVisibility(View.VISIBLE);
+        	logComment.setVisibility(View.VISIBLE);
         	receiveFile.setVisibility(View.GONE);
         } else {
         	sendFile.setVisibility(View.GONE);
         	receiveFile.setVisibility(View.GONE);
+        	logComment.setVisibility(View.VISIBLE);
         }
 
         // hide the connect button
@@ -188,6 +193,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		// the filename must be amytest.txt for now.
 		String dirname = "WiFiDirect_Demo_Dir";
 		String filename = "test_data.csv";
+		String logcomments = "Default log comment";
 		// [AR] - this should only be readable...need to change
 		if(isExternalStorageWritable()) { 
 			File dataDir = getDataStorageDir(dirname);
@@ -203,6 +209,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
 						info.groupOwnerAddress.getHostAddress());
 				serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, PORT);
+				logcomments = logComment.getText().toString();
+				serviceIntent.putExtra(FileTransferService.EXTRAS_LOG_COMMENT, logcomments);
 				getActivity().startService(serviceIntent);     
 			} else {
 				statusText.setText("File does not exist! " + file.getName());
