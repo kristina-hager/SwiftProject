@@ -41,6 +41,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
@@ -59,11 +60,15 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private WifiP2pInfo info;
     ProgressDialog progressDialog = null;
     TextView statusText;
+    Button sendFile;
+    Button receiveFile;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         statusText = (TextView) mContentView.findViewById(R.id.status_text);
+        sendFile = (Button) mContentView.findViewById(R.id.btn_send_file);
+        receiveFile = (Button) mContentView.findViewById(R.id.btn_receive_file);
     }
 
     @Override
@@ -97,7 +102,22 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     }
                 });
 
-
+        mContentView.findViewById(R.id.btn_send_file).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    	if (info != null)
+                    		sendFile(info);
+                    }
+                });
+        
+        mContentView.findViewById(R.id.btn_receive_file).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    	receiveFile();
+                    }
+                });
 
         return mContentView;
     }
@@ -130,9 +150,10 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         // server. The file server is single threaded, single connection server
         // socket.
         if (info.groupFormed && info.isGroupOwner) {
+        	sendFile.setVisibility(View.GONE);
         	Log.d(TAG, "group is formed and isGroupOwner true - execute FileServerAsyncTask" 
         			+ " which accepts connection and writes data from stream to file");
-        	new FileServerAsyncTask(getActivity(), statusText).execute();
+        	receiveFile();
         } else if (info.groupFormed) {
         	Log.d(TAG, "group is formed and isGroupOwner false. " 
         			+ "Want to create and send file via FileTransferService");
@@ -141,14 +162,23 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         	/*[AR] - Here we get the file we want to transfer and perform
         	 *[AR] - the file transfer
         	 */
-        	statusText.setText(getResources()
-                    .getString(R.string.client_text) + "[AR] - Need to get file and send it");
-            sendFile(info);           
+        	statusText.setText(getResources().getString(R.string.client_text));
+        	sendFile.setVisibility(View.VISIBLE);
+        	receiveFile.setVisibility(View.GONE);
+        } else {
+        	sendFile.setVisibility(View.GONE);
+        	receiveFile.setVisibility(View.GONE);
         }
 
         // hide the connect button
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
     }
+
+	private void receiveFile() {
+		receiveFile.setVisibility(View.GONE);
+		new FileServerAsyncTask(getActivity(), statusText).execute();
+		receiveFile.setVisibility(View.VISIBLE);
+	}
 
     /*
      * send file to other device via wifi-d
@@ -165,8 +195,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 			if (file.exists() && file.isFile()) {
 				// Try to transfer the file over
 				Uri uri = Uri.fromFile(file);
-				statusText.setText("Sending file: " + uri.toString());
-				Log.d(TAG, "Sending file: " + uri.toString());
+				statusText.setText("Sending file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
+				Log.d(TAG, "Sending file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
 				Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
 				serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
 				serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
@@ -270,8 +300,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         @Override
         protected void onPostExecute(String result) {
             if (result != null) {
-                statusText.setText("File copied to - " + result);
-                Log.d(TAG,"File copied to - " + result);
+                statusText.setText("File copied to - " + result + "\nAt: " + Utils.getDateAndTime() 
+                		+ "\nSelect Ready Receive to prepare for new file.");
+                Log.d(TAG,"File copied to - " + result + "\nAt: " + Utils.getDateAndTime());
                /* Intent intent = new Intent();
                 intent.setAction(android.content.Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse("file://" + result), "text/*");
