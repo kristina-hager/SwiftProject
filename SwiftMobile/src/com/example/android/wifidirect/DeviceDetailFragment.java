@@ -187,7 +187,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		// [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
 		// the filename must be amytest.txt for now.
 		String dirname = "WiFiDirect_Demo_Dir";
-		String filename = "amytest.txt";
+		String filename = "test_data.csv";
 		// [AR] - this should only be readable...need to change
 		if(isExternalStorageWritable()) { 
 			File dataDir = getDataStorageDir(dirname);
@@ -275,7 +275,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(TAG, "Server: connection done");
-                final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), "amytest.txt");
+                final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), "test_data.csv");
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
                     dirs.mkdirs();

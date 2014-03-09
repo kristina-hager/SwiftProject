@@ -234,6 +234,8 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
 
             @Override
             public void onSuccess() {
+            	fragment.getView().findViewById(R.id.btn_receive_file).setVisibility(View.GONE);
+            	fragment.getView().findViewById(R.id.btn_send_file).setVisibility(View.GONE);
                 fragment.getView().setVisibility(View.GONE);
             }
 
