@@ -78,25 +78,21 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
      * 		  which shows up in "ME" status on top left window
      * */
     private static String getDeviceStatus(int deviceStatus) {
-        String status = null;
+        Log.d(TAG, "Device status: " + "(" + deviceStatus + ")");
         switch (deviceStatus) {
             case WifiP2pDevice.AVAILABLE:
-                status = "Available";
+                return "Available";
             case WifiP2pDevice.INVITED:
-            	status = "Invited";
+            	return "Invited";
             case WifiP2pDevice.CONNECTED:
-            	status = "Connected";
+            	return "Connected";
             case WifiP2pDevice.FAILED:
-            	status = "Failed";
+            	return "Failed";
             case WifiP2pDevice.UNAVAILABLE:
-            	status = "Unavailable";
+            	return "Unavailable";
             default:
-            	status = "Unknown";
-
+            	return "Unknown";
         }
-        Log.d(TAG, "Device status :" + status);
-        assert(status != null);
-        return status;
     }
 
     /**
