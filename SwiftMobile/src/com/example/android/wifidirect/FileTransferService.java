@@ -81,7 +81,7 @@ public class FileTransferService extends IntentService {
             	} //is!=null
             	//\todo - consider adding output message to user indicating file doesn't exist
             } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, "IOException on FileXfer: " + e.getMessage());
             } finally {
                 if (socket != null) {
                     if (socket.isConnected()) {
@@ -110,8 +110,8 @@ public class FileTransferService extends IntentService {
 			}
 
 				out = new BufferedWriter(new FileWriter(file, true));
-				out.write(comment + ": " + (Long.toString(duration)) + " is file transfer duration.\n");
-				Log.d(TAG,comment + ": " + (Long.toString(duration)) + " is file transfer duration.\n");
+				out.write(comment + ": " + (Long.toString(duration)) + " ns is send file transfer duration.\n");
+				Log.d(TAG,comment + ": " + (Long.toString(duration)) + " ns is send file transfer duration.\n");
 				out.close();
 			} catch (IOException e) {
 				Log.d(TAG, "IO Exception writing to log file.");
