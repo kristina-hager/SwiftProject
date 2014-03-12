@@ -16,9 +16,11 @@
 
 package com.example.android.wifidirect;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -191,11 +193,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
      * send file to other device via wifi-d
      */
 	private void sendFile(final WifiP2pInfo info) {
-		// [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
-		// the filename must be amytest.txt for now.
-
 		String logcomments = "Default log comment";
-		// [AR] - this should only be readable...need to change
 		//KH - getFileToSend now writes to external storage, so keep this if
 		if(isExternalStorageWritable()) { 
 			File file = getFileToSend();
@@ -319,7 +317,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 ServerSocket serverSocket = new ServerSocket(PORT);
                 Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
-                Log.d(TAG, "Server: connection done");
+                Log.d(TAG, "Server: connection done for receive.");
                 final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), 
                 		"test_data." + System.currentTimeMillis() + ".csv");
                 File dirs = new File(f.getParent());
@@ -330,13 +328,36 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
                 //[AR] - This call to copy file reads in from the socket and writes to a file
-                copyFile(inputstream, new FileOutputStream(f));
+                long duration = copyFile(inputstream, new FileOutputStream(f));
                 serverSocket.close();
-                return f.getAbsolutePath();
+                logDuration(duration, f.getName());
+                return f.getAbsolutePath();          
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
                 return null;
             }
+        }
+        
+        private void logDuration(long duration, String filename) {
+       		// log file transfer capture time to receive file
+    		String logFileName = "receiveTimeLog.txt";
+    		BufferedWriter out = null;
+    		if(DeviceDetailFragment.isExternalStorageWritable()){
+    			try {
+    			File dataDir = DeviceDetailFragment.getDataStorageDir("Timelogs");
+    			File file = new File(dataDir, logFileName);
+    			if(!file.exists()){
+    				file.createNewFile();
+    			}
+
+    				out = new BufferedWriter(new FileWriter(file, true));
+    				out.write((Long.toString(duration)) + " ns to receive file " + filename + "\n");
+    				Log.d(TAG, (Long.toString(duration)) + " ns to receive file " + filename + "\n");
+    				out.close();
+    			} catch (IOException e) {
+    				Log.d(TAG, "IO Exception writing to log file.");
+    			}
+    		} //isExternalStorageWritable    	
         }
 
         /*
