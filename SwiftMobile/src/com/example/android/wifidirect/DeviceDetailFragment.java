@@ -17,6 +17,7 @@
 package com.example.android.wifidirect;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -191,17 +193,17 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 	private void sendFile(final WifiP2pInfo info) {
 		// [AR] Here we expect the file to send to be in the WifiDirect_Demo_Dir
 		// the filename must be amytest.txt for now.
-		String dirname = "WiFiDirect_Demo_Dir";
-		String filename = "test_data.csv";
+
 		String logcomments = "Default log comment";
 		// [AR] - this should only be readable...need to change
+		//KH - getFileToSend now writes to external storage, so keep this if
 		if(isExternalStorageWritable()) { 
-			File dataDir = getDataStorageDir(dirname);
-			File file = new File(dataDir, filename);
-			if (file.exists() && file.isFile()) {
-				// Try to transfer the file over
+			File file = getFileToSend();
+			if (file != null) {		
 				Uri uri = Uri.fromFile(file);
-				statusText.setText("Sending file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
+				statusText.setText("Sending file: " + uri.toString() 
+						+ "\nAt: " + Utils.getDateAndTime() 
+						+ "\n of size: " + file.length() + " B");
 				Log.d(TAG, "Sending file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
 				Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
 				serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
@@ -213,13 +215,48 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				serviceIntent.putExtra(FileTransferService.EXTRAS_LOG_COMMENT, logcomments);
 				getActivity().startService(serviceIntent);     
 			} else {
-				statusText.setText("File does not exist! " + file.getName());
-				Log.d(TAG, "File does not exist! " + file.getName());
-			}
+				statusText.setText("File to send does not exist! ");
+				Log.d(TAG, "File to send does not exist! ");
+		    }
 		} else {
 			statusText.setText("Storage is not writeable");
 			Log.d(TAG,"Storage is not writeable");
 		}
+	}
+
+	private File getFileToSend() {
+		String dirname = "WiFiDirect_Demo_Dir";
+		String filename = "test_data_MASTER.csv";
+		File dataDir = getDataStorageDir(dirname);
+		File file = new File(dataDir, filename);
+		if (file.exists() && file.isFile()) {
+			Log.d(TAG, "To send file of size: " + file.length());
+		} else {
+
+				InputStream ins = getResources().openRawResource(R.raw.test_data_csv);
+				FileOutputStream fos;
+				try {
+					fos = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
+				byte buf[] = new byte[1024];
+				int len;
+				try {
+					while((len=ins.read(buf))>0) {
+					    fos.write(buf,0,len);
+					}
+					fos.close();
+					ins.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
+		}
+		return file;
 	}
 
     /**
@@ -283,7 +320,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(TAG, "Server: connection done");
-                final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), "test_data.csv");
+                final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), 
+                		"test_data." + System.currentTimeMillis() + ".csv");
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
                     dirs.mkdirs();
@@ -308,13 +346,12 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         @Override
         protected void onPostExecute(String result) {
             if (result != null) {
-                statusText.setText("File copied to - " + result + "\nAt: " + Utils.getDateAndTime() 
-                		+ "\nSelect Ready Receive to prepare for new file.");
+            	File file = new File(result);
+                statusText.setText("File copied to - " + result 
+                		+ "\nAt: " + Utils.getDateAndTime() 
+                		+ "\nSize: " + file.length() + " B"                		
+                		+ "\n\nSelect Ready Receive to prepare for new file.");
                 Log.d(TAG,"File copied to - " + result + "\nAt: " + Utils.getDateAndTime());
-               /* Intent intent = new Intent();
-                intent.setAction(android.content.Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse("file://" + result), "text/*");
-                context.startActivity(intent);*/
             }
 
         }
