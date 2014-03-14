@@ -328,7 +328,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
                 //[AR] - This call to copy file reads in from the socket and writes to a file
-                long duration = copyFile(inputstream, new FileOutputStream(f));
+                StringBuilder errMsg = new StringBuilder();
+                long duration = copyFile(inputstream, new FileOutputStream(f), errMsg);
+                Log.d(TAG,"Socket, copyFile errMsg: " + errMsg);
                 serverSocket.close();
                 logDuration(duration, f.getName());
                 return f.getAbsolutePath();          
@@ -388,7 +390,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     }
 
-    public static long copyFile(InputStream inputStream, OutputStream out) {
+    public static long copyFile(InputStream inputStream, OutputStream out, StringBuilder outErrorMessage) {
     	//[AR] - here we return the duration as a long always, but it only
     	//matters to us when the output stream is a socket connection, not
     	//an output to a file.  Output stream is only a socket connection
@@ -407,10 +409,10 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             out.close();
             inputStream.close();
             duration = time2-time1;
-            
+            //outErrorMessage.append("CopyFile No Error"); //KH-this used to test msg return only
         } catch (IOException e) {
             Log.d(TAG, e.toString());
-            return duration;
+            outErrorMessage.append("CopyFile Error: " + e.toString());
         }
         return duration;
     }

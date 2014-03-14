@@ -74,8 +74,9 @@ public class FileTransferService extends IntentService {
             	//don't try the next bit of code if the file doesn't exist
             	if (is != null) {
             		//write data from fileUri to socket
-            		clientDuration = DeviceDetailFragment.copyFile(is, stream);
-            		Log.d(TAG, "Client: Data written");
+            		StringBuilder errMsg = new StringBuilder();
+            		clientDuration = DeviceDetailFragment.copyFile(is, stream, errMsg);
+            		Log.d(TAG, "Client: Data written. ErrMsg: " + errMsg );
             		logDuration(clientDuration, logComment);
  
             	} //is!=null
