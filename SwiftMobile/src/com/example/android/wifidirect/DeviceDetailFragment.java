@@ -31,7 +31,6 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -126,6 +125,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     }
                 });
 
+        
         return mContentView;
     }
 
@@ -435,4 +435,5 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         }
         return path;
     }
+
 }

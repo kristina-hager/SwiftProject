@@ -16,6 +16,8 @@
 
 package com.example.android.wifidirect;
 
+import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,15 +30,13 @@ import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 
 /**
  * An activity that uses WiFi Direct APIs to discover and connect with available
@@ -81,6 +81,24 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
 
+        /*
+         * Creates an intent filter for ResponseReceiver that intercepts broadcast Intents
+         */
+        
+        // The filter's action is BROADCAST_ACTION
+        IntentFilter statusIntentFilter = new IntentFilter(
+                Constants.BROADCAST_ACTION);
+        
+        // Sets the filter's category to DEFAULT
+        statusIntentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        
+        // Instantiates a new DownloadStateReceiver
+        ResponseReceiver mResponseReceiver = new ResponseReceiver();
+        
+        // Registers the DownloadStateReceiver and its intent filters
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+        		mResponseReceiver,
+                statusIntentFilter);
         
     }
 
@@ -294,6 +312,33 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                 });
             }
         }
-
     }
+    
+    // Broadcast receiver for receiving status updates from the IntentService
+    private class ResponseReceiver extends BroadcastReceiver
+    {
+    	private static final String TAG = "DDFragResponseReceiver";
+        // Prevents instantiation
+        private ResponseReceiver() {
+        }
+        
+        /**
+        *
+        * This method is called by the system when a broadcast Intent is matched by this class'
+        * intent filters
+        *
+        * @param context An Android context
+        * @param intent The incoming broadcast Intent
+        */
+       @Override
+        public void onReceive(Context context, Intent intent) {
+    	   String msg = intent.getStringExtra(Constants.EXTENDED_STATUS_LOG);
+    	   Log.d(TAG, "onReceive of ResponseReceiver called: " + msg);
+    	   Toast.makeText(WiFiDirectActivity.this, msg,
+                   Toast.LENGTH_LONG).show();
+        	return;
+        }
+    }
+    
+    
 }

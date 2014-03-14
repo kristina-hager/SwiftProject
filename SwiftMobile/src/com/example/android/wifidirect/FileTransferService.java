@@ -33,6 +33,8 @@ public class FileTransferService extends IntentService {
     public static final String EXTRAS_GROUP_OWNER_PORT = "go_port";
     public static final String EXTRAS_LOG_COMMENT = "log_comment";
 
+    private BroadcastNotifier mBroadcaster = new BroadcastNotifier(this);
+
     public FileTransferService(String name) {
         super(name);
     }
@@ -76,12 +78,17 @@ public class FileTransferService extends IntentService {
             		//write data from fileUri to socket
             		StringBuilder errMsg = new StringBuilder();
             		clientDuration = DeviceDetailFragment.copyFile(is, stream, errMsg);
-            		Log.d(TAG, "Client: Data written. ErrMsg: " + errMsg );
-            		logDuration(clientDuration, logComment);
- 
+            		if (clientDuration == -1 ) {
+            			Log.d(TAG, "Client: Data write error. ErrMsg: " + errMsg );
+            			mBroadcaster.broadcastIntentWithMessage("Data write error: " +errMsg);
+            	} else {
+            			logDuration(clientDuration, logComment);
+            			mBroadcaster.broadcastIntentWithMessage("File sent! Took this long: " + clientDuration);
+            		}
             	} //is!=null
             	//\todo - consider adding output message to user indicating file doesn't exist
             } catch (IOException e) {
+            	mBroadcaster.broadcastIntentWithMessage("IOException Error: " + e.getMessage());
                 Log.e(TAG, "IOException on FileXfer: " + e.getMessage());
             } finally {
                 if (socket != null) {
