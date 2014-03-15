@@ -67,6 +67,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     Button sendFile;
     Button receiveFile;
     EditText logComment;
+    
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -333,10 +334,14 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 Log.d(TAG,"Socket, copyFile errMsg: " + errMsg);
                 serverSocket.close();
                 logDuration(duration, f.getName());
-                return f.getAbsolutePath();          
+                if (duration < 0){
+                	return errMsg.toString();
+                } else {
+                	return f.getAbsolutePath();
+                }                       
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
-                return null;
+                return "IO Exception receiving the file and writing it to disk: " + e;
             }
         }
         

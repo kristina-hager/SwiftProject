@@ -72,6 +72,7 @@ public class FileTransferService extends IntentService {
             		is = cr.openInputStream(Uri.parse(fileUri));
             	} catch (FileNotFoundException e) {
             		Log.e(TAG, e.toString());
+        			mBroadcaster.broadcastIntentWithMessage("File not found error: " + e.toString());
             	}
             	//don't try the next bit of code if the file doesn't exist
             	if (is != null) {
