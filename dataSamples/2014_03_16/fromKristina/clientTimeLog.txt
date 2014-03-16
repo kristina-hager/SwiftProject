@@ -1,0 +1,24 @@
+: 18676758 ns is send file transfer duration.
+: 21026612 ns is send file transfer duration.
+: 18951417 ns is send file transfer duration.
+test: 14312745 ns is send file transfer duration.
+test: 12451172 ns is send file transfer duration.
+test nx: 14129640 ns is send file transfer duration.
+test nx: 15319825 ns is send file transfer duration.
+test nx: 12939453 ns is send file transfer duration.
+55 ft 5in Travis cty: 15777588 ns is send file transfer duration.
+55 ft 5in Travis cty: 20568848 ns is send file transfer duration.
+80ft Travis cty: 11962891 ns is send file transfer duration.
+80ft Travis cty 2: 12176512 ns is send file transfer duration.
+80ft Travis cty 3: 20263671 ns is send file transfer duration.
+97ft Travis cty 3: 12573243 ns is send file transfer duration.
+97ft Travis cty 2try: 14068603 ns is send file transfer duration.
+97ft Travis cty 3 try: 12420656 ns is send file transfer duration.
+31ft PSG b try1: 19165039 ns is send file transfer duration.
+31ft PSG b try1a: 19989014 ns is send file transfer duration.
+31ft PSG b try1a1: 12512207 ns is send file transfer duration.
+20ft b PSG 1: 19439697 ns is send file transfer duration.
+20ft b PSG 2: 12451173 ns is send file transfer duration.
+Travis CTY b try 1: 396301269 ns is send file transfer duration.
+Travis CTY b try 2: 116302490 ns is send file transfer duration.
+Travis CTY b try 3: 113128664 ns is send file transfer duration.
