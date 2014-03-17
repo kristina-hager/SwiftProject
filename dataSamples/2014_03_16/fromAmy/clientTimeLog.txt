@@ -1,0 +1,49 @@
+null: 980000 is file transfer duration.
+null: 514000 is file transfer duration.
+null: 510000 is file transfer duration.
+null: 809000 is file transfer duration.
+null: 505000 is file transfer duration.
+29878000 is file transfer duration.
+78660000 is file transfer duration.
+Testing fixed: 91558000 is file transfer duration.
+Testing fixed 2: 87449000 is file transfer duration.
+poop: 68525000 is file transfer duration.
+poop: 70714000 is file transfer duration.
+: 74160000 ns is send file transfer duration.
+hi: 120295000 ns is send file transfer duration.
+hi: 88907000 ns is send file transfer duration.
+hi: 193000000 ns is send file transfer duration.
+: 86097000 ns is send file transfer duration.
+: 52906000 ns is send file transfer duration.
+: 84640000 ns is send file transfer duration.
+: 49107000 ns is send file transfer duration.
+: 64433999 ns is send file transfer duration.
+: 64532000 ns is send file transfer duration.
+: 46437000 ns is send file transfer duration.
+: 26367000 ns is send file transfer duration.
+: 42375000 ns is send file transfer duration.
+: 46167000 ns is send file transfer duration.
+: 38479000 ns is send file transfer duration.
+: 40603000 ns is send file transfer duration.
+: 16840000 ns is send file transfer duration.
+: 21426000 ns is send file transfer duration.
+: 33422000 ns is send file transfer duration.
+: 19735000 ns is send file transfer duration.
+: 35227000 ns is send file transfer duration.
+8ft...passage b. Try one.: 80809000 ns is send file transfer duration.
+8ft...passage b. Try : 124116000 ns is send file transfer duration.
+8ft...passage b. Try : 68804000 ns is send file transfer duration.
+8ft. Passage b. Try one.: 138801000 ns is send file transfer duration.
+8ft. Passage b. Try one.: 149605000 ns is send file transfer duration.
+8ft. Passage b. Try one.: 105464000 ns is send file transfer duration.
+28ft. Passage b. Try one.: 162796000 ns is send file transfer duration.
+28ft. Passage b. Try one.: 226090000 ns is send file transfer duration.
+28ft. Passage b. Try two.: 283006000 ns is send file transfer duration.
+28ft. Passage b. Try three.: 184317000 ns is send file transfer duration.
+30ft. Passage b.Try one.: 380452001 ns is send file transfer duration.
+30ft. Passage b.Try two.: 624415999 ns is send file transfer duration.
+30ft. Passage b.Try three: 368881000 ns is send file transfer duration.
+67ft. Travis county b. Try one.: 178535000 ns is send file transfer duration.
+67ft. Travis county b. Try one.: 288861000 ns is send file transfer duration.
+67ft. Travis county b. Try one.: 205437999 ns is send file transfer duration.
+67ft. Travis county b. Try one.: 102064000 ns is send file transfer duration.
