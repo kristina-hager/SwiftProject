@@ -28,29 +28,35 @@ University of Texas at Austin\\
 \end{abstract}
 \section{Introduction}
 Research can takes scientists to places difficult to access to retrieve their study data. 
-For this project we will consider a common problem faced by scientists researching caves in Central Texas. 
+For this project a common problem faced by scientists researching caves in Central Texas is considered. 
 Data regarding CO2 levels, cave-drip water, temperature, humidity, etc is collected by in-cave data loggers (sensors). 
 The most common method of retrieving this data from sensors in caves is via a human entering the cave and manually retrieving it. 
 This method is very slow, inconvenient, and in some cases quite perilous. 
 
-We want to research application of the Wifi Direct technology in the cave environment for the purpose of ferrying data from in-cave sensors back to the surface for easier access by environmental scientists. 
-We propose that this would be a far more convenient, effective and safe mechanism of data retrieval versus current techniques.  The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which could provide a simple and power effective means of setting up the network and transferring data. 
+The data retrieval problem could potentially be made easier by leveraging Wifi Direct technology. This technology is now common in most mobile devices.
+The goal for this research is to use WiFi Direct in the cave environment for the purpose of ferrying data from in-cave sensors back to the surface for easier access by environmental scientists. 
+An application leveraging this technology standard would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
+The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which could provide a simple and power effective means of setting up the network and transferring data. 
 
-There are two key questions which will be the focus of this paper which evaluate two potential challenges of the WiFi Direct being used to solve this problem. 
+There are two key questions which will be the focus of this paper, evaluating two potential challenges of WiFi Direct being used to solve this problem. 
 The first question is that of range and connectivity. 
 While WiFi Direct theoretically provides for longer ranges than Bluetooth technology, in a subterranean environment these characteristics could change. 
-In addition to range, the current, and still nacent implementation of the WiFi Direct APIs may be somewhat limited for use in communication beyond a single WiFi Direct group. 
-In addition, from the early research into the APIs, the current wireless protected setup implementation doesn't appear to provide a means to automate connectivity approval.
+In addition to range, the current, and still nacent implementation of the WiFi Direct APIs may be somewhat limited for this use case.
+One conern is that communication beyond a single WiFi Direct group may be a challenge, and this will be a key need for this application. 
+In addition, the current wireless protected setup implementation doesn't appear to provide a means to automate connectivity approval on a device.
 This issue may be circumvented by the concept of remembered groups, but will require further investigation.
 
 For this project, we will explore and evaluate the Wifi Direct technology and quantify the behavior of Wifi Direct using off the shelf Android devices in actual cave environments. 
 The focus of the experiments will be on achievable ranges and data transfer rates if benchmarking is feasible while working within the Android APIs. 
-We have created a prototype application on Android devices for the initial phase of our research to use to measure Wifi Direct characteristics with the UT Grotto, a popular cave in Austin with a variety of topologies/profiles to test the connectivity of the technology. 
-The ultimate goal of this initial application and our cave excursion is to determine if the range is sufficient to enlist WiFi Direct to support passing messages out of the cave.
+For the first phase of this project a prototype application on Android devices has been created. This application was used to measure Wifi Direct characteristics within the UT Grotto, a popular cave in Austin with a variety of formations and profiles to test the connectivity of the technology. 
+The ultimate goal of this initial application and the cave excursion is to determine if the range is sufficient to enlist WiFi Direct to support passing messages out of the cave.
+The results of this initial testing showed that WiFi Direct had significant range in areas where direct line of sight was achievable between devices.
 
-Following this experiment, a second Android application will be developed. While we have successfully utilized WiFi direct to transfer data files within a single WiFi Direct group, ultimately we need to determine if this protocol and the available Android APIs are suited to passing information from peer to peer to ferry the data from the cave. 
-A key concern is that the distance required to ferry the data the entire lengh of a cave may span multiple WiFi Direct groups. This will require that an application could be developed to support multiple WiFi direct groups on the device. 
-In addition, timing of discovery and connectivity must be implemented in such a way that a single wireless interface on the device can be shared.
+Following this experiment, a second Android application will be developed. 
+While WiFi Direct has been successfully utilized to transfer data files within a single WiFi Direct group, practical application of this technology requires peer to peer hops that extend beyond the range of what a single group can provide.
+Ultimately the second application will determine if passing information from peer to peer to ferry the data from the cave is achievable. 
+In addition to the key concern that the an application could support multiple WiFi direct groups on the same device, there are also concerns about timing of discovery and connectivity.
+These must be implemented in such a way that a single wireless interface on the device can be shared.
 
 The current state of our research is incomplete, but this paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
 The remainder of this paper is structured as follows, section x….
@@ -61,8 +67,8 @@ Test citation \cite{mo12}
 
 \section{WiFi Direct}
 In today's world, wireless connectivity is, for the most part taken for granted. 
-There are still a few circumstances though, that remind us that the Internet and network connectivity are not guaranteed. 
-There are still a few places due to physical or technological constraints where device connectivity cannot be achieved. 
+There are still a few circumstances that remind us that the Internet and network connectivity are not guaranteed. 
+Whether due to physical or technological constraints occasionally device connectivity cannot be achieved. 
 The WiFi Direct standard is one means of potentially filling that gap. 
 In some use cases, broader connectivity to infrastructure is not required and there is value to simple device to device communication. 
 This is Wifi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
@@ -72,10 +78,24 @@ This standard has several benefits, first and foremost being that it does not re
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
 Speed and range for WiFi Direct are those of typical WiFi devices and can operation at ---todo get number---Mbs and up to 200 meters depending on the environment. 
 Security for WiFi direct utilizes WiFi Protected Setup and WPA2 to ensure security of the communications over the peer to peer network. 
+Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
 
-The basic concepts of WiFi Direct are as follows. 
+The basic concepts of WiFi Direct are as follows. At the core of Wifi Direct is the WiFi Direct Group. This basically functions as an infrastructure basic service set(BSS). 
+All components that can connect into a wireless medium in a network are referred to as stations. 
+The basic service set (BSS) is a set of all stations that can communicate with each other. 
+An infrastructure BSS includes both access points and stations in a wireless connection scenario.
+--en.wikipedia.org.wiki.Wireless.LAN--
+All WiFi Direct devices must be capable of becoming the group owner. Within a group, a single device takes on this role. 
+The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, Wi-Fi Protected Setup Internal Registrar functionality, and communication between Clients in the Group. 
+The Group owner decides if the group is temporary or persistent, a persistent group may be formed again without reinitiating WPS.
+Group owners may optionally provide features such as simultaneous (concurrent) connection with an infrastructure network and sharing of that infrastructure connection. In addition to being able to execute the group owner role, WiFi Direct devices must also be capable of group ownership negotiation, discovery, and power management functions.
+ 
 Devices adhering to the standard enter into a discovery phase where peers within range are found. 
+Once a list of peers is retrieved, users can select to connect to one of these devices.
+Devices wishing to connect may either form a new group or connect to an existing group. 
+As part of the connection process WiFi Protected Setup is used to obtain credentials and authenticate the WiFi Direct device. 
+
 A device obtains the role of group owner through one of three mechanisms [what are these]. 
 Once the group owner is established, devices may open socket connections to communicate with other devices within the group.
 1.	Discovery
