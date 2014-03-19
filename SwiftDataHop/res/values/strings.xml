@@ -3,5 +3,7 @@
 
     <string name="app_name">SwiftDataHop</string>
     <string name="title_task_detail">Task Detail</string>
-
+    <string name="task_configure_name">Task configure</string>
+    <string name="task_dataxfer_name">Task data transfer</string>
+    <string name="task_moreinfo_name">Task more info</string>
 </resources>

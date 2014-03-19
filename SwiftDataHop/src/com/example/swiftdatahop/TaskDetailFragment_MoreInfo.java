@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.swiftdatahop.dummy.DummyContent;
-
 /**
  * A fragment representing a single Task detail screen. This fragment is either
  * contained in a {@link TaskListActivity} in two-pane mode (on tablets) or a
  * {@link TaskDetailActivity} on handsets.
  */
-public class TaskDetailFragment extends Fragment {
+public class TaskDetailFragment_MoreInfo extends Fragment {
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
@@ -24,13 +22,13 @@ public class TaskDetailFragment extends Fragment {
 	/**
 	 * The dummy content this fragment is presenting.
 	 */
-	private DummyContent.DummyItem mItem;
+	private TaskInfo.TaskItem mItem;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public TaskDetailFragment() {
+	public TaskDetailFragment_MoreInfo() {
 	}
 
 	@Override
@@ -41,7 +39,7 @@ public class TaskDetailFragment extends Fragment {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			mItem = DummyContent.ITEM_MAP.get(getArguments().getString(
+			mItem = TaskInfo.ITEM_MAP.get(getArguments().getString(
 					ARG_ITEM_ID));
 		}
 	}
@@ -49,7 +47,7 @@ public class TaskDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_task_detail,
+		View rootView = inflater.inflate(R.layout.tdf_moreinfo,
 				container, false);
 
 		// Show the dummy content as text in a TextView.

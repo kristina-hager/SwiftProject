@@ -3,6 +3,7 @@ package com.example.swiftdatahop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 
 /**
  * An activity representing a list of Tasks. This activity has different
@@ -14,7 +15,7 @@ import android.support.v4.app.FragmentActivity;
  * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link TaskListFragment} and the item details (if present) is a
- * {@link TaskDetailFragment}.
+ * {@link TaskDetailFragment_Configure}.
  * <p>
  * This activity also implements the required {@link TaskListFragment.Callbacks}
  * interface to listen for item selections.
@@ -56,21 +57,14 @@ public class TaskListActivity extends FragmentActivity implements
 	@Override
 	public void onItemSelected(String id) {
 		if (mTwoPane) {
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(TaskDetailFragment.ARG_ITEM_ID, id);
-			TaskDetailFragment fragment = new TaskDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.task_detail_container, fragment).commit();
-
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			TaskChooser.configTaskFragment(id, transaction);
+			transaction.commit();
 		} else {
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, TaskDetailActivity.class);
-			detailIntent.putExtra(TaskDetailFragment.ARG_ITEM_ID, id);
+			TaskChooser.putExtraOnIntent(id, detailIntent);
 			startActivity(detailIntent);
 		}
 	}

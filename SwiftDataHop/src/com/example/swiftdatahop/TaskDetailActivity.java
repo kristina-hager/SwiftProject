@@ -3,6 +3,7 @@ package com.example.swiftdatahop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
@@ -12,9 +13,10 @@ import android.view.MenuItem;
  * side-by-side with a list of items in a {@link TaskListActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link TaskDetailFragment}.
+ * a {@link TaskDetailFragment_Configure}.
  */
-public class TaskDetailActivity extends FragmentActivity {
+public class TaskDetailActivity extends FragmentActivity implements
+TaskListFragment.Callbacks {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +38,25 @@ public class TaskDetailActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(TaskDetailFragment.ARG_ITEM_ID, getIntent()
-					.getStringExtra(TaskDetailFragment.ARG_ITEM_ID));
-			TaskDetailFragment fragment = new TaskDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.task_detail_container, fragment).commit();
+
+			//[kh] - i'm not actually sure when this is ever invoked, but perhaps it's just some sort of default
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			TaskChooser.configTaskFragment(getIntent().getStringExtra(TaskDetailFragment_Configure.ARG_ITEM_ID)
+					, transaction);
+			transaction.commit();
 		}
+	}
+
+	/**
+	 * Callback method from {@link TaskListFragment.Callbacks} indicating that
+	 * the item with the given ID was selected.
+	 */
+	@Override
+	public void onItemSelected(String id) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+		TaskChooser.configTaskFragment(id, transaction);
+		transaction.commit();
 	}
 
 	@Override
