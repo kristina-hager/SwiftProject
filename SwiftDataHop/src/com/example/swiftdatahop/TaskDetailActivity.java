@@ -13,7 +13,7 @@ import android.view.MenuItem;
  * side-by-side with a list of items in a {@link TaskListActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link TaskDetailFragment_Configure}.
+ * a {@link TaskDetailFragment_Configure_prev}.
  */
 public class TaskDetailActivity extends FragmentActivity implements
 TaskListFragment.Callbacks {
@@ -41,7 +41,7 @@ TaskListFragment.Callbacks {
 
 			//[kh] - i'm not actually sure when this is ever invoked, but perhaps it's just some sort of default
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			TaskChooser.configTaskFragment(getIntent().getStringExtra(TaskDetailFragment_Configure.ARG_ITEM_ID)
+			TaskChooser.configTaskFragment(getIntent().getStringExtra(TaskDetailFragment_ShowPeers.ARG_ITEM_ID)
 					, transaction);
 			transaction.commit();
 		}

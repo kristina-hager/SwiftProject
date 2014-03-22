@@ -2,6 +2,7 @@ package com.example.swiftdatahop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 /* Needed a way to pick the fragment that was started based on menu item selected.
@@ -13,32 +14,32 @@ public class TaskChooser {
 		// fragment transaction.
 		Bundle arguments = new Bundle();
 		if (id.equals("1")) {
-			arguments.putString(TaskDetailFragment_Configure.ARG_ITEM_ID, id);
-			TaskDetailFragment_Configure fragment = new TaskDetailFragment_Configure();
+			arguments.putString(TaskDetailFragment_ShowPeers.ARG_ITEM_ID, id);
+			TaskDetailFragment_ShowPeers fragment = new TaskDetailFragment_ShowPeers();
 			fragment.setArguments(arguments);
-			transaction.replace(R.id.task_detail_container, fragment);
+			transaction.replace(R.id.task_detail_container, fragment, "CONFIG");
 		} else if (id.equals("2")) {
-			arguments.putString(TaskDetailFragment_DataXfer.ARG_ITEM_ID, id);
-			TaskDetailFragment_DataXfer fragment = new TaskDetailFragment_DataXfer();
+			arguments.putString(TaskDetailFragment_PeerDetails.ARG_ITEM_ID, id);
+			TaskDetailFragment_PeerDetails fragment = new TaskDetailFragment_PeerDetails();
 			fragment.setArguments(arguments);
-			transaction.replace(R.id.task_detail_container, fragment);		
+			transaction.replace(R.id.task_detail_container, fragment, "PEER");		
 		} else if (id.equals("3")){
 			arguments.putString(TaskDetailFragment_MoreInfo.ARG_ITEM_ID, id);
 			TaskDetailFragment_MoreInfo fragment = new TaskDetailFragment_MoreInfo();
 			fragment.setArguments(arguments);
-			transaction.replace(R.id.task_detail_container, fragment);
+			transaction.replace(R.id.task_detail_container, fragment, "MORE"); //todo-kh - use 'id' string here if this works
 		} else {
 			assert(false);
 		}
-		transaction.addToBackStack(null);
+		//transaction.addToBackStack(null);
 	}
 
 	public static void putExtraOnIntent(String id, Intent detailIntent)  {
 
 		if (id.equals("1"))
-			detailIntent.putExtra(TaskDetailFragment_Configure.ARG_ITEM_ID, id);
+			detailIntent.putExtra(TaskDetailFragment_ShowPeers.ARG_ITEM_ID, id);
 		else if (id.equals("2"))
-			detailIntent.putExtra(TaskDetailFragment_DataXfer.ARG_ITEM_ID, id);
+			detailIntent.putExtra(TaskDetailFragment_PeerDetails.ARG_ITEM_ID, id);
 		else if (id.equals("3"))
 			detailIntent.putExtra(TaskDetailFragment_MoreInfo.ARG_ITEM_ID, id);
 		else

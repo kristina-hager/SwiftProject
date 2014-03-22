@@ -27,8 +27,8 @@ public class TaskInfo {
 
 	static {
 		// Add 3 sample items.
-		addItem(new TaskItem("1", "Configure"));
-		addItem(new TaskItem("2", "Data Xfer"));
+		addItem(new TaskItem("1", "Show Peers"));
+		addItem(new TaskItem("2", "Peer Details"));
 		addItem(new TaskItem("3", "More info"));
 	}
 
