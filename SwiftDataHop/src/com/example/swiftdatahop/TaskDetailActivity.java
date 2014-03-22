@@ -1,6 +1,7 @@
 package com.example.swiftdatahop;
 
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -13,10 +14,12 @@ import android.view.MenuItem;
  * side-by-side with a list of items in a {@link TaskListActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link TaskDetailFragment_Configure_prev}.
+ * a {@link TaskDetailFragment_Configure}.
  */
 public class TaskDetailActivity extends FragmentActivity implements
 TaskListFragment.Callbacks {
+	
+	AppDataManager mAppData = AppDataManager.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,4 +79,13 @@ TaskListFragment.Callbacks {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    public WifiP2pDevice getSelectedDevice() {
+		return mAppData.getLastSelectedDevice();
+	}
+
+	public void setSelectedDevice(WifiP2pDevice selectedDevice) {
+		mAppData.setLastSelectedDevice(selectedDevice);
+	}
+
 }

@@ -52,7 +52,7 @@ public class TaskListActivity extends FragmentActivity implements
     private BroadcastReceiver receiver = null;
     
     //other fragments need this data. not sure if this is the best way or not, but it's a test
-    public WifiP2pDevice selectedDevice;
+    AppDataManager mAppData = AppDataManager.getInstance();
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -116,7 +116,7 @@ public class TaskListActivity extends FragmentActivity implements
 			((TaskListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.task_list)).setActivateOnItemClick(true);
 			
-			//kh - let's try initiating the config fragment now.. will need it for discover
+			//kh - let's try initiating the show peers fragment now.. will need it for discover
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			TaskChooser.configTaskFragment(Constants.FRAG_SHOWPEERS_ID, transaction);
 			transaction.commit();
@@ -354,11 +354,11 @@ public class TaskListActivity extends FragmentActivity implements
     }
     
     public WifiP2pDevice getSelectedDevice() {
-		return selectedDevice;
+		return mAppData.getLastSelectedDevice();
 	}
 
 	public void setSelectedDevice(WifiP2pDevice selectedDevice) {
-		this.selectedDevice = selectedDevice;
+		mAppData.setLastSelectedDevice(selectedDevice);
 	}
 	
     private void showToastLong(String msg) {
