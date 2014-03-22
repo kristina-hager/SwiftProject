@@ -112,7 +112,7 @@ public class FileTransferService extends IntentService {
 		BufferedWriter out = null;
 		if(TaskDetailFragment_PeerDetails.isExternalStorageWritable()){
 			try {
-			File dataDir = TaskDetailFragment_PeerDetails.getDataStorageDir("Timelogs");
+			File dataDir = TaskDetailFragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
 			File file = new File(dataDir, logFileName);
 			if(!file.exists()){
 				file.createNewFile();

@@ -77,8 +77,10 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             // request available peers from the wifi p2p manager. This is an
             // asynchronous call and the calling activity is notified with a
             // callback on PeerListListener.onPeersAvailable()
+        	//TODO-maybe: could be better to send this  to activity itself vs to fragment?
             if (manager != null) {
-            	PeerListListener listListener = (PeerListListener) activity.getSupportFragmentManager().findFragmentByTag("CONFIG");
+            	PeerListListener listListener = 
+            			(PeerListListener) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
                 manager.requestPeers(channel, listListener);  //kdh - change from orig, hope it works!
             }
             Log.d(TAG, "P2P peers changed");
@@ -100,8 +102,9 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                         .getFragmentManager().findFragmentById(R.id.frag_detail);
                 manager.requestConnectionInfo(channel, fragment); 
                 */
+            	//TODO-maybe: could be better to send this to activity itself vs to fragment?
             	TaskDetailFragment_PeerDetails fragment = 
-            			(TaskDetailFragment_PeerDetails) activity.getSupportFragmentManager().findFragmentByTag("PEER");
+            			(TaskDetailFragment_PeerDetails) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
             	manager.requestConnectionInfo(channel, fragment);
                 Log.d(TAG, "P2P connection changed - request connection info");
             } else {
@@ -114,8 +117,9 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                     .findFragmentById(R.id.frag_list);
             fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));*/
+        	//TODO-maybe: could be better to send this  to activity itself vs to fragment?
         	TaskDetailFragment_ShowPeers fragment = 
-        			(TaskDetailFragment_ShowPeers) activity.getSupportFragmentManager().findFragmentByTag("CONFIG");
+        			(TaskDetailFragment_ShowPeers) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
         	if (fragment != null)
         	fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));

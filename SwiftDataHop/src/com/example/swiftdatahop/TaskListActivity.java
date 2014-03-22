@@ -119,7 +119,7 @@ public class TaskListActivity extends FragmentActivity implements
 			
 			//kh - let's try initiating the config fragment now.. will need it for discover
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			TaskChooser.configTaskFragment("1", transaction);
+			TaskChooser.configTaskFragment(Constants.FRAG_SHOWPEERS_ID, transaction);
 			transaction.commit();
 		}
         
@@ -151,29 +151,31 @@ public class TaskListActivity extends FragmentActivity implements
             return true;
         }
 		final TaskDetailFragment_ShowPeers fragment = 
-				(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag("CONFIG");
+				(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
         /* [AR] - shows a popup progress bar */
 		if (fragment != null)
 			fragment.onInitiateDiscovery(); 
 		else 
-			Toast.makeText(TaskListActivity.this, "config fragment null-fix?",
-                    Toast.LENGTH_SHORT).show();
+			showToastShort("config fragment null-fix?");
         /* [AR] - Actual discovery kick off */
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
 
             @Override
             public void onSuccess() {
-                Toast.makeText(TaskListActivity.this, "Discovery Initiated",
-                        Toast.LENGTH_SHORT).show();
+            	showToastShort("Discovery Initiated");
             }
 
             @Override
             public void onFailure(int reasonCode) {
-                Toast.makeText(TaskListActivity.this, "Discovery Failed : " + reasonCode,
-                        Toast.LENGTH_SHORT).show();
+            	showToastShort("Discovery Failed : " + reasonCode);
             }
         });
         return true;
+	}
+
+	private void showToastShort(String msg) {
+		Toast.makeText(TaskListActivity.this, msg,
+		        Toast.LENGTH_SHORT).show();
 	}
 
     /** register the BroadcastReceiver with the intent values to be matched
@@ -198,8 +200,10 @@ public class TaskListActivity extends FragmentActivity implements
      * BroadcastReceiver receiving a state change event.
      */
     public void resetData() {
-    	TaskDetailFragment_ShowPeers fragmentList = (TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag("CONFIG");
-    	TaskDetailFragment_PeerDetails fragmentDetails = (TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag("PEER");   	
+    	TaskDetailFragment_ShowPeers fragmentList = 
+    			(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
+    	TaskDetailFragment_PeerDetails fragmentDetails = 
+    			(TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);   	
         if (fragmentList != null) {
             fragmentList.clearPeers();
         }
@@ -236,16 +240,17 @@ public class TaskListActivity extends FragmentActivity implements
     @Override
     /*[AR] - keep so far, don't know how this gets called yet */
     public void showDetails(WifiP2pDevice device) {
+    	//once a user selects a device, set it in master activity as selected
     	setSelectedDevice(device);
-    	TaskDetailFragment_PeerDetails fragment = (TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag("PEER");
+    	//if the "Peer details" fragment is available, switch to it or start it up
+    	TaskDetailFragment_PeerDetails fragment = 
+    			(TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
     	//todo - kh - this seems a bit messy. just seeing what works for now though.
     	if (fragment != null)
     		fragment.showDetails(device);
     	else {
-    		//lets try initiating all the fragments we'll need to see if this fixes stuff
-			//kh - let's try initiating the config fragment now.. will need it for discover
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			TaskChooser.configTaskFragment("2", transaction);
+			TaskChooser.configTaskFragment(Constants.FRAG_PEERDETAILS_ID, transaction);
 			transaction.commit();
     	}
     }
@@ -266,20 +271,20 @@ public class TaskListActivity extends FragmentActivity implements
 
             @Override
             public void onFailure(int reason) {
-                Toast.makeText(TaskListActivity.this, "Connect failed. Retry.",
-                        Toast.LENGTH_SHORT).show();
+            	showToastShort("Connect failed. Retry.");
             }
         });
     }
 
-    /* [AR] - Need to keep, called from DeviceDetailFragment.java when disconnect
+    /* [AR] - Need to keep, called from TaskDetailFragment_PeerDetails.java when disconnect
      * [AR] - button is pressed
      * (non-Javadoc)
      * @see com.example.android.wifidirect.DeviceListFragment.DeviceActionListener#connect(android.net.wifi.p2p.WifiP2pConfig)
      */
     @Override
     public void disconnect() {
-    	TaskDetailFragment_PeerDetails fragment = (TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag("PEER");
+    	TaskDetailFragment_PeerDetails fragment = 
+    			(TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
         fragment.resetViews();
         manager.removeGroup(channel, new ActionListener() {
 
@@ -306,14 +311,12 @@ public class TaskListActivity extends FragmentActivity implements
     public void onChannelDisconnected() {
         // we will try once more
         if (manager != null && !retryChannel) {
-            Toast.makeText(this, "Channel lost. Trying again", Toast.LENGTH_LONG).show();
+        	showToastLong("Channel lost. Trying again");
             resetData();
             retryChannel = true;
             manager.initialize(this, getMainLooper(), this);
         } else {
-            Toast.makeText(this,
-                    "Severe! Channel is probably lost permanently. Try Disable/Re-Enable P2P.",
-                    Toast.LENGTH_LONG).show();
+        	showToastLong("Severe! Channel is probably lost permanently. Try Disable/Re-Enable P2P.");
         }
     }
  
@@ -327,7 +330,8 @@ public class TaskListActivity extends FragmentActivity implements
          * request
          */
         if (manager != null) {
-        	TaskDetailFragment_ShowPeers fragment = (TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag("CONFIG");
+        	TaskDetailFragment_ShowPeers fragment = 
+        			(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
             if (fragment.getDevice() == null
                     || fragment.getDevice().status == WifiP2pDevice.CONNECTED) {
                 disconnect();
@@ -338,15 +342,12 @@ public class TaskListActivity extends FragmentActivity implements
 
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(TaskListActivity.this, "Aborting connection",
-                                Toast.LENGTH_SHORT).show();
+                    	showToastShort("Aborting connection");
                     }
 
                     @Override
                     public void onFailure(int reasonCode) {
-                        Toast.makeText(TaskListActivity.this,
-                                "Connect abort request failed. Reason Code: " + reasonCode,
-                                Toast.LENGTH_SHORT).show();
+                    	showToastShort("Connect abort request failed. Reason Code: " + reasonCode);
                     }
                 });
             }
@@ -361,7 +362,12 @@ public class TaskListActivity extends FragmentActivity implements
 		this.selectedDevice = selectedDevice;
 	}
 	
-    // Broadcast receiver for receiving status updates from the IntentService
+    private void showToastLong(String msg) {
+		Toast.makeText(TaskListActivity.this, msg,
+                   Toast.LENGTH_LONG).show();
+	}
+
+	// Broadcast receiver for receiving status updates from the IntentService
     private class ResponseReceiver extends BroadcastReceiver
     {
     	private static final String TAG = "DDFragResponseReceiver";
@@ -381,8 +387,7 @@ public class TaskListActivity extends FragmentActivity implements
         public void onReceive(Context context, Intent intent) {
     	   String msg = intent.getStringExtra(Constants.EXTENDED_STATUS_LOG);
     	   Log.d(TAG, "onReceive of ResponseReceiver called: " + msg);
-    	   Toast.makeText(TaskListActivity.this, msg,
-                   Toast.LENGTH_LONG).show();
+    	   showToastLong(msg);
         	return;
         }
     }

@@ -27,9 +27,9 @@ public class TaskInfo {
 
 	static {
 		// Add 3 sample items.
-		addItem(new TaskItem("1", "Show Peers"));
-		addItem(new TaskItem("2", "Peer Details"));
-		addItem(new TaskItem("3", "More info"));
+		addItem(new TaskItem(Constants.FRAG_SHOWPEERS_ID, "Show Peers"));
+		addItem(new TaskItem(Constants.FRAG_PEERDETAILS_ID, "Peer Details"));
+		addItem(new TaskItem(Constants.FRAG_MOREINFO_ID, "More info"));
 	}
 
 	private static void addItem(TaskItem item) {

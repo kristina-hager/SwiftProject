@@ -275,9 +275,8 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
 	}
 
 	private File getFileToSend() {
-		String dirname = "WiFiDirect_Demo_Dir";
 		String filename = "test_data_MASTER.csv";
-		File dataDir = getDataStorageDir(dirname);
+		File dataDir = getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO);
 		File file = new File(dataDir, filename);
 		if (file.exists() && file.isFile()) {
 			Log.d(TAG, "To send file of size: " + file.length());
@@ -370,7 +369,7 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
                 Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(TAG, "Server: connection done for receive.");
-                final File f = new File(getDataStorageDir("WifiDirect_Demo_Dir"), 
+                final File f = new File(getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO), 
                 		"test_data." + System.currentTimeMillis() + ".csv");
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
@@ -402,7 +401,7 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
     		BufferedWriter out = null;
     		if(TaskDetailFragment_PeerDetails.isExternalStorageWritable()){
     			try {
-    			File dataDir = TaskDetailFragment_PeerDetails.getDataStorageDir("Timelogs");
+    			File dataDir = TaskDetailFragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
     			File file = new File(dataDir, logFileName);
     			if(!file.exists()){
     				file.createNewFile();
