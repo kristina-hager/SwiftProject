@@ -1,10 +1,7 @@
 package com.example.swiftdatahop;
 
-import com.example.swiftdatahop.R.id;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 /* Needed a way to pick the fragment that was started based on menu item selected.

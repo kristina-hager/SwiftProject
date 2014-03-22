@@ -16,8 +16,6 @@
 
 package com.example.swiftdatahop;
 
-import com.example.swiftdatahop.R.id;
-
 /**
  *
  * Constants used by multiple classes in this package
