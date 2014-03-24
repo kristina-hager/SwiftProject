@@ -40,6 +40,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/disconnect_peer_button" />
+    
+    <Button
+        android:id="@+id/btn_set_upstream_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_upstream_device" />
+    
+    <Button
+        android:id="@+id/btn_set_downstream_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_downstream_device" />
 
     <Button
         android:id="@+id/btn_start_client"

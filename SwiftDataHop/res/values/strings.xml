@@ -13,6 +13,8 @@
     <string name="get_file_button">Launch Gallery</string>
     <string name="send_file_button">Send file</string>
     <string name="receive_file_button">Ready receive</string>
+    <string name="set_upstream_device">Set As Upstream</string>
+    <string name="set_downstream_device">Set As Downstream</string>
     <string name="empty"></string>
     <string name="yes">yes</string>
     <string name="no">no</string>
