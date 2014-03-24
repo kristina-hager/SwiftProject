@@ -28,6 +28,11 @@ public class TaskChooser {
 			TaskDetailFragment_MoreInfo fragment = new TaskDetailFragment_MoreInfo();
 			fragment.setArguments(arguments);
 			transaction.replace(R.id.task_detail_container, fragment, Constants.FRAG_MOREINFO_NAME); //todo-kh - use 'id' string here if this works
+		} else if (id.equals(Constants.FRAG_OPERATEMODE_ID)) {
+			arguments.putString(TaskDetailFragment_MoreInfo.ARG_ITEM_ID, id);
+			TaskDetailFragment_OperateMode fragment = new TaskDetailFragment_OperateMode();
+			fragment.setArguments(arguments);
+			transaction.replace(R.id.task_detail_container, fragment, Constants.FRAG_OPERATEMODE_NAME);			
 		} else {
 			assert(false);
 		}

@@ -34,6 +34,8 @@ public final class Constants {
 	static final String FRAG_PEERDETAILS_NAME = "PEER";
 	public static final String FRAG_SHOWPEERS_NAME = "CONFIG";
 	public static final String FRAG_MOREINFO_NAME = "MORE";
+	public static final String FRAG_OPERATEMODE_NAME = "OPERATE";
+    public static final String FRAG_OPERATEMODE_ID = "4";
 	public static final String FRAG_MOREINFO_ID = "3";
 	public static final String FRAG_PEERDETAILS_ID = "2";
 	public static final String FRAG_SHOWPEERS_ID = "1";

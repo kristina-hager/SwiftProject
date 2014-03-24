@@ -6,6 +6,7 @@
     <string name="task_configure_name">Task configure</string>
     <string name="task_dataxfer_name">Task data transfer</string>
     <string name="task_moreinfo_name">Task more info</string>
+    <string name="task_operatemode_name">Task operate mode</string>
     <string name="enable_p2p_button">P2P On/Off</string>
     <string name="discover_peers_button">Discover</string>
     <string name="connect_peer_button">Connect</string>
