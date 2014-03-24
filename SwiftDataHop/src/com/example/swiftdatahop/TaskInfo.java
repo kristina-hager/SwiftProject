@@ -27,7 +27,7 @@ public class TaskInfo {
 		// Add 3 sample items.
 		addItem(new TaskItem(Constants.FRAG_SHOWPEERS_ID, "Show Peers"));
 		addItem(new TaskItem(Constants.FRAG_PEERDETAILS_ID, "Peer Details"));
-		addItem(new TaskItem(Constants.FRAG_MOREINFO_ID, "More info"));
+		addItem(new TaskItem(Constants.FRAG_MOREINFO_ID, "More Info")); //[AR] - Removed excess more info text, for now, maybe edit text fields need to fill container
 	}
 
 	private static void addItem(TaskItem item) {

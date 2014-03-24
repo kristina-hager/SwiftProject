@@ -29,7 +29,8 @@
 		android:layout_height="wrap_content"
 		android:padding="16dp" 
 		android:textIsSelectable="true"
-		tools:context="com.example.swiftdatahop.TaskDetailFragment_MoreInfo" />
+		tools:context="com.example.swiftdatahop.TaskDetailFragment_MoreInfo"
+		android:visibility="invisible" />"
 	
 
 </LinearLayout>
