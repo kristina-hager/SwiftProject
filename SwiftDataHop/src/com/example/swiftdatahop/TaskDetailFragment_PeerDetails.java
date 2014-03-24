@@ -47,6 +47,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.swiftdatahop.TaskDetailFragment_ShowPeers.DeviceActionListener;
 
@@ -78,6 +79,7 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
     Button sendFile;
     Button receiveFile;
     EditText logComment;
+    AppDataManager mAppData = AppDataManager.getInstance();
     
 
     @Override
@@ -158,7 +160,51 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
                     	receiveFile();
                     }
                 });
+        
+        mContentView.findViewById(R.id.btn_set_upstream_device).setOnClickListener(
+                new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View v) {
+                    	if (device == null) {
+                    		Log.e("TaskDetailFragment_PeerDetails", "Set upstream device failed with null device");
+                    		return;
+                    	}
+                    	WifiP2pDevice downstream = mAppData.getDownStreamDevice();
+                    	if(downstream != null) {
+                    	    if(downstream.deviceName.equals(device.deviceName)) {
+                    		    Log.e("TaskDetailFragment_PeerDetails", "Upstream device chosen, matches downstream device " + downstream.deviceName);
+                    		    showToastShort("Warning: upstream device chosen, matches downstream device " + downstream.deviceName);
+                    	    }
+                    	}
+                    	mAppData.setUpStreamDevice(device);
+                    	Log.d("TaskDetailFragment_PeerDetails", "Upstream device set " + device.deviceName);
+                    	showToastShort("Upstream device set " + device.deviceName);
+                    }
+                });
+        
+        mContentView.findViewById(R.id.btn_set_downstream_device).setOnClickListener(
+                new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                    	if (device == null) {
+                    		Log.e("TaskDetailFragment_PeerDetails", "Set downstream device failed with null device.");
+                    		return;
+                    	} else { 
+                    		WifiP2pDevice upStream = mAppData.getUpStreamDevice();
+                    		if(upStream != null) {
+                    		    if(upStream.deviceName.equals(device.deviceName)) {
+                        		    Log.e("TaskDetailFragment_PeerDetails", "Downstream device chosen, matches downstream device " + upStream.deviceName);
+                        		    showToastShort("WARNING: Downstream device chosen, matches upStream device " + upStream.deviceName);                  			
+                    		    }
+                    		}
+                            mAppData.setDownStreamDevice(device);
+                            showToastShort("Downstream device set.");
+                            Log.d("TaskDetailFragment_PeerDetails", "Downstream device set " + device.deviceName);   
+                    	}
+                    }
+                });
      
 
         
@@ -490,5 +536,10 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
         }
         return path;
     }
+    
+	private void showToastShort(String msg) {
+		Toast.makeText((TaskListActivity)getActivity(), msg,
+		        Toast.LENGTH_SHORT).show();
+	}
 
 }

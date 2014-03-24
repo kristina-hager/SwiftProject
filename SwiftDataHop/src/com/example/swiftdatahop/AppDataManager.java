@@ -10,6 +10,8 @@ public class AppDataManager {
 
 	//data to store
 	private WifiP2pDevice lastSelectedDevice;
+	private WifiP2pDevice upStreamDevice;
+	private WifiP2pDevice downStreamDevice;
 
 	public WifiP2pDevice getLastSelectedDevice() {
 		return lastSelectedDevice;
@@ -17,6 +19,19 @@ public class AppDataManager {
 	public void setLastSelectedDevice(WifiP2pDevice lastSelectedDevice) {
 		this.lastSelectedDevice = lastSelectedDevice;
 	}
+	public WifiP2pDevice getUpStreamDevice() {
+		return upStreamDevice;
+	}
+	public void setUpStreamDevice(WifiP2pDevice upDevice) {
+		this.upStreamDevice = upDevice;
+	}
+	public WifiP2pDevice getDownStreamDevice() {
+		return downStreamDevice;
+	}
+	public void setDownStreamDevice(WifiP2pDevice downDevice) {
+		this.downStreamDevice = downDevice;
+	}
+	
 	protected AppDataManager() {
 		// Exists only to defeat instantiation.
 	}

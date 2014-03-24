@@ -35,6 +35,8 @@ public class TaskListFragment extends ListFragment {
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
 
+	
+
 	/**
 	 * A callback interface that all activities containing this fragment must
 	 * implement. This mechanism allows activities to be notified of item
@@ -72,6 +74,7 @@ public class TaskListFragment extends ListFragment {
 		setListAdapter(new ArrayAdapter<TaskInfo.TaskItem>(getActivity(),
 				android.R.layout.simple_list_item_activated_1,
 				android.R.id.text1, TaskInfo.ITEMS));
+
 	}
 
 	@Override
@@ -83,7 +86,7 @@ public class TaskListFragment extends ListFragment {
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState
 					.getInt(STATE_ACTIVATED_POSITION));
-		}
+		} 
 	}
 
 	@Override
