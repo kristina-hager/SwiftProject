@@ -1,5 +1,6 @@
 package com.example.swiftdatahop;
 
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ public class TaskDetailFragment_MoreInfo extends Fragment {
 	 * The dummy content this fragment is presenting.
 	 */
 	private TaskInfo.TaskItem mItem;
+    AppDataManager mAppData = AppDataManager.getInstance();
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,7 +56,16 @@ public class TaskDetailFragment_MoreInfo extends Fragment {
 		if (mItem != null) {
 			((TextView) rootView.findViewById(R.id.task_detail))
 					.setText(mItem.content);
+			WifiP2pDevice upStream = mAppData.getUpStreamDevice();
+			WifiP2pDevice downStream = mAppData.getDownStreamDevice();
+			if(upStream != null) {
+			    ((TextView) rootView.findViewById(R.id.upstream_device)).setText(upStream.deviceName);
+			}
+			if(downStream != null) {
+			    ((TextView) rootView.findViewById(R.id.downstream_device)).setText(downStream.deviceName);	
+			}
 		}
+
 
 		return rootView;
 	}

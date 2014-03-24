@@ -15,6 +15,8 @@
     <string name="receive_file_button">Ready receive</string>
     <string name="set_upstream_device">Set As Upstream</string>
     <string name="set_downstream_device">Set As Downstream</string>
+    <string name="downstream_device_label">Downstream Device: </string>
+    <string name="upstream_device_label">Upstream Device: </string>
     <string name="empty"></string>
     <string name="yes">yes</string>
     <string name="no">no</string>

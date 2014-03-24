@@ -8,11 +8,28 @@
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="@string/task_moreinfo_name" />
+	<TextView android:id="@+id/upstream_device_label" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:text="@string/upstream_device_label" />
+    <TextView android:id="@+id/upstream_device" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" />
+    <TextView android:id="@+id/downstream_device_label" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:text="@string/downstream_device_label"
+		/>
+     <TextView android:id="@+id/downstream_device" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" />
 	<TextView android:id="@+id/task_detail" 
 	    style="?android:attr/textAppearanceLarge"
-		android:layout_width="match_parent" 
-		android:layout_height="match_parent"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
 		android:padding="16dp" 
 		android:textIsSelectable="true"
 		tools:context="com.example.swiftdatahop.TaskDetailFragment_MoreInfo" />
+	
+
 </LinearLayout>
