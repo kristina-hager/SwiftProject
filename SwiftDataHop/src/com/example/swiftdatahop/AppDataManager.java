@@ -50,7 +50,7 @@ public class AppDataManager {
 				Log.i(TAG, "sleeping...");
 				// This nap should give the second thread enough time
 				// to get by the first thread.
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			}
 		}
 		catch(InterruptedException ex) {

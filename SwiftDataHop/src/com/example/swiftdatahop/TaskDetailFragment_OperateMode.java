@@ -1,6 +1,5 @@
 package com.example.swiftdatahop;
 
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
