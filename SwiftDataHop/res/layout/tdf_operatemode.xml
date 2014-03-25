@@ -14,7 +14,7 @@
 		android:layout_height="wrap_content"
 		android:padding="16dp" 
 		android:textIsSelectable="true"
-		tools:context="com.example.swiftdatahop.TaskDetailFragment_OperateMode"
+		tools:context="com.example.swiftdatahop.Fragment_OperateMode"
 		android:visibility="invisible" />
 	
 

@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context="com.example.swiftdatahop.TaskDetailFragment_PeerDetails" />
+        tools:context="com.example.swiftdatahop.Fragment_PeerDetails" />
 
  
    <!-- Selected Device Details -->
