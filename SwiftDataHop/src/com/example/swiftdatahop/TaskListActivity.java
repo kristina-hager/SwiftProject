@@ -143,7 +143,7 @@ public class TaskListActivity extends FragmentActivity implements
 		}
 	}
 	
-	private boolean doDiscovery() {
+	public boolean doDiscovery() {
 		if (!isWifiP2pEnabled) {
             Toast.makeText(TaskListActivity.this, R.string.p2p_off_warning,
                     Toast.LENGTH_SHORT).show();

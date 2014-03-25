@@ -79,6 +79,13 @@ public class TaskDetailFragment_ShowPeers extends ListFragment implements PeerLi
 					ARG_ITEM_ID));
 		}
 	}
+	
+	@Override
+	public void onResume () {
+		super.onResume();
+		((TaskListActivity) getActivity()).doDiscovery();
+
+	}
     
     /*[AR] - Need to keep, creation stuff */
     @Override
@@ -257,6 +264,8 @@ public class TaskDetailFragment_ShowPeers extends ListFragment implements PeerLi
         void connect(WifiP2pConfig config);
 
         void disconnect();
+        
+        boolean doDiscovery();
     }
 
 }
