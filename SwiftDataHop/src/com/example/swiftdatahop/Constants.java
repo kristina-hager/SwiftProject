@@ -31,8 +31,8 @@ public final class Constants {
     public static final String EXTENDED_STATUS_LOG = appName + ".LOG";
     
     //fragment related constants
-	static final String FRAG_PEERDETAILS_NAME = "PEER";
-	public static final String FRAG_SHOWPEERS_NAME = "CONFIG";
+	public static final String FRAG_PEERDETAILS_NAME = "PEER";
+	public static final String FRAG_SHOWPEERS_NAME = "SHOW";
 	public static final String FRAG_MOREINFO_NAME = "MORE";
 	public static final String FRAG_OPERATEMODE_NAME = "OPERATE";
     public static final String FRAG_OPERATEMODE_ID = "4";
