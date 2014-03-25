@@ -102,8 +102,8 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 manager.requestConnectionInfo(channel, fragment); 
                 */
             	//TODO-maybe: could be better to send this to activity itself vs to fragment?
-            	TaskDetailFragment_PeerDetails fragment = 
-            			(TaskDetailFragment_PeerDetails) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
+            	Fragment_PeerDetails fragment = 
+            			(Fragment_PeerDetails) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
             	manager.requestConnectionInfo(channel, fragment);
                 Log.d(TAG, "P2P connection changed - request connection info");
             } else {
@@ -117,8 +117,8 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));*/
         	//TODO-maybe: could be better to send this  to activity itself vs to fragment?
-        	TaskDetailFragment_ShowPeers fragment = 
-        			(TaskDetailFragment_ShowPeers) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
+        	Fragment_ShowPeers fragment = 
+        			(Fragment_ShowPeers) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
         	if (fragment != null)
         	fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));

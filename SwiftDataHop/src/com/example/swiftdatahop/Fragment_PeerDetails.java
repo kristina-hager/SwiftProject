@@ -49,14 +49,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.swiftdatahop.TaskDetailFragment_ShowPeers.DeviceActionListener;
+import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 
 /**
  * A fragment that manages a particular peer and allows interaction with device
  * i.e. setting up network connection and transferring data.
  */
-public class TaskDetailFragment_PeerDetails extends Fragment implements ConnectionInfoListener {
+public class Fragment_PeerDetails extends Fragment implements ConnectionInfoListener {
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
@@ -445,9 +445,9 @@ public class TaskDetailFragment_PeerDetails extends Fragment implements Connecti
        		// log file transfer capture time to receive file
     		String logFileName = "receiveTimeLog.txt";
     		BufferedWriter out = null;
-    		if(TaskDetailFragment_PeerDetails.isExternalStorageWritable()){
+    		if(Fragment_PeerDetails.isExternalStorageWritable()){
     			try {
-    			File dataDir = TaskDetailFragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
+    			File dataDir = Fragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
     			File file = new File(dataDir, logFileName);
     			if(!file.exists()){
     				file.createNewFile();

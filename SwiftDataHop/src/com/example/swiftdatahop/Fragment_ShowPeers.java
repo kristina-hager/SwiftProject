@@ -41,7 +41,7 @@ import android.widget.TextView;
  * A ListFragment that displays available peers on discovery and requests the
  * parent activity to handle user interaction events
  */
-public class TaskDetailFragment_ShowPeers extends ListFragment implements PeerListListener {
+public class Fragment_ShowPeers extends ListFragment implements PeerListListener {
 
 	/**
 	 * The fragment argument representing the item ID that this fragment
@@ -64,7 +64,7 @@ public class TaskDetailFragment_ShowPeers extends ListFragment implements PeerLi
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public TaskDetailFragment_ShowPeers() {
+	public Fragment_ShowPeers() {
 	}
 
 	@Override

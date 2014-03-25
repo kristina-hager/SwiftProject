@@ -1,7 +1,7 @@
 package com.example.swiftdatahop;
 
 
-import com.example.swiftdatahop.TaskDetailFragment_ShowPeers.DeviceActionListener;
+import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -149,8 +149,8 @@ public class TaskListActivity extends FragmentActivity implements
                     Toast.LENGTH_SHORT).show();
             return true;
         }
-		final TaskDetailFragment_ShowPeers fragment = 
-				(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
+		final Fragment_ShowPeers fragment = 
+				(Fragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
         /* [AR] - shows a popup progress bar */
 		if (fragment != null)
 			fragment.onInitiateDiscovery(); 
@@ -199,10 +199,10 @@ public class TaskListActivity extends FragmentActivity implements
      * BroadcastReceiver receiving a state change event.
      */
     public void resetData() {
-    	TaskDetailFragment_ShowPeers fragmentList = 
-    			(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
-    	TaskDetailFragment_PeerDetails fragmentDetails = 
-    			(TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);   	
+    	Fragment_ShowPeers fragmentList = 
+    			(Fragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
+    	Fragment_PeerDetails fragmentDetails = 
+    			(Fragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);   	
         if (fragmentList != null) {
             fragmentList.clearPeers();
         }
@@ -242,8 +242,8 @@ public class TaskListActivity extends FragmentActivity implements
     	//once a user selects a device, set it in master activity as selected
     	setSelectedDevice(device);
     	//if the "Peer details" fragment is available, switch to it or start it up
-    	TaskDetailFragment_PeerDetails fragment = 
-    			(TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
+    	Fragment_PeerDetails fragment = 
+    			(Fragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
     	//todo - kh - this seems a bit messy. just seeing what works for now though.
     	if (fragment != null)
     		fragment.showDetails(device);
@@ -282,8 +282,8 @@ public class TaskListActivity extends FragmentActivity implements
      */
     @Override
     public void disconnect() {
-    	TaskDetailFragment_PeerDetails fragment = 
-    			(TaskDetailFragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
+    	Fragment_PeerDetails fragment = 
+    			(Fragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
         fragment.resetViews();
         manager.removeGroup(channel, new ActionListener() {
 
@@ -329,8 +329,8 @@ public class TaskListActivity extends FragmentActivity implements
          * request
          */
         if (manager != null) {
-        	TaskDetailFragment_ShowPeers fragment = 
-        			(TaskDetailFragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
+        	Fragment_ShowPeers fragment = 
+        			(Fragment_ShowPeers) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_SHOWPEERS_NAME);
             if (fragment.getDevice() == null
                     || fragment.getDevice().status == WifiP2pDevice.CONNECTED) {
                 disconnect();

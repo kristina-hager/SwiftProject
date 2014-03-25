@@ -44,7 +44,7 @@ TaskListFragment.Callbacks {
 
 			//[kh] - i'm not actually sure when this is ever invoked, but perhaps it's just some sort of default
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			TaskChooser.configTaskFragment(getIntent().getStringExtra(TaskDetailFragment_ShowPeers.ARG_ITEM_ID)
+			TaskChooser.configTaskFragment(getIntent().getStringExtra(Fragment_ShowPeers.ARG_ITEM_ID)
 					, transaction);
 			transaction.commit();
 		}

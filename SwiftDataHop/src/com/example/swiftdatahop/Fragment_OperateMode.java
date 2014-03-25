@@ -11,7 +11,7 @@ import com.example.swiftdatahop.AppDataManager;
 import com.example.swiftdatahop.R;
 import com.example.swiftdatahop.TaskInfo;
 
-public class TaskDetailFragment_OperateMode extends Fragment {
+public class Fragment_OperateMode extends Fragment {
 	
 	/**
 	 * The fragment argument representing the item ID that this fragment
@@ -30,7 +30,7 @@ public class TaskDetailFragment_OperateMode extends Fragment {
 	 * fragment (e.g. upon screen orientation changes).
 	 * @return 
 	 */
-	public TaskDetailFragment_OperateMode() {
+	public Fragment_OperateMode() {
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class FileTransferService extends IntentService {
             	if (is != null) {
             		//write data from fileUri to socket
             		StringBuilder errMsg = new StringBuilder();
-            		clientDuration = TaskDetailFragment_PeerDetails.copyFile(is, stream, errMsg);
+            		clientDuration = Fragment_PeerDetails.copyFile(is, stream, errMsg);
             		if (clientDuration == -1 ) {
             			Log.d(TAG, "Client: Data write error. ErrMsg: " + errMsg );
             			mBroadcaster.broadcastIntentWithMessage("Data write error: " +errMsg);
@@ -110,9 +110,9 @@ public class FileTransferService extends IntentService {
    		// log file transfer capture time to wirelessly send file
 		String logFileName = "clientTimeLog.txt";
 		BufferedWriter out = null;
-		if(TaskDetailFragment_PeerDetails.isExternalStorageWritable()){
+		if(Fragment_PeerDetails.isExternalStorageWritable()){
 			try {
-			File dataDir = TaskDetailFragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
+			File dataDir = Fragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
 			File file = new File(dataDir, logFileName);
 			if(!file.exists()){
 				file.createNewFile();

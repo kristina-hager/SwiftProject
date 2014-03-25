@@ -14,23 +14,23 @@ public class TaskChooser {
 		// fragment transaction.
 		Bundle arguments = new Bundle();
 		if (id.equals(Constants.FRAG_SHOWPEERS_ID)) {
-			arguments.putString(TaskDetailFragment_ShowPeers.ARG_ITEM_ID, id);
-			TaskDetailFragment_ShowPeers fragment = new TaskDetailFragment_ShowPeers();
+			arguments.putString(Fragment_ShowPeers.ARG_ITEM_ID, id);
+			Fragment_ShowPeers fragment = new Fragment_ShowPeers();
 			fragment.setArguments(arguments);
 			transaction.replace(R.id.task_detail_container, fragment, Constants.FRAG_SHOWPEERS_NAME);
 		} else if (id.equals(Constants.FRAG_PEERDETAILS_ID)) {
-			arguments.putString(TaskDetailFragment_PeerDetails.ARG_ITEM_ID, id);
-			TaskDetailFragment_PeerDetails fragment = new TaskDetailFragment_PeerDetails();
+			arguments.putString(Fragment_PeerDetails.ARG_ITEM_ID, id);
+			Fragment_PeerDetails fragment = new Fragment_PeerDetails();
 			fragment.setArguments(arguments);
 			transaction.replace(R.id.task_detail_container, fragment, Constants.FRAG_PEERDETAILS_NAME);		
 		} else if (id.equals(Constants.FRAG_MOREINFO_ID)){
-			arguments.putString(TaskDetailFragment_MoreInfo.ARG_ITEM_ID, id);
-			TaskDetailFragment_MoreInfo fragment = new TaskDetailFragment_MoreInfo();
+			arguments.putString(Fragment_MoreInfo.ARG_ITEM_ID, id);
+			Fragment_MoreInfo fragment = new Fragment_MoreInfo();
 			fragment.setArguments(arguments);
 			transaction.replace(R.id.task_detail_container, fragment, Constants.FRAG_MOREINFO_NAME); //todo-kh - use 'id' string here if this works
 		} else if (id.equals(Constants.FRAG_OPERATEMODE_ID)) {
-			arguments.putString(TaskDetailFragment_OperateMode.ARG_ITEM_ID, id);
-			TaskDetailFragment_OperateMode fragment = new TaskDetailFragment_OperateMode();
+			arguments.putString(Fragment_OperateMode.ARG_ITEM_ID, id);
+			Fragment_OperateMode fragment = new Fragment_OperateMode();
 			fragment.setArguments(arguments);
 			transaction.replace(R.id.task_detail_container, fragment, Constants.FRAG_OPERATEMODE_NAME);			
 		} else {
@@ -42,11 +42,11 @@ public class TaskChooser {
 	public static void putExtraOnIntent(String id, Intent detailIntent)  {
 
 		if (id.equals(Constants.FRAG_SHOWPEERS_ID))
-			detailIntent.putExtra(TaskDetailFragment_ShowPeers.ARG_ITEM_ID, id);
+			detailIntent.putExtra(Fragment_ShowPeers.ARG_ITEM_ID, id);
 		else if (id.equals(Constants.FRAG_PEERDETAILS_ID))
-			detailIntent.putExtra(TaskDetailFragment_PeerDetails.ARG_ITEM_ID, id);
+			detailIntent.putExtra(Fragment_PeerDetails.ARG_ITEM_ID, id);
 		else if (id.equals(Constants.FRAG_MOREINFO_ID))
-			detailIntent.putExtra(TaskDetailFragment_MoreInfo.ARG_ITEM_ID, id);
+			detailIntent.putExtra(Fragment_MoreInfo.ARG_ITEM_ID, id);
 		else
 			assert(false);
 	}
