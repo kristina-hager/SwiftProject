@@ -22,7 +22,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -391,7 +390,7 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
                 InputStream inputstream = client.getInputStream();
                 //[AR] - This call to copy file reads in from the socket and writes to a file
                 StringBuilder errMsg = new StringBuilder();
-                long duration = copyFile(inputstream, new FileOutputStream(f), errMsg);
+                long duration = FileHelper.copyFile(inputstream, new FileOutputStream(f), errMsg);
                 Log.d(TAG,"Socket, copyFile errMsg: " + errMsg);
                 serverSocket.close();
                 logDuration(duration, f.getName());
@@ -462,32 +461,7 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
 
     }
 
-    public static long copyFile(InputStream inputStream, OutputStream out, StringBuilder outErrorMessage) {
-    	//[AR] - here we return the duration as a long always, but it only
-    	//matters to us when the output stream is a socket connection, not
-    	//an output to a file.  Output stream is only a socket connection
-    	// when called from FileTransferServer.java. We can't tell the difference 
-    	//here, so we always capture it, and return it from this function.
-        byte buf[] = new byte[1024];
-        int len;
-        long duration = -1;
-        try {
-            long time1 = System.nanoTime();
-            while ((len = inputStream.read(buf)) != -1) {
-                out.write(buf, 0, len);
 
-            }
-            long time2 = System.nanoTime();
-            out.close();
-            inputStream.close();
-            duration = time2-time1;
-            //outErrorMessage.append("CopyFile No Error"); //KH-this used to test msg return only
-        } catch (IOException e) {
-            Log.d(TAG, e.toString());
-            outErrorMessage.append("CopyFile Error: " + e.toString());
-        }
-        return duration;
-    }
     
 
 

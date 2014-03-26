@@ -78,7 +78,7 @@ public class FileTransferService extends IntentService {
             	if (is != null) {
             		//write data from fileUri to socket
             		StringBuilder errMsg = new StringBuilder();
-            		clientDuration = Fragment_PeerDetails.copyFile(is, stream, errMsg);
+            		clientDuration = FileHelper.copyFile(is, stream, errMsg);
             		if (clientDuration == -1 ) {
             			Log.d(TAG, "Client: Data write error. ErrMsg: " + errMsg );
             			mBroadcaster.broadcastIntentWithMessage("Data write error: " +errMsg);
