@@ -18,7 +18,6 @@ package com.example.swiftdatahop;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -293,7 +292,7 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
 		String logcomments = "Default log comment";
 		//KH - getFileToSend now writes to external storage, so keep this if
 		if(FileHelper.isExternalStorageWritable()) { 
-			File file = getFileToSend();
+			File file = FileHelper.getFileToSend(this);
 			if (file != null) {		
 				Uri uri = Uri.fromFile(file);
 				statusText.setText("Sending file: " + uri.toString() 
@@ -319,39 +318,6 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
 		}
 	}
 
-	private File getFileToSend() {
-		String filename = "test_data_MASTER.csv";
-		File dataDir = FileHelper.getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO);
-		File file = new File(dataDir, filename);
-		if (file.exists() && file.isFile()) {
-			Log.d(TAG, "To send file of size: " + file.length());
-		} else {
-
-				InputStream ins = getResources().openRawResource(R.raw.test_data_csv);
-				FileOutputStream fos;
-				try {
-					fos = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				}
-				byte buf[] = new byte[1024];
-				int len;
-				try {
-					while((len=ins.read(buf))>0) {
-					    fos.write(buf,0,len);
-					}
-					fos.close();
-					ins.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				}
-		}
-		return file;
-	}
 
     /**
      * Updates the UI with device data

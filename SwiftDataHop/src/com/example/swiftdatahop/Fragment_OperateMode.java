@@ -1,7 +1,6 @@
 package com.example.swiftdatahop;
 
-<<<<<<< HEAD:SwiftDataHop/src/com/example/swiftdatahop/Fragment_OperateMode.java
-=======
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,7 +12,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
->>>>>>> started adding operating mode. created file helper class.:SwiftDataHop/src/com/example/swiftdatahop/TaskDetailFragment_OperateMode.java
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -27,7 +25,7 @@ import android.widget.Toast;
 import com.example.swiftdatahop.AppDataManager;
 import com.example.swiftdatahop.R;
 import com.example.swiftdatahop.TaskInfo;
-import com.example.swiftdatahop.TaskDetailFragment_PeerDetails.FileServerAsyncTask;
+import com.example.swiftdatahop.Fragment_PeerDetails.FileServerAsyncTask;
 
 public class Fragment_OperateMode extends Fragment implements ConnectionInfoListener {
 
@@ -182,7 +180,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		String logcomments = "Default log comment";
 		//KH - getFileToSend now writes to external storage, so keep this if
 		if(isExternalStorageWritable()) { 
-			File file = getFileToSend();
+			File file = FileHelper.getFileToSend(this);
 			if (file != null) {		
 				Uri uri = Uri.fromFile(file);
 				showToastShort("Sending file: " + uri.toString() 
@@ -210,39 +208,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		}
 	}
 	
-	private File getFileToSend() {
-		String filename = "test_data_MASTER.csv";
-		File dataDir = FileHelper.getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO);
-		File file = new File(dataDir, filename);
-		if (file.exists() && file.isFile()) {
-			Log.d(TAG, "To send file of size: " + file.length());
-		} else {
 
-				InputStream ins = getResources().openRawResource(R.raw.test_data_csv);
-				FileOutputStream fos;
-				try {
-					fos = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				}
-				byte buf[] = new byte[1024];
-				int len;
-				try {
-					while((len=ins.read(buf))>0) {
-					    fos.write(buf,0,len);
-					}
-					fos.close();
-					ins.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				}
-		}
-		return file;
-	}
 	
 	private void showToastShort(String msg) {
 		Toast.makeText((TaskListActivity)getActivity(), msg,
