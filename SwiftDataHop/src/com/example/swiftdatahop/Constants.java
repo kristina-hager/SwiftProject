@@ -39,6 +39,9 @@ public final class Constants {
 	public static final String FRAG_MOREINFO_ID = "3";
 	public static final String FRAG_PEERDETAILS_ID = "2";
 	public static final String FRAG_SHOWPEERS_ID = "1";
+	public static final String STATE_SEND_FILE = "2";
+	public static final String STATE_WAITING = "1";
+	public static final String STATE_OFF = "0";
 	
 	//data storage related
 	public static final String DIR_TIMELOGS = "Timelogs";

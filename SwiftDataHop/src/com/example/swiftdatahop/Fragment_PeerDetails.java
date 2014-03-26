@@ -39,7 +39,6 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -293,7 +292,7 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
 	private void sendFile(final WifiP2pInfo info) {
 		String logcomments = "Default log comment";
 		//KH - getFileToSend now writes to external storage, so keep this if
-		if(isExternalStorageWritable()) { 
+		if(FileHelper.isExternalStorageWritable()) { 
 			File file = getFileToSend();
 			if (file != null) {		
 				Uri uri = Uri.fromFile(file);
@@ -322,7 +321,7 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
 
 	private File getFileToSend() {
 		String filename = "test_data_MASTER.csv";
-		File dataDir = getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO);
+		File dataDir = FileHelper.getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO);
 		File file = new File(dataDir, filename);
 		if (file.exists() && file.isFile()) {
 			Log.d(TAG, "To send file of size: " + file.length());
@@ -415,7 +414,7 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
                 Log.d(TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(TAG, "Server: connection done for receive.");
-                final File f = new File(getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO), 
+                final File f = new File(FileHelper.getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO), 
                 		"test_data." + System.currentTimeMillis() + ".csv");
                 File dirs = new File(f.getParent());
                 if (!dirs.exists())
@@ -445,9 +444,15 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
        		// log file transfer capture time to receive file
     		String logFileName = "receiveTimeLog.txt";
     		BufferedWriter out = null;
-    		if(Fragment_PeerDetails.isExternalStorageWritable()){
+
+
+
+
+
+    		if(FileHelper.isExternalStorageWritable()){
     			try {
-    			File dataDir = Fragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
+    			File dataDir = FileHelper.getDataStorageDir(Constants.DIR_TIMELOGS);
+
     			File file = new File(dataDir, logFileName);
     			if(!file.exists()){
     				file.createNewFile();
@@ -518,24 +523,8 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
         return duration;
     }
     
-    /* [AR] - Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-    public static File getDataStorageDir(String dataName) {
-        // Get the directory for the user's public documents directory. 
-        File path = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS), dataName);
-        if (!path.mkdirs()) {
-//[AR] need a log here
 
-        }
-        return path;
-    }
+
     
 	private void showToastShort(String msg) {
 		Toast.makeText((TaskListActivity)getActivity(), msg,

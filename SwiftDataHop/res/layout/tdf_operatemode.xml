@@ -8,6 +8,16 @@
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="@string/task_operatemode_name" />
+	<Button
+        android:id="@+id/btn_operate_on_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/operate_on_off_button" />  
+    <Button
+        android:id="@+id/btn_operate_send_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/operate_send_file_button" />
 	<TextView android:id="@+id/task_detail" 
 	    style="?android:attr/textAppearanceLarge"
 		android:layout_width="wrap_content" 

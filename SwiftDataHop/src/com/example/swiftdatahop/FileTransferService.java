@@ -110,9 +110,15 @@ public class FileTransferService extends IntentService {
    		// log file transfer capture time to wirelessly send file
 		String logFileName = "clientTimeLog.txt";
 		BufferedWriter out = null;
-		if(Fragment_PeerDetails.isExternalStorageWritable()){
+
+
+
+
+
+		if(FileHelper.isExternalStorageWritable()){
 			try {
-			File dataDir = Fragment_PeerDetails.getDataStorageDir(Constants.DIR_TIMELOGS);
+			File dataDir = FileHelper.getDataStorageDir(Constants.DIR_TIMELOGS);
+
 			File file = new File(dataDir, logFileName);
 			if(!file.exists()){
 				file.createNewFile();
