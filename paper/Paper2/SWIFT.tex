@@ -27,39 +27,48 @@ University of Texas at Austin\\
    and use of bibtex to handle bibliographies.
 \end{abstract}
 \section{Introduction}
-Research can takes scientists to places difficult to access to retrieve their study data. 
-For this project a common problem faced by scientists researching caves in Central Texas is considered. 
-Data regarding CO2 levels, cave-drip water, temperature, humidity, etc is collected by in-cave data loggers (sensors). 
-The most common method of retrieving this data from sensors in caves is via a human entering the cave and manually retrieving it. 
+Research takes scientists to places difficult to access to retrieve their study data. 
+For this project, we will consider a common problem scientists face when doing research in caves involving sensors and associated data loggers. 
+In-cave data loggers (sensors) collect data regarding CO2 levels, cave-drip water, temperature, humidity, and more. 
+The most common method of retrieving this data from the data loggers in caves is via a human entering the cave, traveling to the collection site, and manually retrieving it. 
 This method is very slow, inconvenient, and in some cases quite perilous. 
+Furthermore, data loggers can and do malfunction.
+A scientist will not know that her data logger has malfunctioned until she is able to visit the datalogger.
 
-The data retrieval problem could potentially be made easier by leveraging Wifi Direct technology. This technology is now common in most mobile devices.
-The goal for this research is to use WiFi Direct in the cave environment for the purpose of ferrying data from in-cave sensors back to the surface for easier access by environmental scientists. 
-An application leveraging this technology standard would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
+We propose a more automatic means of data retrieval from in-cave loggers. 
+We propose to ferry data back to the surface using Wifi Direct enabled devices. 
+This technology is now common in many mobile devices.
+This would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
 The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which could provide a simple and power effective means of setting up the network and transferring data. 
 
-There are two key questions which will be the focus of this paper, evaluating two potential challenges of WiFi Direct being used to solve this problem. 
-The first question is that of range and connectivity. 
-While WiFi Direct theoretically provides for longer ranges than Bluetooth technology, in a subterranean environment these characteristics could change. 
-In addition to range, the current, and still nascent implementation of the WiFi Direct APIs may be somewhat limited for this use case.
-One concern is that communication beyond a single WiFi Direct group may be a challenge, and this will be a key need for this application. 
-In addition, the current wireless protected setup implementation doesn't appear to provide a means to automate connectivity approval on a device.
-This issue may be circumvented by the concept of remembered groups, but will require further investigation.
-
-For this project, we will explore and evaluate the Wifi Direct technology and quantify the behavior of Wifi Direct using off the shelf Android devices in actual cave environments. 
-The focus of the experiments will be on achievable ranges and data transfer rates if benchmarking is feasible while working within the Android APIs. 
-For the first phase of this project a prototype application on Android devices has been created. This application was used to measure Wifi Direct characteristics within the UT Grotto, a popular cave in Austin with a variety of formations and profiles to test the connectivity of the technology. 
-The ultimate goal of this initial application and the cave excursion is to determine if the range is sufficient to enlist WiFi Direct to support passing messages out of the cave.
+We will focus on two key questions in this paper regarding the potential of the Wifi Direct technology for this application.
+First, we will investigate the range of the Wifi Direct technology in a cave environment.
+WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology. 
+However, we would like to determine the potential range of Wifi Direct specifically in a cave environment which has different characteristics from a usual surface environment. 
+Next, we will create a prototype application for ferrying data using Wifi Direct as provided by the Android platform. 
+However, the still nascent implementation of the WiFi Direct APIs will pose some limitations for our use case.
+The current implementation of Wifi Direct on Android devices does not allow a device to be simultaneously connected to two WifiDirect groups.
+Since the data will need to travel from device to device, each device will need to participate in one or two groups. 
+Since the connection to those groups cannot be simultaneous, our prototype application will manage the disconnect from one group and connect to the next group automatically.
+In addition, the current wireless protected setup implementation requires the human user of the device to approve any new connections.
+However, once a device has gained user permission once to a join a group, the Android platform "remembers" that permission and allows the device to automatically rejoin that group.
+Since we want our devices to be able to operate autonomously underground, we will show how to accommodate the approval issue by pre-configuring the devices in their planned sequence.
+ 
+For the first phase of this project, we created a prototype application for Android devices. 
+We used this application to test the ability to make Wifi Direct connections within Whirlpool Cave, a popular cave in south Austin with a variety of passage characteristics. 
+The ultimate goal of this initial application and the cave excursion is to determine if the range of Wifi Direct is sufficient to support passing messages out of the cave.
 The results of this initial testing showed that WiFi Direct had significant range in areas where direct line of sight was achievable between devices.
+We will discuss these experiments in a subsequent section of the paper.
 
-Following this experiment, a second Android application will be developed. 
-While WiFi Direct has been successfully utilized to transfer data files within a single WiFi Direct group, practical application of this technology requires peer to peer hops that extend beyond the range of what a single group can provide.
+For the second phase of the project, we will develop a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
+While WiFi Direct can easily be used to transfer data files within a single WiFi Direct group, our application data transfer from peer to peer that extend beyond the range of what a single group can provide.
 Ultimately the second application will determine if passing information from peer to peer to ferry the data from the cave is achievable. 
-In addition to the key concern that the an application could support multiple WiFi direct groups on the same device, there are also concerns about timing of discovery and connectivity.
+In addition to the key concern that the application could support multiple WiFi direct groups on the same device, we have concerns about timing of discovery and connectivity.
 These must be implemented in such a way that a single wireless interface on the device can be shared.
 
-The current state of our research is incomplete, but this paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
-The remainder of this paper is structured as follows, section x….
+We have not yet finished our research project. 
+This paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
+% The remainder of this paper is structured as follows, section x….
 
 \section{Cave Research and Data Loggers or whatever we want to call this section}
 
