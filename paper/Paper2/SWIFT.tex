@@ -88,11 +88,11 @@ When a sensor or data logger fails, the scientist loses a great deal of data whi
 
 Therefore, cave researchers are interested in mechanisms that would make their data easier to access and available in a more timely manner.
 
-\section{Prior Work}
+\section{Related Work}
 Cave explorers and researchers need in cave communication systems in order to carry out complex group tasks such as expedition management, rescues, or photography projects.
 
 Wired telephone technology is popular with expedition and rescue teams because they are simple and robust \cite{cavecomm}.
-However, one major drawback of wire based systems is that the wire must be laid along the cave passage. 
+However, one major drawback of wire based systems is that the wire must be carefully laid along the cave passage. 
 The wires themselves are heavy to carry and expensive.
 Also, if the wire is broken somewhere along the line, then the entire system will not work.
 Therefore, the drawbacks of wired telephone technology are the cost and weight of the wire and fragility of the system.
@@ -100,7 +100,7 @@ Therefore, the drawbacks of wired telephone technology are the cost and weight o
 The APRS Cave-Link system is capable of sending text based messages via VHF/UHF walkie talkies or relay boxes placed along a cave passage.
 In their experiments in a large cave, the average hop length was an average of 390' and 440' for VHF and UHF respectively.
 The advantages of this system over wired systems is that the radio units and relay boxes are approximately hand-sized and are relatively lightweight.
-The authors were using the system to essentially send text messages and did not address the data capacity of the system \cite{cavelink}.
+The authors were using the system to essentially send text messages and did not address the general data capacity of the system \cite{cavelink}.
 
 In Postojna Cave in Slovenia, a research team created a system for delay tolerant automatic data transfer from environmental monitoring systems deep in the cave.
 Postojna Cave has a train to ferry tourists 2km into the cave.
@@ -108,7 +108,9 @@ Their system treats this train as a data mule by equipping it with a wifi enable
 Overall, this is a very interesting approach. 
 However, it requires a cave with regular traffic of some type to act as the data mule.
 
-TODO: Moore paper on autonomous mobile radios \cite{moore2012}
+Moore, et al \cite{moore2012} considers using autonomous mobile radio nodes to wirelessly (via wifi) connect a base station to a leader node in tunnel exploration. 
+Tunnel environments share some similarities with cave environments in that the passages usually consist of rough, concrete (rock-like) walls with straighter, longer passages of more consistent dimensions. 
+Therefore, their experiments with wifi signal attenuation in the tunnel environment give us useful data to use in predicting range possibilities in a cave environment.
 
 
 
