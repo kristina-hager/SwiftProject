@@ -164,14 +164,32 @@ With persistent groups, since credentials have been stored, the previous process
 
 \section{Android APIs For WiFi Direct}
 For this project, Android APIs were used to evaluate WiFi Direct for the Swift use case. 
-Android provides three main areas within their interface. Methods that allow you to discover, request, and connect to peers are defined in the WifiP2pManager class.  
+Starting with Android 4.0(API 14 and higher), Android provides three main areas within their API to support Wifi Direct.
+These are the WiFi manager, Listeners, and Intents.
 The WiFi manager class provides methods to allow you to interact with the Wi-Fi hardware on your device to do things like discover and connect to peers. 
-Listeners that allow you to be notified of the success or failure of WifiP2pManager method calls. 
-When calling WifiP2pManager methods, each method can receive a specific listener passed in as a parameter. 
-WifiP2pManager methods let you pass in a listener, so that the Wi-Fi P2P framework can notify your activity of the status of a call. 
-Intents that notify you of specific events detected by the Wi-Fi P2P framework, such as a dropped connection or a newly discovered peer. 
-The Wi-Fi P2P APIs define intents that are broadcast when certain Wi-Fi P2P events happen, such as when a new peer is discovered or when a device's Wi-Fi state changes. 
-You can register to receive these intents in your application by creating a broadcast receiver that handles these intents: ---tobecompleted----
+Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
+Intents notify you of specific events detected by the Wi-Fi P2P framework, such as a dropped connection or a newly discovered peer. 
+Actual data transfer between devices are handled by standard TCP/IP socket objects and I/O operations.
+Android devices making use of the WiFI Direct functionalities are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
+
+An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
+First, the application must setup a Broadcast Receiver. 
+A broadcast receiver allows you to receive intents broadcast by the Android system, in this case the application should respond to Wi-Fi peer to peer intents.
+The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive" method.
+The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
+The application also should set up a Peer to Peer manager. 
+The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast reciever.
+
+To discover peer devices the "discoverPeers()" method is called from the peer to peer manager created for the application.
+Discovery is asynchronous, so an intent is used to notify the application when discovered peers are available.
+Once the application recieves notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
+This function call is also asynchronous and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
+This provides a list of WifiP2pDevice devices which can be used to establish a connection. \cite{androidp2p}
+
+When a device is selected to connect to the wifi peer to peer manager is used to call the "connect()" function to establish the connection to the device. 
+This method is passed a WifiP2pConfig which can be assigned parameters from the WifiP2pDevice such as the device's address.
+The "connect()" method is another asynchronous call. 
+Once successful, a Wifi direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
 
 \section{Experimental Setups}
 a.	Physical Environment
