@@ -1,1 +1,3 @@
+*.lpr
+*.gitignore
 *.undo
