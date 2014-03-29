@@ -137,21 +137,30 @@ The basic concepts of WiFi Direct are as follows. At the core of Wifi Direct is 
 All components that can connect into a wireless medium in a network are referred to as stations. 
 The basic service set (BSS) is a set of all stations that can communicate with each other. 
 An infrastructure BSS includes both access points and stations in a wireless connection scenario.\cite{wirelesslanwiki}
-All WiFi Direct devices must be capable of becoming the group owner. Within a group, a single device takes on this role. 
+All WiFi Direct devices must be capable of becoming the group owner. Within a group, a single device takes on this role.
+ 
 The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, Wi-Fi Protected Setup Internal Registrar functionality, and communication between Clients in the Group. 
 The Group owner decides if the group is temporary or persistent, a persistent group may be formed again without reinitiating WPS.
 Group owners may optionally provide features such as simultaneous (concurrent) connection with an infrastructure network and sharing of that infrastructure connection. In addition to being able to execute the group owner role, WiFi Direct devices must also be capable of group ownership negotiation, discovery, and power management functions.
  
 Devices adhering to the standard enter into a discovery phase where peers within range are found. 
-Once a list of peers is retrieved, users can select to connect to one of these devices.
-Devices wishing to connect may either form a new group or connect to an existing group. 
-As part of the connection process WiFi Protected Setup is used to obtain credentials and authenticate the WiFi Direct device. 
+Once a list of peers is retrieved, devices wishing to connect may either form a new  Wifi Direct group or connect to an existing group. 
+As part of the group formation process, the devices wishing to connect establish which device will become the group owner.
 
-A device obtains the role of group owner through one of three mechanisms [what are these]. 
-Once the group owner is established, devices may open socket connections to communicate with other devices within the group.
-1.	Discovery
-2.	Wifi Protected Setup
-3.	Group Ownership
+A device obtains the role of group owner through one of three mechanisms: Standard, Autonomous, or Persistent. 
+With Standard, devices negotiate to become the group owner.
+With Persistent, a device identifies that a peer has been established as part of a past group. 
+The group can be reformed, and the formation process can occur with significantly reduced WPS phase because credentials for the devices have been stored.
+With Autonomous, a device declares itself a group owner without involvement from any other peer devices. 
+As part of providing the the BSS functionality for the network, the group owner is responsible for providing DHCP addresses to devices on the network.
+Connections can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established\cite{wifiwhitepaper}.
+
+As part of the connection process WiFi Protected Setup(WPS) is used to obtain credentials and authenticate the WiFi Direct device.  
+This type of security requires user intervention in the form of the user either pushing a button or providing a PIN on the device.
+To execute WPS the group owner generates and issues the security keys to other devices in the group. 
+WPS, which is based on WPA-2 security, uses Advanced Encryption Standard (AES)-CCMP as cipher, and a randomly generated Pre-Shared Key (PSK) for mutual authentication\cite{wifiwhitepaper}.
+After this part of the process device disconnect and reconnect using their new authentication credentials.
+With persistent groups, since credentials have been stored, the previous process of establishing authentication can be skipped and the two devices can use their credentials to connect.
 
 \section{Android APIs For WiFi Direct}
 For this project, Android APIs were used to evaluate WiFi Direct for the Swift use case. 
