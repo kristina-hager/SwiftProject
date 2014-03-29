@@ -2,11 +2,12 @@
 \usepackage{simpleConference}
 \usepackage{times}
 \usepackage{graphicx}
+\graphicspath{ {images/} }
 \usepackage{amssymb}
 \usepackage{url,hyperref}
 \begin{document}
 
-\title{Subterranean WiFi}
+\title{Subterranean WiFi (SWIFT)}
 
 \author{Amy Reed, Kristina Hager\\
 Mobile Computing EE382V\\
@@ -34,7 +35,9 @@ The most common method of retrieving this data from the data loggers in caves is
 This method is very slow, inconvenient, and in some cases quite perilous. 
 Furthermore, data loggers can and do malfunction.
 A scientist will not know that her data logger has malfunctioned until she is able to visit the datalogger.
-
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{cavewifi2}
+\end{figure*}
 We propose a more automatic means of data retrieval from in-cave loggers. 
 We propose to ferry data back to the surface using Wifi Direct enabled devices. 
 This technology is now common in many mobile devices.
@@ -194,15 +197,34 @@ Once successful, a Wifi direct group has been formed, or reformed, and the devic
 \section{Experimental Setups}
 \subsection{Physical Environment}
 Kristina, do you want to provide your maps/topology diagrams?
+\includegraphics[width=\columnwidth]{cavewifi}
 \subsection{Datalogger}
 Here if Kristina wants to provide info on this, otherwise can delete?
 \subsection{Range Experiment Software}
+An Android application was developed to perform the range experiments in a cave and to test distances that could be achieved by Wifi Direct on a mobile device.
+This initial application was developed based on a Wifi Direct example provided by the Android SDK.
+The example was used to learn how to create the necessary Wifi Direct components, and understand how the significant asynchronous function calls operate together.
+To perform the range experiments the example was modified to open a connection to a single device, load a data file from the device, and send the data file. 
+The original application provided the ability for the client to launch the other devices photo gallery and select a photo to be copied.
+This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a datalogger.
+
+The Android application followed the architecture described in the section outlining the Android Wifi Direct APIs for creating peer to peer connections. 
+The main application presents a fairly simple GUI interface allowing the user to kick off discovery. 
+Upon completion of discovery a list of available peers is displayed on the GUI.
+The user can then select from the list of devices which brings up a menu to connect to that device.
+Once the Wifi Direct connection is established, the user may select a button to transfer the data file.
+The GUI also provides the user a mechanism to take a note to be logged to a file so that data may be captured about the test being performed at the time.
+The application timestamps the start and end of the data transfer and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
+
 \subsection{Data Ferry Software}
 The data ferry software has currently be started, but is still under development.
 
 \section{Results}
 \subsection{Range Experiment Results}
+Kristina - did you want to fill in this section?
+
 \subsection{Data Ferry Experiment Results}
+This experiment has not yet been performed, and is planned to be completed before the final report.
 
 \section{Conclusions and Future Work}
 Currently the research is still underway, so this section will be completed in the final report.
