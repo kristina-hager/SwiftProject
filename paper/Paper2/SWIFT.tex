@@ -192,28 +192,20 @@ The "connect()" method is another asynchronous call.
 Once successful, a Wifi direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
 
 \section{Experimental Setups}
-a.	Physical Environment
-b.	Datalogger
-c.	Range
-i.	Software
----This section needs to be rewritten it is copy-paste from reference, but a placeholder----The first application which was build was based on a WiFi Direct example provided by Android ADT. 
-Request permission to use the Wi-Fi hardware on the device and also declare your application to have the correct minimum SDK version in the Android manifest. 
-As a best practice, one should check to see if Wi-Fi P2P is on and supported within the device. 
-In the activity's onCreate method, obtain an instance of WifiP2pManager and register the application with the Wi-Fi P2P framework by calling initialize method. 
-This method returns a WifiP2pManager.Channel, which is used to connect the application to the Wi-Fi P2P framework. 
-Within the application, a broadcast receiver with the WifiP2pManager and WifiP2pManager.
-Channel objects along with a reference to your activity. 
-This allows your broadcast receiver to notify your activity of interesting events and update it accordingly. 
-It also lets you manipulate the device's Wi-Fi state if necessary. 
-The application should create an intent filter and add the intents which broadcast receiver checks for. 
-Next the application should initiate device discovery which will asynchronously return a list of peers. 
-The application can then choose a peer and connect via a socket to transfer data.
-d.	Message Passing
-i.	Software
+\subsection{Physical Environment}
+Kristina, do you want to provide your maps/topology diagrams?
+\subsection{Datalogger}
+Here if Kristina wants to provide info on this, otherwise can delete?
+\subsection{Range Experiment Software}
+\subsection{Data Ferry Software}
+The data ferry software has currently be started, but is still under development.
 
 \section{Results}
+\subsection{Range Experiment Results}
+\subsection{Data Ferry Experiment Results}
 
 \section{Conclusions and Future Work}
+Currently the research is still underway, so this section will be completed in the final report.
 
 \section{Acknowledgements}
 TODO:
