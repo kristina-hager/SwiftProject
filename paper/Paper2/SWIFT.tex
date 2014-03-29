@@ -194,11 +194,56 @@ The "connect()" method is another asynchronous call.
 Once successful, a Wifi direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
 
 \section{Experimental Setups}
-\subsection{Physical Environment}
-Kristina, do you want to provide your maps/topology diagrams?
-\includegraphics[width=\columnwidth]{cavewifi}
-\subsection{Datalogger}
-Here if Kristina wants to provide info on this, otherwise can delete?
+
+
+\subsection{Typical Sensor, Datalogger Usage and Data File}
+
+Wong, et al carried out their experiments with a Telaire 7001 CO2 Sensor \cite{telaire} \cite{wong2010}. 
+This is a hand held CO$_2$ and temperature sensor.
+This sensor can perform environmental readings, but it cannot save data.
+To save data from the sensor, you must attach it to a compatible logger.
+HOBO offers a variety of loggers.
+Some loggers have a USB output, others have Wifi, Cellular, or Ethernet communications.
+In a cave, none of these connections is usually possible, so I suspect most research teams opt for the less expensive systems without external communications.
+An example inexpensive logger is the HOBO U12 4-Channel External Data Logger equipped with 64K bytes of memory which is enough for 43,000 12-bit measurements \cite{logger}. 
+Some data loggers do have larger memory capacities such as 4mb (todo: cite other logger).
+
+Based on the Wong paper and informal interviews with cave researchers, we consider a typical cave research project would use one or a few similar sensors and attached data loggers.
+We also consider that the researchers would attempt to gather their data regularly so that their dataloggers do not overfill, but not so frequently that they are burdened by the overhead of the required caving trips.
+Of course, we hope to reduce their burden with Wifi Direct technology.
+However, for the sake of our research, we needed to understand the typical experiment setup.
+
+Zara Environmental gave us an example data file gathered from a logger and sensor setup that was measuring various environmental features like temperature, wind speed, pressure and so on.
+This file has about six weeks worth of data and is 305K in size \cite{datafile}.
+Therefore, we considered this a good example of the kind of data our app would want to transmit in real life.
+We used this data file in all of our experiments and have included a copy of it in both apps.
+
+\subsection{Wifi Direct Range Experiments Outline}
+We found various sources on the internet claiming that the range of Wifi direct was anywhere from 10m to 200m. 
+Of course, the achievable range of the Wifi direct signal can and should vary depending on the topology of the environment, how many other devices are trying to use the same wifi band, and of course any obstructions between the devices trying to communicate.
+
+For each connectivity and transfer experiment, we followed the same procedure. 
+We started with the devices not connected, but with the wifi direct group already established.
+First, the user of one device would initiate a connection.
+Once connection succeeded, we would perform three file transfer attempts using the response of the app to verify the success of each attempt.
+Last, we disconnected the device, and moved to a new position for the next experiment.
+
+\subsection{Wifi Direct Range in Open Field}
+
+We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
+An open field, with no line of site obstructions and no other wifi devices around, should be the most ideal setting for Wifi direct ranges.
+We started our tests at 100' apart and increases the distance by 50' to 100' at at time.
+We found that our devices were easily able to connect and transfer a sample data file at distances up to 300' (91meters). 
+We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
+At times, the connection would take longer than usual.
+Also, the initial file transfer took multiple attempts.
+Once the initial file was received, then subsequent transfers went much better.
+However, at 650' (198m) the devices had a lot of trouble connecting, so we stopped measurements then.
+This is very close to the claimed range of 200' meters.
+
+\subsection{Wifi Direct Range in a Cave}
+
+
 \subsection{Range Experiment Software}
 An Android application was developed to perform the range experiments in a cave and to test distances that could be achieved by Wifi Direct on a mobile device.
 This initial application was developed based on a Wifi Direct example provided by the Android SDK.
@@ -216,7 +261,7 @@ The GUI also provides the user a mechanism to take a note to be logged to a file
 The application timestamps the start and end of the data transfer and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
 
 \subsection{Data Ferry Software}
-The data ferry software has currently be started, but is still under development.
+The data ferry software has currently been started, but is still under development.
 
 \section{Results}
 \subsection{Range Experiment Results}
