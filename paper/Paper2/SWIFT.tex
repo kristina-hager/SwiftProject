@@ -4,7 +4,6 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{url,hyperref}
-
 \begin{document}
 
 \title{Subterranean WiFi}
@@ -78,23 +77,23 @@ These scientists are usually looking for information about the cave's microclima
 For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
 
 Caves present a wide variety of size and shape of passage and climate. 
-Some caves consist of tiny passages too small for even humans and other caves consist of large booming passages and interior spaces that would accommodate even large buildings.
+Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 For example, Son Doong Cave in Thailand has a large room that is over five kilometers long, 200 meters high and 150 meters wide \cite{sondoong}.
 
 Most caves, however, are difficult and dangerous to some degree or another to access and data loggers are often placed deep in the cave.
 Therefore, a researcher expends a great deal of time, logistics and even risk to her life when she needs to access her sensors and the data logger attached to the sensor.
 Also, most cave climates have nearly 100\% humidity at all times and some caves flood or in general have conditions that make sensors and data loggers prone to failure.
 When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
-
+--/***--....
 Therefore, cave researchers are interested in mechanisms that would make their data easier to access and available in a more timely manner.
 
-\section{Related Work}
+\section{Related Work}SPWPS
 Cave explorers and researchers need in cave communication systems in order to carry out complex group tasks such as expedition management, rescues, or photography projects.
 
 Wired telephone technology is popular with expedition and rescue teams because they are simple and robust \cite{cavecomm}.
 However, one major drawback of wire based systems is that the wire must be carefully laid along the cave passage. 
-The wires themselves are heavy to carry and expensive.
-Also, if the wire is broken somewhere along the line, then the entire system will not work.
+The wires themselves are heavy to carry and expensive.Also, if the wire is broken somewh
+ere along the line, then the entire system will not work.
 Therefore, the drawbacks of wired telephone technology are the cost and weight of the wire and fragility of the system.
 
 The APRS Cave-Link system is capable of sending text based messages via VHF/UHF walkie talkies or relay boxes placed along a cave passage.
@@ -129,7 +128,7 @@ Wifi Direct is a standard developed by the WiFi Alliance which provides a mechan
 This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}
 , therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
-Speed and range for WiFi Direct are those of typical WiFi devices and can operation at ---todo get number---Mbs and up to 200 meters depending on the environment. 
+Speed and range for WiFi Direct are those of typical WiFi devices and can operation at 250 Mbs and up to 200 meters depending on the environment. 
 Security for WiFi direct utilizes WiFi Protected Setup and WPA2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
@@ -137,8 +136,7 @@ All of these benefits makes WiFi Direct an ideal consideration to utilize as the
 The basic concepts of WiFi Direct are as follows. At the core of Wifi Direct is the WiFi Direct Group. This basically functions as an infrastructure basic service set(BSS). 
 All components that can connect into a wireless medium in a network are referred to as stations. 
 The basic service set (BSS) is a set of all stations that can communicate with each other. 
-An infrastructure BSS includes both access points and stations in a wireless connection scenario.
---en.wikipedia.org.wiki.Wireless.LAN--
+An infrastructure BSS includes both access points and stations in a wireless connection scenario./cite{WirelessLANwiki}
 All WiFi Direct devices must be capable of becoming the group owner. Within a group, a single device takes on this role. 
 The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, Wi-Fi Protected Setup Internal Registrar functionality, and communication between Clients in the Group. 
 The Group owner decides if the group is temporary or persistent, a persistent group may be formed again without reinitiating WPS.
