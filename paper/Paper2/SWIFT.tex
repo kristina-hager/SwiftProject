@@ -54,7 +54,7 @@ However, the still nascent implementation of the WiFi Direct APIs will pose some
 The current implementation of Wifi Direct on Android devices does not allow a device to be simultaneously connected to two WifiDirect groups.
 Since the data will need to travel from device to device, each device will need to participate in one or two groups. 
 Since the connection to those groups cannot be simultaneous, our prototype application will manage the disconnect from one group and connect to the next group automatically.
-In addition, the current wireless protected setup implementation requires the human user of the device to approve any new connections.
+In addition, the current Wifi Protected Setup(WPS) implementation requires the human user of the device to approve any new connections.
 However, once a device has gained user permission once to a join a group, the Android platform "remembers" that permission and allows the device to automatically rejoin that group.
 Since we want our devices to be able to operate autonomously underground, we will show how to accommodate the approval issue by pre-configuring the devices in their planned sequence.
  
@@ -65,14 +65,13 @@ The results of this initial testing showed that WiFi Direct had significant rang
 We will discuss these experiments in a subsequent section of the paper.
 
 For the second phase of the project, we will develop a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
-While WiFi Direct can easily be used to transfer data files within a single WiFi Direct group, our application data transfer from peer to peer that extend beyond the range of what a single group can provide.
+While WiFi Direct can easily be used to transfer data files within a single WiFi Direct group, in some cases our application would require data transfers beyond the range of what a single group can provide.
 Ultimately the second application will determine if passing information from peer to peer to ferry the data from the cave is achievable. 
 In addition to the key concern that the application could support multiple WiFi direct groups on the same device, we have concerns about timing of discovery and connectivity.
 These must be implemented in such a way that a single wireless interface on the device can be shared.
 
 We have not yet finished our research project. 
 This paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
-% The remainder of this paper is structured as follows, section x….
 
 \section{Usage of sensors and data loggers in caves}
 
@@ -95,8 +94,8 @@ Cave explorers and researchers need in cave communication systems in order to ca
 
 Wired telephone technology is popular with expedition and rescue teams because they are simple and robust \cite{cavecomm}.
 However, one major drawback of wire based systems is that the wire must be carefully laid along the cave passage. 
-The wires themselves are heavy to carry and expensive.Also, if the wire is broken somewh
-ere along the line, then the entire system will not work.
+The wires themselves are heavy to carry and expensive.
+Also, if the wire is broken somewhere along the line, then the entire system will not work.
 Therefore, the drawbacks of wired telephone technology are the cost and weight of the wire and fragility of the system.
 
 The APRS Cave-Link system is capable of sending text based messages via VHF/UHF walkie talkies or relay boxes placed along a cave passage.
@@ -117,7 +116,7 @@ Therefore, their experiments with wifi signal attenuation in the tunnel environm
 \section{WiFi Direct}
 In today's world, wireless connectivity is, for the most part taken for granted. 
 There are still a few circumstances that remind us that the Internet and network connectivity are not guaranteed. 
-Whether due to physical or technological constraints occasionally device connectivity cannot be achieved. 
+Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
 The WiFi Direct standard is one means of potentially filling that gap. 
 In some use cases, broader connectivity to infrastructure is not required and there is value to simple device to device communication. 
 This is Wifi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
@@ -126,20 +125,24 @@ Wifi Direct is a standard developed by the WiFi Alliance which provides a mechan
 This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}
 , therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
-Speed and range for WiFi Direct are those of typical WiFi devices and can operation at 250 Mbs and up to 200 meters depending on the environment. 
-Security for WiFi direct utilizes WiFi Protected Setup and WPA2 to ensure security of the communications over the peer to peer network. 
+Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbs and up to 200 meters depending on the environment. 
+Security for WiFi direct utilizes WPS and WPA2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
 
-The basic concepts of WiFi Direct are as follows. At the core of Wifi Direct is the WiFi Direct Group. This basically functions as an infrastructure basic service set(BSS). 
+The basic concepts of WiFi Direct are as follows. 
+At the core of Wifi Direct is the WiFi Direct Group. 
+The Wifi Direct group basically functions as an infrastructure basic service set(BSS). 
 All components that can connect into a wireless medium in a network are referred to as stations. 
-The basic service set (BSS) is a set of all stations that can communicate with each other. 
+The BSS is a set of all stations that can communicate with each other. 
 An infrastructure BSS includes both access points and stations in a wireless connection scenario.\cite{wirelesslanwiki}
-All WiFi Direct devices must be capable of becoming the group owner. Within a group, a single device takes on this role.
+All WiFi Direct devices must be capable of becoming the group owner. 
+Within a group, a single device takes on this role.
  
-The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, Wi-Fi Protected Setup Internal Registrar functionality, and communication between Clients in the Group. 
+The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, WPS Internal Registrar functionality, and communication between Clients in the Group. 
 The Group owner decides if the group is temporary or persistent, a persistent group may be formed again without reinitiating WPS.
-Group owners may optionally provide features such as simultaneous (concurrent) connection with an infrastructure network and sharing of that infrastructure connection. In addition to being able to execute the group owner role, WiFi Direct devices must also be capable of group ownership negotiation, discovery, and power management functions.
+Group owners may optionally provide features such as simultaneous (concurrent) connection with an infrastructure network and sharing of that infrastructure connection. 
+In addition to being able to execute the group owner role, WiFi Direct devices must also be capable of group ownership negotiation, discovery, and power management functions.
  
 Devices adhering to the standard enter into a discovery phase where peers within range are found. 
 Once a list of peers is retrieved, devices wishing to connect may either form a new  Wifi Direct group or connect to an existing group. 
@@ -148,16 +151,16 @@ As part of the group formation process, the devices wishing to connect establish
 A device obtains the role of group owner through one of three mechanisms: Standard, Autonomous, or Persistent. 
 With Standard, devices negotiate to become the group owner.
 With Persistent, a device identifies that a peer has been established as part of a past group. 
-The group can be reformed, and the formation process can occur with significantly reduced WPS phase because credentials for the devices have been stored.
+The group can be reformed, and the formation process can occur with a significantly reduced WPS phase because credentials for the devices have been stored.
 With Autonomous, a device declares itself a group owner without involvement from any other peer devices. 
 As part of providing the the BSS functionality for the network, the group owner is responsible for providing DHCP addresses to devices on the network.
-Connections can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established\cite{wifiwhitepaper}.
+Data I/O can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established\cite{wifiwhitepaper}.
 
-As part of the connection process WiFi Protected Setup(WPS) is used to obtain credentials and authenticate the WiFi Direct device.  
+As part of the connection process, WPS is used to obtain credentials and authenticate the WiFi Direct device.  
 This type of security requires user intervention in the form of the user either pushing a button or providing a PIN on the device.
-To execute WPS the group owner generates and issues the security keys to other devices in the group. 
+To execute WPS, the group owner generates and issues the security keys to other devices in the group. 
 WPS, which is based on WPA-2 security, uses Advanced Encryption Standard (AES)-CCMP as cipher, and a randomly generated Pre-Shared Key (PSK) for mutual authentication\cite{wifiwhitepaper}.
-After this part of the process device disconnect and reconnect using their new authentication credentials.
+After this part of the process devices disconnect and reconnect using their new authentication credentials.
 With persistent groups, since credentials have been stored, the previous process of establishing authentication can be skipped and the two devices can use their credentials to connect.
 
 \section{Android APIs For WiFi Direct}
@@ -173,7 +176,7 @@ Android devices making use of the WiFI Direct functionalities are required to re
 An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
 First, the application must setup a Broadcast Receiver. 
 A broadcast receiver allows you to receive intents broadcast by the Android system, in this case the application should respond to Wi-Fi peer to peer intents.
-The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive" method.
+The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive()" method.
 The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
 The application also should set up a Peer to Peer manager. 
 The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast reciever.
@@ -184,8 +187,8 @@ Once the application recieves notification of available peers, the peer to peer 
 This function call is also asynchronous and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
 This provides a list of WifiP2pDevice devices which can be used to establish a connection. \cite{androidp2p}
 
-When a device is selected to connect to the wifi peer to peer manager is used to call the "connect()" function to establish the connection to the device. 
-This method is passed a WifiP2pConfig which can be assigned parameters from the WifiP2pDevice such as the device's address.
+When a device is selected for a connection, the wifi peer to peer manager is used to call the "connect()" function to establish the connection to the device. 
+This method is passed a WifiP2pConfig object which can be assigned parameters from the WifiP2pDevice such as the device's address.
 The "connect()" method is another asynchronous call. 
 Once successful, a Wifi direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
 
@@ -209,8 +212,8 @@ However, for the sake of our research, we needed to understand the typical exper
 
 Zara Environmental gave us an example data file gathered from a logger and sensor setup that was measuring various environmental features like temperature, wind speed, pressure and so on.
 This file has about six weeks worth of data and is 305K in size \cite{datafile}.
-Therefore, we considered this a good example of the kind of data our app would want to transmit in real life.
-We used this data file in all of our experiments and have included a copy of it in both apps.
+Therefore, we considered this a good example of the kind of data our application would be required to transmit in real life.
+We used this data file in all of our experiments and have included a copy of it in both applications.
 
 \subsection{Wifi Direct Range Experiments Outline}
 We found various sources on the internet claiming that the range of Wifi direct was anywhere from 10m to 200m. 
@@ -239,12 +242,18 @@ The original application provided the ability for the client to launch the other
 This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a datalogger.
 
 The Android application followed the architecture described in the section outlining the Android Wifi Direct APIs for creating peer to peer connections. 
-The main application presents a fairly simple GUI interface allowing the user to kick off discovery. 
+This Wifi Direct application has the ability to be either the sender or the receiver of the test data file.
+The main application presents a fairly simple GUI interface allowing the user to kick off discovery of peer devices. 
 Upon completion of discovery a list of available peers is displayed on the GUI.
 The user can then select from the list of devices which brings up a menu to connect to that device.
-Once the Wifi Direct connection is established, the user may select a button to transfer the data file.
-The GUI also provides the user a mechanism to take a note to be logged to a file so that data may be captured about the test being performed at the time.
-The application timestamps the start and end of the data transfer and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
+Once the Wifi Direct connection is established, the user may either disconnect or select a button to transfer the data file.
+After the connection is established, the device which is designated to be the receiver has slightly different functionality.
+For the receiver they have the option of terminating the connection, but also have a button to allow them to reset the applicaiton to be prepared to receive the next data file.
+The GUI provides the user a mechanism to take a note to be logged to the log file so that data may be captured about the test being performed at the time.
+The application timestamps the start and end of the data transfer, calculates duration, and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
+The goal of the application was to have a means to test connectivity throughout the cave and ensure that the full data file could be tranfered.
+The duration of the transfer was captured as measured from one side of the connection, in the event that a benchmark was possible.
+In general, the most important result provided by the application was to confirm or deny a successful file transfer.
 
 \subsection{Data Ferry Software}
 The data ferry software has currently been started, but is still under development.
@@ -266,7 +275,6 @@ This is very close to the claimed range of 200' meters.
 
 \subsection{Wifi Direct Range in a Cave}
 We gained access to Whirlpool Cave in south Austin with the permission of the managing entity, TCMA (http://www.tcmacaves.org/) and experimented with the range and connectivity of our Nexus 7 devices on March 16, 2014.
-
 
 \subsection{Data Ferry Experiment Results}
 This experiment has not yet been performed, and is planned to be completed before the final report.
