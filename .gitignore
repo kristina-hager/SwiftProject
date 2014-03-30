@@ -3,7 +3,8 @@
 .settings
 .dex
 .properties
-
+.lpr
+.gitignore
 # Built application files
 *.apk
 *.ap_
