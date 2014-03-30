@@ -184,13 +184,13 @@ CharSet=def
 FileName=SWIFT.tex
 FoldedLines=
 IsMainFile=yes
-Opened=yes
+Opened=no
 ScrollPos.X=0
 ScrollPos.Y=297
 SearchListCount=0
 ShowSyntax=yes
 SpellChecking=yes
-TabOrder=0
+TabOrder=-1
 UseThesaurus=yes
 WrapLine=yes
 
