@@ -126,7 +126,7 @@ This standard has several benefits, first and foremost being that it does not re
 , therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
 Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbs and up to 200 meters depending on the environment. 
-Security for WiFi direct utilizes WPS and WPA2 to ensure security of the communications over the peer to peer network. 
+Security for WiFi direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
 
@@ -181,7 +181,7 @@ The application will register the broadcast receiver and intent filter for the W
 The application also should set up a Peer to Peer manager. 
 The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast reciever.
 
-To discover peer devices the "discoverPeers()" method is called from the peer to peer manager created for the application.
+To discover peer devices, the "discoverPeers()" method is called from the peer to peer manager created for the application.
 Discovery is asynchronous, so an intent is used to notify the application when discovered peers are available.
 Once the application recieves notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
 This function call is also asynchronous and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
@@ -240,7 +240,7 @@ An Android application was developed to perform the range experiments in a cave 
 This initial application was developed based on a Wifi Direct example provided by the Android SDK.
 The example was used to learn how to create the necessary Wifi Direct components, and understand how the significant asynchronous function calls operate together.
 To perform the range experiments the example was modified to open a connection to a single device, load a data file from the device, and send the data file. 
-The original application provided the ability for the client to launch the other devices photo gallery and select a photo to be copied.
+The original application provided the ability for the client to launch the other device's photo gallery and select a photo to be copied.
 This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a datalogger.
 
 The Android application followed the architecture described in the section outlining the Android Wifi Direct APIs for creating peer to peer connections. 
@@ -249,10 +249,12 @@ The main application presents a fairly simple GUI interface allowing the user to
 Upon completion of discovery a list of available peers is displayed on the GUI.
 The user can then select from the list of devices which brings up a menu to connect to that device.
 Once the Wifi Direct connection is established, the user may either disconnect or select a button to transfer the data file.
+
 After the connection is established, the device which is designated to be the receiver has slightly different functionality.
 For the receiver they have the option of terminating the connection, but also have a button to allow them to reset the applicaiton to be prepared to receive the next data file.
 The GUI provides the user a mechanism to take a note to be logged to the log file so that data may be captured about the test being performed at the time.
 The application timestamps the start and end of the data transfer, calculates duration, and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
+
 The goal of the application was to have a means to test connectivity throughout the cave and ensure that the full data file could be tranfered.
 The duration of the transfer was captured as measured from one side of the connection, in the event that a benchmark was possible.
 In general, the most important result provided by the application was to confirm or deny a successful file transfer.
@@ -266,7 +268,7 @@ The data ferry software has currently been started, but is still under developme
 
 We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
 An open field, with no line of site obstructions and no other wifi devices around, should be the most ideal setting for Wifi direct ranges.
-We started our tests at 100' apart and increases the distance by 50' to 100' at at time.
+We started our tests at 100' apart and increased the distance by 50' to 100' at at time.
 We found that our devices were easily able to connect and transfer a sample data file at distances up to 300' (91meters). 
 We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
 At times, the connection would take longer than usual.
@@ -297,7 +299,7 @@ Our Nexus devices successfully connected at 8' and 28' feet apart.
 After 28' apart, the passage starts to turn making line of sight was impossible to maintain, so our devices could not connect.
 Furthermore, since this passage was so narrow and filled with rubble, we had to take great care to maintain a line of sight between the devices.
 
-Since the cave offers no larger rooms nor longer passages, we had to cease our experiments in this cave there.
+Since the cave offers no larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
 However, we suspect that in a larger cave or with straighter passages longer range should be possible.
 Moore, et al carried out wifi range experiments in straight mine tunnels where they claim that signal loss attenuates there less quickly than in free space.
 We refer you to that work for details.
