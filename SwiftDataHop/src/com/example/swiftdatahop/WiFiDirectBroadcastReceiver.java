@@ -36,6 +36,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
     private WifiP2pManager manager;
     private Channel channel;
     private TaskListActivity activity;
+    private AppDataManager mAppData = null;
 
     /**
      * @param manager WifiP2pManager system service
@@ -48,6 +49,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
         this.manager = manager;
         this.channel = channel;
         this.activity = activity;
+        mAppData = AppDataManager.getInstance();
     }
 
     /*
@@ -102,9 +104,18 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 manager.requestConnectionInfo(channel, fragment); 
                 */
             	//TODO-maybe: could be better to send this to activity itself vs to fragment?
-            	Fragment_PeerDetails fragment = 
-            			(Fragment_PeerDetails) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
-            	manager.requestConnectionInfo(channel, fragment);
+
+            	if(mAppData.getOperateState().equals(Constants.STATE_WAITING)) {
+            		Log.d(TAG, "Waiting state");
+               	    Fragment_OperateMode fragment = 
+                			(Fragment_OperateMode) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_OPERATEMODE_NAME);           		
+                	manager.requestConnectionInfo(channel, fragment);
+            	} else {
+               	    Fragment_PeerDetails fragment = 
+                			(Fragment_PeerDetails) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);           		
+                	manager.requestConnectionInfo(channel, fragment);
+            	}
+
                 Log.d(TAG, "P2P connection changed - request connection info");
             } else {
                 // It's a disconnect

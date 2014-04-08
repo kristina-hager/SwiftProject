@@ -10,6 +10,9 @@ import java.io.InputStream;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import com.example.swiftdatahop.AppDataManager;
 import com.example.swiftdatahop.R;
 import com.example.swiftdatahop.TaskInfo;
 import com.example.swiftdatahop.Fragment_PeerDetails.FileServerAsyncTask;
+import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 public class Fragment_OperateMode extends Fragment implements ConnectionInfoListener {
 
@@ -49,6 +53,9 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
     private final String TAG = "TaskDetailFragment_OperateMode";
     ProgressDialog progressDialog = null;
 	public static final int PORT = 8988;
+	private WifiP2pDevice downStreamDevice = null;
+	private WifiP2pDevice upStreamDevice = null;
+	
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -97,8 +104,29 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                public void onClick(View v) {
 	                	if(operateState == Constants.STATE_OFF) {
 	                	    operateState = Constants.STATE_WAITING;
+	                	    mAppData.setOperateState(Constants.STATE_WAITING);
+	                	    downStreamDevice = mAppData.getDownStreamDevice();
+	                    	Log.d(TAG,"operate mode connect attempted");
+	                    	if (downStreamDevice == null) {
+	                    		showToastShort("No downstream device set");
+	                    	    return; //todo - add code to remove connect/disconnect button if no device
+	                    	}
+	                    	WifiP2pConfig config = new WifiP2pConfig();
+	                        config.deviceAddress = downStreamDevice.deviceAddress;
+	                        config.wps.setup = WpsInfo.PBC;
+	                        if (progressDialog != null && progressDialog.isShowing()) {
+	                            progressDialog.dismiss();
+	                        }
+	                        progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
+	                                "Connecting to :" + downStreamDevice.deviceAddress, true, true
+	                                );
+	                        ((DeviceActionListener) getActivity()).connect(config);                	    
+	                	    
+	                	    
 	                	} else {
+	                        //((DeviceActionListener) getActivity()).disconnect();	                		
 	                		operateState = Constants.STATE_OFF;
+	                		mAppData.setOperateState(Constants.STATE_OFF);
 	                	}
 	                	showToastShort("State operate: " + operateState);
 	                    Log.d(TAG, "Operate on-off clicked");
@@ -124,6 +152,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		//if (device != null)
 		//	showDetails(device);
 		//kh - does the below help? not sure.
+		operateState = mAppData.getOperateState();
 		if (info!=null)
 			onConnectionInfoAvailable(info);
 

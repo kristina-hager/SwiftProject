@@ -12,6 +12,7 @@ public class AppDataManager {
 	private WifiP2pDevice lastSelectedDevice;
 	private WifiP2pDevice upStreamDevice;
 	private WifiP2pDevice downStreamDevice;
+	private String operateState = Constants.STATE_OFF;
 
 	public WifiP2pDevice getLastSelectedDevice() {
 		return lastSelectedDevice;
@@ -30,6 +31,12 @@ public class AppDataManager {
 	}
 	public void setDownStreamDevice(WifiP2pDevice downDevice) {
 		this.downStreamDevice = downDevice;
+	}
+	public void setOperateState(String OS) {
+		this.operateState = OS;
+	}
+	public String getOperateState() {
+		return this.operateState;
 	}
 	
 	protected AppDataManager() {
