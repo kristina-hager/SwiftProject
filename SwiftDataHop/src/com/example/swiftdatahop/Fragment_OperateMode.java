@@ -128,7 +128,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                		operateState = Constants.STATE_OFF;
 	                		mAppData.setOperateState(Constants.STATE_OFF);
 	                	}
-	                	showToastShort("State operate: " + operateState);
+	                	showToastShort("State operate(Zero is off, 1 is connected, waiting): " + operateState);
 	                    Log.d(TAG, "Operate on-off clicked");
 	                    
 	                }
