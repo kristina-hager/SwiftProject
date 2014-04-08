@@ -282,6 +282,7 @@ public class TaskListActivity extends FragmentActivity implements
      */
     @Override
     public void disconnect() {
+
     	Fragment_PeerDetails fragment = 
     			(Fragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
         fragment.resetViews();

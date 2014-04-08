@@ -46,6 +46,10 @@ public final class Constants {
 	//data storage related
 	public static final String DIR_TIMELOGS = "Timelogs";
 	public static final String DIR_WI_FI_DIRECT_DEMO = "WiFiDirect_Demo_Dir";
+	
+	public enum State {
+		SEND_FILE, WAITING, OFF
+	}
 
 	
 }

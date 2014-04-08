@@ -1,5 +1,7 @@
 package com.example.swiftdatahop;
 
+import com.example.swiftdatahop.Constants.State;
+
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.util.Log;
 
@@ -12,7 +14,7 @@ public class AppDataManager {
 	private WifiP2pDevice lastSelectedDevice;
 	private WifiP2pDevice upStreamDevice;
 	private WifiP2pDevice downStreamDevice;
-	private String operateState = Constants.STATE_OFF;
+	private State operateState;
 
 	public WifiP2pDevice getLastSelectedDevice() {
 		return lastSelectedDevice;
@@ -32,10 +34,10 @@ public class AppDataManager {
 	public void setDownStreamDevice(WifiP2pDevice downDevice) {
 		this.downStreamDevice = downDevice;
 	}
-	public void setOperateState(String OS) {
-		this.operateState = OS;
+	public void setOperateState(Constants.State state) {
+		this.operateState = state;
 	}
-	public String getOperateState() {
+	public State getOperateState() {
 		return this.operateState;
 	}
 	

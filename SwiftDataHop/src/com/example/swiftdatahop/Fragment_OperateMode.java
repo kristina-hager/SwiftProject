@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.swiftdatahop.AppDataManager;
+import com.example.swiftdatahop.Constants.State;
 import com.example.swiftdatahop.R;
 import com.example.swiftdatahop.TaskInfo;
 import com.example.swiftdatahop.Fragment_PeerDetails.FileServerAsyncTask;
@@ -45,7 +46,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	 */
 	private TaskInfo.TaskItem mItem;
     private AppDataManager mAppData = AppDataManager.getInstance();
-    private String operateState = Constants.STATE_OFF;
+    private Constants.State operateState;
     private Button operateModeOnOff;
     private Button operateSendFile;
     private View mContentView = null;
@@ -102,31 +103,29 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 
 	                @Override
 	                public void onClick(View v) {
-	                	if(operateState == Constants.STATE_OFF) {
-	                	    operateState = Constants.STATE_WAITING;
-	                	    mAppData.setOperateState(Constants.STATE_WAITING);
-	                	    downStreamDevice = mAppData.getDownStreamDevice();
-	                    	Log.d(TAG,"operate mode connect attempted");
-	                    	if (downStreamDevice == null) {
-	                    		showToastShort("No downstream device set");
-	                    	    return; //todo - add code to remove connect/disconnect button if no device
-	                    	}
-	                    	WifiP2pConfig config = new WifiP2pConfig();
-	                        config.deviceAddress = downStreamDevice.deviceAddress;
-	                        config.wps.setup = WpsInfo.PBC;
-	                        if (progressDialog != null && progressDialog.isShowing()) {
-	                            progressDialog.dismiss();
-	                        }
-	                        progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
-	                                "Connecting to :" + downStreamDevice.deviceAddress, true, true
+	                	if(operateState == State.OFF) {
+	                		if(mAppData.getDownStreamDevice()== null && mAppData.getUpStreamDevice()!=null) {      
+	                			upStreamDevice = mAppData.getUpStreamDevice();
+	                    	    Log.d(TAG,"operate mode connect attempted");
+	                    	    WifiP2pConfig config = new WifiP2pConfig();
+	                            config.deviceAddress = upStreamDevice.deviceAddress;
+	                            config.wps.setup = WpsInfo.PBC;
+	                            if (progressDialog != null && progressDialog.isShowing()) {
+	                                progressDialog.dismiss();
+	                            }
+	                            progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
+	                                "Connecting to :" + upStreamDevice.deviceAddress, true, true
 	                                );
-	                        ((DeviceActionListener) getActivity()).connect(config);                	    
-	                	    
-	                	    
+	                            ((DeviceActionListener) getActivity()).connect(config); 
+	                			
+	                		} else if (mAppData.getDownStreamDevice()!=null) {
+	                	        operateState = State.WAITING;
+	                	        mAppData.setOperateState(State.WAITING);              	    
+	                		}
 	                	} else {
 	                        //((DeviceActionListener) getActivity()).disconnect();	                		
-	                		operateState = Constants.STATE_OFF;
-	                		mAppData.setOperateState(Constants.STATE_OFF);
+	                		operateState = State.OFF;
+	                		mAppData.setOperateState(State.OFF);
 	                	}
 	                	showToastShort("State operate(Zero is off, 1 is connected, waiting): " + operateState);
 	                    Log.d(TAG, "Operate on-off clicked");
