@@ -26,6 +26,8 @@
 		android:textIsSelectable="true"
 		tools:context="com.example.swiftdatahop.Fragment_OperateMode"
 		android:visibility="invisible" />
-	
+	<TextView android:id="@+id/operate_status" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

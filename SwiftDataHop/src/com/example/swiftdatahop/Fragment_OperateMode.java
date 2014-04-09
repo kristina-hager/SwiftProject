@@ -56,6 +56,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	public static final int PORT = 8988;
 	private WifiP2pDevice downStreamDevice = null;
 	private WifiP2pDevice upStreamDevice = null;
+	TextView statusBox;
 	
 
 	/**
@@ -84,6 +85,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         super.onActivityCreated(savedInstanceState);
         operateModeOnOff = (Button) mContentView.findViewById(R.id.btn_operate_on_off);
         operateSendFile = (Button) mContentView.findViewById(R.id.btn_operate_send_file);
+        statusBox = ((TextView) mContentView.findViewById(R.id.operate_status));
     }
 
 	@Override
@@ -128,6 +130,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                		mAppData.setOperateState(State.OFF);
 	                	}
 	                	showToastShort("State operate(Zero is off, 1 is connected, waiting): " + operateState);
+	                	updateStatusText("My state: " + Constants.getOperateStateString(operateState));
 	                    Log.d(TAG, "Operate on-off clicked");
 	                    
 	                }
@@ -152,6 +155,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		//	showDetails(device);
 		//kh - does the below help? not sure.
 		operateState = mAppData.getOperateState();
+		updateStatusText("My state: "+ Constants.getOperateStateString(operateState));
 		if (info!=null)
 			onConnectionInfoAvailable(info);
 
@@ -178,12 +182,10 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         // socket.
         if (info.groupFormed && info.isGroupOwner) {
             showToastShort("Group formed and is group owner");
-        	Log.d(TAG, "group is formed and isGroupOwner true - execute FileServerAsyncTask" 
-        			+ " which accepts connection and writes data from stream to file");
+        	Log.d(TAG, "group is formed and isGroupOwner true");
         } else if (info.groupFormed) {
         	showToastShort("Group formed, not group owner");
-        	Log.d(TAG, "group is formed and isGroupOwner false. " 
-        			+ "Want to create and send file via FileTransferService");
+        	Log.d(TAG, "group is formed and isGroupOwner false. ");
 
             // The other device acts as the client. 
         	//*[AR] - Here we get the file we want to transfer and perform
@@ -252,5 +254,9 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         return false;
     }
 
+    private void updateStatusText(String status) {
+    	if (statusBox!= null)
+    		statusBox.setText(status);
+    }
 
 }

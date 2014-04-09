@@ -105,7 +105,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 */
             	//TODO-maybe: could be better to send this to activity itself vs to fragment?
 
-            	if(mAppData.getOperateState().equals(Constants.STATE_WAITING)) {
+            	if(mAppData.getOperateState() == Constants.State.WAITING) {
             		Log.d(TAG, "Waiting state");
                	    Fragment_OperateMode fragment = 
                 			(Fragment_OperateMode) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_OPERATEMODE_NAME);           		
