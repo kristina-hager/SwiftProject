@@ -54,8 +54,6 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
     private final String TAG = "TaskDetailFragment_OperateMode";
     ProgressDialog progressDialog = null;
 	public static final int PORT = 8988;
-	private WifiP2pDevice downStreamDevice = null;
-	private WifiP2pDevice upStreamDevice = null;
 	TextView statusBox;
 	
 
@@ -248,16 +246,20 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
     }
 
 	private void connectToUpstream() {
-		upStreamDevice = mAppData.getUpStreamDevice();
+		if (mAppData.getUpStreamDevice()==null) {
+			showToastShort("Upstream device is null!");
+			return;
+		}
+			
 		Log.d(TAG,"operate mode connect attempted");
 		WifiP2pConfig config = new WifiP2pConfig();
-		config.deviceAddress = upStreamDevice.deviceAddress;
+		config.deviceAddress = mAppData.getUpStreamDevice().deviceAddress;
 		config.wps.setup = WpsInfo.PBC;
 		if (progressDialog != null && progressDialog.isShowing()) {
 		    progressDialog.dismiss();
 		}
 		progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
-		    "Connecting to :" + upStreamDevice.deviceAddress, true, true
+		    "Connecting to :" + mAppData.getUpStreamDevice().deviceAddress, true, true
 		    );
 		((DeviceActionListener) getActivity()).connect(config);
 	}
