@@ -107,19 +107,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                public void onClick(View v) {
 	                	if(operateState == State.OFF) {
 	                		if(mAppData.getDownStreamDevice()== null && mAppData.getUpStreamDevice()!=null) {      
-	                			upStreamDevice = mAppData.getUpStreamDevice();
-	                    	    Log.d(TAG,"operate mode connect attempted");
-	                    	    WifiP2pConfig config = new WifiP2pConfig();
-	                            config.deviceAddress = upStreamDevice.deviceAddress;
-	                            config.wps.setup = WpsInfo.PBC;
-	                            if (progressDialog != null && progressDialog.isShowing()) {
-	                                progressDialog.dismiss();
-	                            }
-	                            progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
-	                                "Connecting to :" + upStreamDevice.deviceAddress, true, true
-	                                );
-	                            ((DeviceActionListener) getActivity()).connect(config); 
-	                			
+	                			connectToUpstream();                 			
 	                		} else if (mAppData.getDownStreamDevice()!=null) {
 	                	        operateState = State.WAITING;
 	                	        mAppData.setOperateState(State.WAITING);              	    
@@ -258,5 +246,20 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
     	if (statusBox!= null)
     		statusBox.setText(status);
     }
+
+	private void connectToUpstream() {
+		upStreamDevice = mAppData.getUpStreamDevice();
+		Log.d(TAG,"operate mode connect attempted");
+		WifiP2pConfig config = new WifiP2pConfig();
+		config.deviceAddress = upStreamDevice.deviceAddress;
+		config.wps.setup = WpsInfo.PBC;
+		if (progressDialog != null && progressDialog.isShowing()) {
+		    progressDialog.dismiss();
+		}
+		progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
+		    "Connecting to :" + upStreamDevice.deviceAddress, true, true
+		    );
+		((DeviceActionListener) getActivity()).connect(config);
+	}
 
 }
