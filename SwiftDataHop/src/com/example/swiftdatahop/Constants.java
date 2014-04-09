@@ -45,14 +45,15 @@ public final class Constants {
 	public static final String DIR_WI_FI_DIRECT_DEMO = "WiFiDirect_Demo_Dir";
 	
 	public enum State {
-		SEND_FILE, WAITING, OFF
+		SEND_FILE, IDLE_WAIT, RECEIVE_FILE, OFF
 	}
 	public static final String getOperateStateString(State inState) {
 		if (inState==null)
 			return "NULL";
 		switch(inState) {
 			case SEND_FILE: return "SEND_FILE";
-			case WAITING: return "WAITING";
+			case IDLE_WAIT: return "WAITING/IDLE";
+			case RECEIVE_FILE: return "RECEIVE_FILE";
 			case OFF: return "OFF";
 			default: return "UNKNOWN";
 		}

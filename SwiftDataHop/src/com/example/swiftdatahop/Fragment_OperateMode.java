@@ -106,9 +106,9 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                	if(mAppData.getOperateState() == State.OFF) {
 	                		if(mAppData.getDownStreamDevice()== null && mAppData.getUpStreamDevice()!=null) {      
 	                			connectToUpstream();   
-	                			mAppData.setOperateState(State.WAITING);
+	                			mAppData.setOperateState(State.IDLE_WAIT);
 	                		} else if (mAppData.getDownStreamDevice()!=null) {
-	                	        mAppData.setOperateState(State.WAITING);              	    
+	                	        mAppData.setOperateState(State.IDLE_WAIT);              	    
 	                		}
 	                	} else {
 	                        ((DeviceActionListener) getActivity()).disconnect();	                		
