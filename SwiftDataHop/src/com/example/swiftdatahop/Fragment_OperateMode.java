@@ -111,7 +111,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                	        mAppData.setOperateState(State.WAITING);              	    
 	                		}
 	                	} else {
-	                        //((DeviceActionListener) getActivity()).disconnect();	                		
+	                        ((DeviceActionListener) getActivity()).disconnect();	                		
 	                		operateState = State.OFF;
 	                		mAppData.setOperateState(State.OFF);
 	                	}

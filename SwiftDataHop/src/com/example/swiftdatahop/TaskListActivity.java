@@ -1,6 +1,7 @@
 package com.example.swiftdatahop;
 
 
+import com.example.swiftdatahop.Constants.State;
 import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 import android.content.BroadcastReceiver;
@@ -282,10 +283,11 @@ public class TaskListActivity extends FragmentActivity implements
      */
     @Override
     public void disconnect() {
-
-    	Fragment_PeerDetails fragment = 
+        if(mAppData.getOperateState()== State.OFF) {
+    	    Fragment_PeerDetails fragment = 
     			(Fragment_PeerDetails) getSupportFragmentManager().findFragmentByTag(Constants.FRAG_PEERDETAILS_NAME);
-        fragment.resetViews();
+            fragment.resetViews();
+        }
         manager.removeGroup(channel, new ActionListener() {
 
             @Override
