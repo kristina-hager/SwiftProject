@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.swiftdatahop.AppDataManager;
 import com.example.swiftdatahop.Constants.State;
 import com.example.swiftdatahop.R;
@@ -106,9 +107,6 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                public void onClick(View v) {
 	                	if(mAppData.getOperateState() == State.OFF) {
 	                		boolean pass = autonomousModeChecks();
-	                		//todo: check that upstream or downstream device is set
-	                		//(check we are good to go for autonomous)
-	                		//if downstream device is null, show 'send file' button
 	                		if (pass) {
 	                			if (mAppData.getDownStreamDevice()==null)
 	                				operateSendFile.setVisibility(View.VISIBLE);
@@ -117,11 +115,13 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                	} else if (mAppData.getOperateState() == State.RECEIVE_FILE) {
 	                		//todo: abort, disconnect, etc
 	                		operateSendFile.setVisibility(View.INVISIBLE);
+	                		mAppData.setOperateState(State.OFF);
 	                	} else if (mAppData.getOperateState() == State.SEND_FILE) {
 	                		//todo: abort, disconnect etc
 	                		//if there is some connection, do a disconnect?
 	                        //((DeviceActionListener) getActivity()).disconnect();
 	                		operateSendFile.setVisibility(View.INVISIBLE);
+	                		mAppData.setOperateState(State.OFF);
 	                	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {                		
 	                		mAppData.setOperateState(State.OFF);
 	                		operateSendFile.setVisibility(View.INVISIBLE);
@@ -139,14 +139,12 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                public void onClick(View v) {
 	                	showToastShort("operate send file clicked");
 	                    Log.d(TAG, "Operate send file clicked");
-	                    //we know: downstream device is null
-	                    //upstream device is not null
 	                    assert(mAppData.getDownStreamDevice() == null);
 	                    assert(mAppData.getDownStreamDevice() != null);
 	                    mAppData.setOperateState(State.SEND_FILE);
-	                    /*bool success =*/ connectToUpstream();   //make wifi direct connection
-	                    //todo: updateStatusText and Log.d - at each step
-	                    
+	                    Log.d(TAG, "about to connect to upstream device");
+	                    updateStatusText("send connect request to upstream device");
+	                    connectToUpstream();   //make wifi direct connection	                    
 	                }
 	            });
 
@@ -181,15 +179,30 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
             	Log.d(TAG, "group is formed and isGroupOwner false. ");
         	}
         		
+        	if (mAppData.getOperateState() == State.SEND_FILE) {
+        		Log.d(TAG, "Do wait before file send");
+//        		try {
+//					//wait(30);
+//        			//todo: http://stackoverflow.com/questions/17811794/android-java-lang-illegalmonitorstateexception-object-not-locked-by-thread-befo
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+        		sendFile(info);
+        		//todo: check success
+        		mAppData.setOperateState(State.IDLE_WAIT);
         	//if I am in State.SEND_FILE
         		//todo: wait?
         		//todo: open socket to send file
         		//todo: actually send file
         		//if all successful
         		//mAppData.setOperateState(State.IDLE_WAIT);
-        	//else if I am receiving device, in IDLE_WAIT
-        		//mAppData.setOperateState(State.RECEIVE_FILE);
+        	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {
+        	//else if I am receiving device, in IDLE_WAIT 
+        		mAppData.setOperateState(State.RECEIVE_FILE);
         		//open socket to receive file "receiveFile()
+        		Log.d(TAG, "receive file");
+        		receiveFile();
         		//if success, disconnect
         		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
         			//mAppData.setOperateState(State.SEND_FILE);
@@ -197,6 +210,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		//else
         			//mAppData.setOperateState(State.IDLE_WAIT);
         			//(display message about file receive if not already done)
+        }
         	
         } else {
         	//todo? error?
@@ -266,10 +280,10 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
     		statusBox.setText(status);
     }
 
-	private void connectToUpstream() {
+	private boolean connectToUpstream() {
 		if (mAppData.getUpStreamDevice()==null) {
 			showToastShort("Upstream device is null!");
-			return;
+			return false;
 		}
 			
 		Log.d(TAG,"operate mode connect attempted");
@@ -283,6 +297,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		    "Connecting to :" + mAppData.getUpStreamDevice().deviceAddress, true, true
 		    );
 		((DeviceActionListener) getActivity()).connect(config);
+		return true;
 	}
 
 	private boolean autonomousModeChecks() {
