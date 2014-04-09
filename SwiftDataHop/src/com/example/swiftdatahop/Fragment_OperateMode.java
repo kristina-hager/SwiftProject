@@ -105,18 +105,26 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                @Override
 	                public void onClick(View v) {
 	                	if(mAppData.getOperateState() == State.OFF) {
+	                		boolean pass = autonomousModeChecks();
 	                		//todo: check that upstream or downstream device is set
 	                		//(check we are good to go for autonomous)
 	                		//if downstream device is null, show 'send file' button
-	                		mAppData.setOperateState(State.IDLE_WAIT);
+	                		if (pass) {
+	                			if (mAppData.getDownStreamDevice()==null)
+	                				operateSendFile.setVisibility(View.VISIBLE);
+	                			mAppData.setOperateState(State.IDLE_WAIT);
+	                		}
 	                	} else if (mAppData.getOperateState() == State.RECEIVE_FILE) {
 	                		//todo: abort, disconnect, etc
+	                		operateSendFile.setVisibility(View.INVISIBLE);
 	                	} else if (mAppData.getOperateState() == State.SEND_FILE) {
 	                		//todo: abort, disconnect etc
 	                		//if there is some connection, do a disconnect?
 	                        //((DeviceActionListener) getActivity()).disconnect();
+	                		operateSendFile.setVisibility(View.INVISIBLE);
 	                	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {                		
 	                		mAppData.setOperateState(State.OFF);
+	                		operateSendFile.setVisibility(View.INVISIBLE);
 	                	} else {
 	                		assert(false);
 	                	}	
@@ -277,4 +285,11 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		((DeviceActionListener) getActivity()).connect(config);
 	}
 
+	private boolean autonomousModeChecks() {
+		if (mAppData.getUpStreamDevice()==null && mAppData.getDownStreamDevice()==null) {
+			showToastShort("Both up & downstream devices NULL! no autonomous for you");
+			return false;
+		}
+		return true;
+	}
 }
