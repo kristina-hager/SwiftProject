@@ -46,7 +46,6 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	 */
 	private TaskInfo.TaskItem mItem;
     private AppDataManager mAppData = AppDataManager.getInstance();
-    private Constants.State operateState;
     private Button operateModeOnOff;
     private Button operateSendFile;
     private View mContentView = null;
@@ -76,6 +75,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 			mItem = TaskInfo.ITEM_MAP.get(getArguments().getString(
 					ARG_ITEM_ID));
 		}
+		
 	}
 	
     @Override
@@ -103,20 +103,19 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 
 	                @Override
 	                public void onClick(View v) {
-	                	if(operateState == State.OFF) {
+	                	if(mAppData.getOperateState() == State.OFF) {
 	                		if(mAppData.getDownStreamDevice()== null && mAppData.getUpStreamDevice()!=null) {      
-	                			connectToUpstream();                 			
+	                			connectToUpstream();   
+	                			mAppData.setOperateState(State.WAITING);
 	                		} else if (mAppData.getDownStreamDevice()!=null) {
-	                	        operateState = State.WAITING;
 	                	        mAppData.setOperateState(State.WAITING);              	    
 	                		}
 	                	} else {
 	                        ((DeviceActionListener) getActivity()).disconnect();	                		
-	                		operateState = State.OFF;
 	                		mAppData.setOperateState(State.OFF);
 	                	}
-	                	showToastShort("State operate(Zero is off, 1 is connected, waiting): " + operateState);
-	                	updateStatusText("My state: " + Constants.getOperateStateString(operateState));
+	                	showToastShort("State operate(Zero is off, 1 is connected, waiting): " + mAppData.getOperateState());
+	                	updateStatusText("My state: " + Constants.getOperateStateString(mAppData.getOperateState()));
 	                    Log.d(TAG, "Operate on-off clicked");
 	                    
 	                }
@@ -140,8 +139,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		//if (device != null)
 		//	showDetails(device);
 		//kh - does the below help? not sure.
-		operateState = mAppData.getOperateState();
-		updateStatusText("My state: "+ Constants.getOperateStateString(operateState));
+		updateStatusText("My state: "+ Constants.getOperateStateString(mAppData.getOperateState()));
 		if (info!=null)
 			onConnectionInfoAvailable(info);
 

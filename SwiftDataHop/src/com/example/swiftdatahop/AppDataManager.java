@@ -14,7 +14,7 @@ public class AppDataManager {
 	private WifiP2pDevice lastSelectedDevice;
 	private WifiP2pDevice upStreamDevice;
 	private WifiP2pDevice downStreamDevice;
-	private State operateState;
+	private State operateState = State.OFF;
 
 	public WifiP2pDevice getLastSelectedDevice() {
 		return lastSelectedDevice;
