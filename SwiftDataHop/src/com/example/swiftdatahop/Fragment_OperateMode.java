@@ -29,7 +29,6 @@ import com.example.swiftdatahop.AppDataManager;
 import com.example.swiftdatahop.Constants.State;
 import com.example.swiftdatahop.R;
 import com.example.swiftdatahop.TaskInfo;
-import com.example.swiftdatahop.Fragment_PeerDetails.FileServerAsyncTask;
 import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 public class Fragment_OperateMode extends Fragment implements ConnectionInfoListener {
@@ -98,26 +97,31 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 					.setText(mItem.content);
 		}
 
+		updateStatusText("My state: " + Constants.getOperateStateString(mAppData.getOperateState()));
+		
 	    mContentView.findViewById(R.id.btn_operate_on_off).setOnClickListener(
 	            new View.OnClickListener() {
 
 	                @Override
 	                public void onClick(View v) {
 	                	if(mAppData.getOperateState() == State.OFF) {
-	                		if(mAppData.getDownStreamDevice()== null && mAppData.getUpStreamDevice()!=null) {      
-	                			connectToUpstream();   
-	                			mAppData.setOperateState(State.IDLE_WAIT);
-	                		} else if (mAppData.getDownStreamDevice()!=null) {
-	                	        mAppData.setOperateState(State.IDLE_WAIT);              	    
-	                		}
-	                	} else {
-	                        ((DeviceActionListener) getActivity()).disconnect();	                		
+	                		//todo: check that upstream or downstream device is set
+	                		//(check we are good to go for autonomous)
+	                		//if downstream device is null, show 'send file' button
+	                		mAppData.setOperateState(State.IDLE_WAIT);
+	                	} else if (mAppData.getOperateState() == State.RECEIVE_FILE) {
+	                		//todo: abort, disconnect, etc
+	                	} else if (mAppData.getOperateState() == State.SEND_FILE) {
+	                		//todo: abort, disconnect etc
+	                		//if there is some connection, do a disconnect?
+	                        //((DeviceActionListener) getActivity()).disconnect();
+	                	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {                		
 	                		mAppData.setOperateState(State.OFF);
-	                	}
-	                	showToastShort("State operate(Zero is off, 1 is connected, waiting): " + mAppData.getOperateState());
+	                	} else {
+	                		assert(false);
+	                	}	
 	                	updateStatusText("My state: " + Constants.getOperateStateString(mAppData.getOperateState()));
-	                    Log.d(TAG, "Operate on-off clicked");
-	                    
+	                    Log.d(TAG, "Operate on-off clicked");                
 	                }
 	            });
 	    mContentView.findViewById(R.id.btn_operate_send_file).setOnClickListener(
@@ -127,6 +131,14 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                public void onClick(View v) {
 	                	showToastShort("operate send file clicked");
 	                    Log.d(TAG, "Operate send file clicked");
+	                    //we know: downstream device is null
+	                    //upstream device is not null
+	                    assert(mAppData.getDownStreamDevice() == null);
+	                    assert(mAppData.getDownStreamDevice() != null);
+	                    mAppData.setOperateState(State.SEND_FILE);
+	                    /*bool success =*/ connectToUpstream();   //make wifi direct connection
+	                    //todo: updateStatusText and Log.d - at each step
+	                    
 	                }
 	            });
 
@@ -152,33 +164,36 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         }
         this.info = info;
 
-        // The owner IP is now known.
-        //TextView view = (TextView) mContentView.findViewById(R.id.group_owner);
-        //view.setText(getResources().getString(R.string.group_owner_text)
-        //        + ((info.isGroupOwner == true) ? getResources().getString(R.string.yes)
-        //                : getResources().getString(R.string.no)));
-
-        // InetAddress from WifiP2pInfo struct.
-        //view.setText("Group Owner IP - " + info.groupOwnerAddress.getHostAddress());
-        
-        // After the group negotiation, we assign the group owner as the file
-        // server. The file server is single threaded, single connection server
-        // socket.
-        if (info.groupFormed && info.isGroupOwner) {
-            showToastShort("Group formed and is group owner");
-        	Log.d(TAG, "group is formed and isGroupOwner true");
-        } else if (info.groupFormed) {
-        	showToastShort("Group formed, not group owner");
-        	Log.d(TAG, "group is formed and isGroupOwner false. ");
-
-            // The other device acts as the client. 
-        	//*[AR] - Here we get the file we want to transfer and perform
-        	//*[AR] - the file transfer
-
+        if (info.groupFormed) {
+        	if (info.isGroupOwner) {
+        		showToastShort("Group formed and is group owner");
+            	Log.d(TAG, "group is formed and isGroupOwner true");
+        	} else {
+        		showToastShort("Group formed, not group owner");
+            	Log.d(TAG, "group is formed and isGroupOwner false. ");
+        	}
+        		
+        	//if I am in State.SEND_FILE
+        		//todo: wait?
+        		//todo: open socket to send file
+        		//todo: actually send file
+        		//if all successful
+        		//mAppData.setOperateState(State.IDLE_WAIT);
+        	//else if I am receiving device, in IDLE_WAIT
+        		//mAppData.setOperateState(State.RECEIVE_FILE);
+        		//open socket to receive file "receiveFile()
+        		//if success, disconnect
+        		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
+        			//mAppData.setOperateState(State.SEND_FILE);
+        			//connectToUpstream
+        		//else
+        			//mAppData.setOperateState(State.IDLE_WAIT);
+        			//(display message about file receive if not already done)
+        	
         } else {
-
+        	//todo? error?
         }
-		
+        
 	}
 
 	private void receiveFile() {

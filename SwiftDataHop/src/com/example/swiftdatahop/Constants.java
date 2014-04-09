@@ -40,6 +40,9 @@ public final class Constants {
 	public static final String FRAG_PEERDETAILS_ID = "2";
 	public static final String FRAG_SHOWPEERS_ID = "1";
 	
+	//
+	public static final int PORT = 8988;//todo: use this elsewhere
+	
 	//data storage related
 	public static final String DIR_TIMELOGS = "Timelogs";
 	public static final String DIR_WI_FI_DIRECT_DEMO = "WiFiDirect_Demo_Dir";
