@@ -170,7 +170,16 @@ public class TaskListActivity extends FragmentActivity implements
 
             @Override
             public void onFailure(int reasonCode) {
-            	showToastShort("Discovery Failed : " + reasonCode);
+            	String reason;
+            	if (reasonCode == WifiP2pManager.BUSY)
+            		reason = new String("BUSY");
+            	else if (reasonCode == WifiP2pManager.ERROR)
+            		reason = new String("ERROR");
+            	else if (reasonCode == WifiP2pManager.P2P_UNSUPPORTED)
+            		reason = new String("P2P_UNSUPPORTED");
+            	else
+            		reason = new String("error unknown");
+            	showToastShort("Discovery Failed : " + reason);
             }
         });
         return true;
