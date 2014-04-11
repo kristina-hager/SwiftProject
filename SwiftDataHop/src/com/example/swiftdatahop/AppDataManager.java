@@ -48,8 +48,8 @@ public class AppDataManager {
 		if(singleton == null) {
 			simulateRandomActivity();
 			singleton = new AppDataManager();
+			Log.i(TAG, "created singleton: " + singleton);
 		}
-		Log.i(TAG, "created singleton: " + singleton);
 		return singleton;
 	}
 	private static void simulateRandomActivity() {

@@ -105,8 +105,9 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 */
             	//TODO-maybe: could be better to send this to activity itself vs to fragment?
 
+            	Log.d(TAG, "isConnected true");
             	if(mAppData.getOperateState() != Constants.State.OFF) {
-            		Log.d(TAG, "Waiting state");
+            		Log.d(TAG, "In autonomous operation mode");
                	    Fragment_OperateMode fragment = 
                 			(Fragment_OperateMode) activity.getSupportFragmentManager().findFragmentByTag(Constants.FRAG_OPERATEMODE_NAME);           		
                 	manager.requestConnectionInfo(channel, fragment);
