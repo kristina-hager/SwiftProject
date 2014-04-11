@@ -122,18 +122,19 @@ import android.widget.TextView;
             	statusUpdate.append("Disconnected connection\n");
             	Log.d(TAG,"Auto disconnect");
             	deviceAction.disconnect();
+            	AppDataManager appData = AppDataManager.getInstance();
+    			if (appData.getUpStreamDevice() != null) {
+        			appData.setOperateState(State.SEND_FILE);
+        			deviceAction.activityConnectUpstream();
+        			statusUpdate.append("try to connect upstream\n");
+        		} else {
+        			appData.setOperateState(State.IDLE_WAIT);
+        		}
             } else {
             	statusUpdate.append("did not force disconnect\n");
             	Log.d(TAG,"no disconnect");
             }
-    		AppDataManager appData = AppDataManager.getInstance();
-			if (appData.getUpStreamDevice() != null) {
-    			appData.setOperateState(State.SEND_FILE);
-    			deviceAction.activityConnectUpstream();
-    			statusUpdate.append("try to connect upstream\n");
-    		} else {
-    			appData.setOperateState(State.IDLE_WAIT);
-    		}
+    		
             statusText.setText(statusUpdate);
         }
 
