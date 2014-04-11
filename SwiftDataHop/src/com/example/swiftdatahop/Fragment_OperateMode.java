@@ -193,12 +193,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		Log.d(TAG, "receive file at ");
         		receiveFile(); //disconnect handled in FileServerAsyncTask
         		//handle state change/upstream connect in FSAT too
-//        		if (mAppData.getUpStreamDevice() != null) {
-//        			mAppData.setOperateState(State.SEND_FILE);
-//        			connectToUpstream();
-//        		} else {
-//        			mAppData.setOperateState(State.IDLE_WAIT);
-//        		}
+
         		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
         			//mAppData.setOperateState(State.SEND_FILE);
         			//connectToUpstream

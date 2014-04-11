@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.swiftdatahop.Constants.State;
 import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 import android.content.Context;
@@ -118,13 +119,21 @@ import android.widget.TextView;
                 Log.d(TAG,"File copied to - " + result + "\nAt: " + Utils.getDateAndTime());
             }
             if (autoDisconnect) {
-            	statusUpdate.append("Disconnected connection");
+            	statusUpdate.append("Disconnected connection\n");
             	Log.d(TAG,"Auto disconnect");
             	deviceAction.disconnect();
             } else {
-            	statusUpdate.append("did not force disconnect");
+            	statusUpdate.append("did not force disconnect\n");
             	Log.d(TAG,"no disconnect");
             }
+    		AppDataManager appData = AppDataManager.getInstance();
+			if (appData.getUpStreamDevice() != null) {
+    			appData.setOperateState(State.SEND_FILE);
+    			deviceAction.activityConnectUpstream();
+    			statusUpdate.append("try to connect upstream\n");
+    		} else {
+    			appData.setOperateState(State.IDLE_WAIT);
+    		}
             statusText.setText(statusUpdate);
         }
 
