@@ -192,8 +192,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		mAppData.setOperateState(State.RECEIVE_FILE);
         		//open socket to receive file "receiveFile()
         		Log.d(TAG, "receive file at ");
-        		receiveFile();
-        		//if success, disconnect
+        		receiveFile(); //disconnect handled in FileServerAsyncTask
         		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
         			//mAppData.setOperateState(State.SEND_FILE);
         			//connectToUpstream
@@ -212,7 +211,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		Time now = new Time(); now.setToNow();
 		Log.d(TAG, "Recieve File Called at time: " + now.toString());
 		showToastShort("Recieve File Called at time " + now.toString());
-		new FileServerAsyncTask(getActivity(), statusBox).execute(); //[AR] Need to add a text field
+		new FileServerAsyncTask(getActivity(), statusBox, true, ((DeviceActionListener) getActivity())).execute(); //[AR] Need to add a text field
 	}
 	
     /*

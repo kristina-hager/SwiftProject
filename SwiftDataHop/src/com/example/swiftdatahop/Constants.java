@@ -31,7 +31,7 @@ public final class Constants {
     public static final String EXTENDED_STATUS_LOG = appName + ".LOG";
 	//
 	public static final int PORT = 8988;//todo: use this constant instead of Local PORT
-	public static final int SEND_WAIT = 4000;
+	public static final int SEND_WAIT = 6000;
 	public static final int SEND_RETRY = 3; //not implemented yet
     
     //fragment related constants

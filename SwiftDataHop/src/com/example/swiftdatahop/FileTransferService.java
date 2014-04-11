@@ -26,7 +26,7 @@ import android.util.Log;
 public class FileTransferService extends IntentService {
 
 	private static final String TAG = "FileTransferService";
-    private static final int SOCKET_TIMEOUT = 15000;
+    private static final int SOCKET_TIMEOUT = 30000;
     public static final String ACTION_SEND_FILE = "com.example.android.wifidirect.SEND_FILE";
     public static final String EXTRAS_FILE_PATH = "file_url";
     public static final String EXTRAS_GROUP_OWNER_ADDRESS = "go_host";

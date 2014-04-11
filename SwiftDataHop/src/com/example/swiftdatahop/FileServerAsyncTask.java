@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -25,14 +27,22 @@ import android.widget.TextView;
 		private Context context;
         private TextView statusText;
         private static final String TAG = "FileServerAsync";
+        private static boolean autoDisconnect;
+        private DeviceActionListener deviceAction;
 
         /**
          * @param context
          * @param statusText
          */
-        public FileServerAsyncTask(Context context, View statusText) {
+        public FileServerAsyncTask(Context context, View statusText, boolean autoDisconnect, DeviceActionListener xx) {
             this.context = context;
             this.statusText = (TextView) statusText;
+            this.autoDisconnect = autoDisconnect;
+            this.deviceAction = xx;
+        }
+        
+        public FileServerAsyncTask(Context context, View statusText) {
+            this(context, statusText, false, null);
         }
 
         @Override
@@ -98,15 +108,24 @@ import android.widget.TextView;
          */
         @Override
         protected void onPostExecute(String result) {
+        	StringBuilder statusUpdate = new StringBuilder();
             if (result != null) {
             	File file = new File(result);
-                statusText.setText("File copied to - " + result 
+                statusUpdate.append("File copied to - " + result 
                 		+ "\nAt: " + Utils.getDateAndTime() 
                 		+ "\nSize: " + file.length() + " B"                		
-                		+ "\n\nSelect Ready Receive to prepare for new file.");
+                		+ "\n\n");
                 Log.d(TAG,"File copied to - " + result + "\nAt: " + Utils.getDateAndTime());
             }
-
+            if (autoDisconnect) {
+            	statusUpdate.append("Disconnected connection");
+            	Log.d(TAG,"Auto disconnect");
+            	deviceAction.disconnect();
+            } else {
+            	statusUpdate.append("did not force disconnect");
+            	Log.d(TAG,"no disconnect");
+            }
+            statusText.setText(statusUpdate);
         }
 
         /*
