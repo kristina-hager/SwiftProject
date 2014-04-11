@@ -29,6 +29,10 @@ public final class Constants {
     public static final String EXTENDED_DATA_STATUS = appName + ".STATUS";
  // Defines the key for the log "extra" in an Intent
     public static final String EXTENDED_STATUS_LOG = appName + ".LOG";
+	//
+	public static final int PORT = 8988;//todo: use this constant instead of Local PORT
+	public static final int SEND_WAIT = 4000;
+	public static final int SEND_RETRY = 3; //not implemented yet
     
     //fragment related constants
 	public static final String FRAG_PEERDETAILS_NAME = "PEER";
@@ -40,8 +44,7 @@ public final class Constants {
 	public static final String FRAG_PEERDETAILS_ID = "2";
 	public static final String FRAG_SHOWPEERS_ID = "1";
 	
-	//
-	public static final int PORT = 8988;//todo: use this elsewhere
+
 	
 	//data storage related
 	public static final String DIR_TIMELOGS = "Timelogs";

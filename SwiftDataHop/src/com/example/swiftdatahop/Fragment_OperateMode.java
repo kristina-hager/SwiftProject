@@ -17,7 +17,9 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,44 +166,32 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	}
 
 	@Override
-	public void onConnectionInfoAvailable(WifiP2pInfo info) {
+	public void onConnectionInfoAvailable(final WifiP2pInfo info) {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         this.info = info;
 
+        Time now = new Time(); now.setToNow();
         if (info.groupFormed) {
         	if (info.isGroupOwner) {
-        		showToastShort("Group formed and is group owner");
-            	Log.d(TAG, "group is formed and isGroupOwner true");
+        		showToastShort("Group formed and is group owner: " + now.toString());
+            	Log.d(TAG, "group is formed and isGroupOwner true: " + now.toString());
         	} else {
-        		showToastShort("Group formed, not group owner");
-            	Log.d(TAG, "group is formed and isGroupOwner false. ");
+        		showToastShort("Group formed, not group owner at time: " + now.toString());
+            	Log.d(TAG, "group is formed and isGroupOwner false: " + now.toString());
         	}
         		
         	if (mAppData.getOperateState() == State.SEND_FILE) {
-        		Log.d(TAG, "Do wait before file send");
-//        		try {
-//					//wait(30);
-//        			//todo: http://stackoverflow.com/questions/17811794/android-java-lang-illegalmonitorstateexception-object-not-locked-by-thread-befo
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-        		sendFile(info);
-        		//todo: check success
+        		//wait on connect, num retries configurable via FileTransferService extras
+        		sendFile(info); //open socket, send file
+        		//todo: check success of send
         		mAppData.setOperateState(State.IDLE_WAIT);
-        	//if I am in State.SEND_FILE
-        		//todo: wait?
-        		//todo: open socket to send file
-        		//todo: actually send file
-        		//if all successful
-        		//mAppData.setOperateState(State.IDLE_WAIT);
         	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {
         	//else if I am receiving device, in IDLE_WAIT 
         		mAppData.setOperateState(State.RECEIVE_FILE);
         		//open socket to receive file "receiveFile()
-        		Log.d(TAG, "receive file");
+        		Log.d(TAG, "receive file at ");
         		receiveFile();
         		//if success, disconnect
         		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
@@ -219,9 +209,10 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	}
 
 	private void receiveFile() {
-		Log.d(TAG, "Recieve File Called");
-		showToastShort("Recieve File Called");
-//		new FileServerAsyncTask(getActivity(), statusText).execute(); [AR] Need to add a text field
+		Time now = new Time(); now.setToNow();
+		Log.d(TAG, "Recieve File Called at time: " + now.toString());
+		showToastShort("Recieve File Called at time " + now.toString());
+		new FileServerAsyncTask(getActivity(), statusBox).execute(); //[AR] Need to add a text field
 	}
 	
     /*
@@ -234,13 +225,13 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 			File file = FileHelper.getFileToSend(this);
 			if (file != null) {		
 				Uri uri = Uri.fromFile(file);
-				showToastShort("Sending file: " + uri.toString() 
+				showToastShort("Preparing to send file: " + uri.toString() 
 						+ "\nAt: " + Utils.getDateAndTime() 
 						+ "\n of size: " + file.length() + " B");
-				Log.d(TAG,"Sending file: " + uri.toString() 
+				Log.d(TAG,"Preparing to send  file: " + uri.toString() 
 						+ "\nAt: " + Utils.getDateAndTime() 
 						+ "\n of size: " + file.length() + " B");
-				Log.d(TAG, "Sending file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
+				Log.d(TAG, "Preparing to send  file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
 				Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
 				serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
 				serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
@@ -248,6 +239,11 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 						info.groupOwnerAddress.getHostAddress());
 				serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, PORT);
 				serviceIntent.putExtra(FileTransferService.EXTRAS_LOG_COMMENT, logcomments);
+				//in this mode, we want to tell fts to delay a bit before connect attempt
+				//and to retry connect a few times
+				serviceIntent.putExtra(FileTransferService.EXTRAS_DELAY_BEFORE_CONNECT, Constants.SEND_WAIT);
+				//retries not yet implemented
+				serviceIntent.putExtra(FileTransferService.EXTRAS_NUMBER_CONNECT_TRIES, Constants.SEND_RETRY);
 				getActivity().startService(serviceIntent);     
 			} else {
 				//statusText.setText("File to send does not exist! "); [AR] probably need to get rid of or add a text field
