@@ -58,7 +58,7 @@ public class FileTransferService extends IntentService {
             String host = intent.getExtras().getString(EXTRAS_GROUP_OWNER_ADDRESS);
             String logComment = intent.getExtras().getString(EXTRAS_LOG_COMMENT);
             int connectDelay = intent.getExtras().getInt(EXTRAS_DELAY_BEFORE_CONNECT,0);
-            int numConnectTries = intent.getExtras().getInt(EXTRAS_NUMBER_CONNECT_TRIES,1);
+            //int numConnectTries = intent.getExtras().getInt(EXTRAS_NUMBER_CONNECT_TRIES,1);
             Socket socket = new Socket();
             int port = intent.getExtras().getInt(EXTRAS_GROUP_OWNER_PORT);
             long clientDuration = -1;

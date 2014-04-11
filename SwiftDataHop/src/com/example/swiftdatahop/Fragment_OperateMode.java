@@ -2,22 +2,14 @@ package com.example.swiftdatahop;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.wifi.WpsInfo;
-import android.net.wifi.p2p.WifiP2pConfig;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -28,10 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.swiftdatahop.AppDataManager;
 import com.example.swiftdatahop.Constants.State;
-import com.example.swiftdatahop.R;
-import com.example.swiftdatahop.TaskInfo;
 import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
 public class Fragment_OperateMode extends Fragment implements ConnectionInfoListener {
@@ -48,7 +37,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	 */
 	private TaskInfo.TaskItem mItem;
     private AppDataManager mAppData = AppDataManager.getInstance();
-    private Button operateModeOnOff;
+    //private Button operateModeOnOff;
     private Button operateSendFile;
     private View mContentView = null;
     private WifiP2pInfo info;
@@ -83,7 +72,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        operateModeOnOff = (Button) mContentView.findViewById(R.id.btn_operate_on_off);
+        //operateModeOnOff = (Button) mContentView.findViewById(R.id.btn_operate_on_off);
         operateSendFile = (Button) mContentView.findViewById(R.id.btn_operate_send_file);
         statusBox = ((TextView) mContentView.findViewById(R.id.operate_status));
     }
@@ -192,14 +181,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		//open socket to receive file "receiveFile()
         		Log.d(TAG, "receive file at ");
         		receiveFile(); //disconnect handled in FileServerAsyncTask
-        		//handle state change/upstream connect in FSAT too
-
-        		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
-        			//mAppData.setOperateState(State.SEND_FILE);
-        			//connectToUpstream
-        		//else
-        			//mAppData.setOperateState(State.IDLE_WAIT);
-        			//(display message about file receive if not already done)
+        		//handle state change/upstream connect in FileServerAsyncTask too
         }
         	
         } else {

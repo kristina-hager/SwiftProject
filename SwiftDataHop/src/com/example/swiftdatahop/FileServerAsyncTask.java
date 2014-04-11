@@ -28,7 +28,7 @@ import android.widget.TextView;
 		private Context context;
         private TextView statusText;
         private static final String TAG = "FileServerAsync";
-        private static boolean autoDisconnect;
+        private boolean autoDisconnect;
         private DeviceActionListener deviceAction;
 
         /**
