@@ -198,6 +198,8 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
         
         return mContentView;
     }
+    
+    
 
 	/*
 	 * This fx is called when the code is resumed..
@@ -207,6 +209,11 @@ public class Fragment_PeerDetails extends Fragment implements ConnectionInfoList
 	@Override
 	public void onResume () {
 		super.onResume();
+		if (mAppData.getOperateState() != Constants.State.OFF) {
+			Log.d(TAG, "Resume peer detail - turn off autonomous mode");
+			showToastShort("Turning off autonomous mode");
+			mAppData.setOperateState(Constants.State.OFF);
+		}
 		device = ((TaskListActivity) getActivity()).getSelectedDevice();
 		if (device != null)
 			showDetails(device);
