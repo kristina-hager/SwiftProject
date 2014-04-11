@@ -1,5 +1,7 @@
 package com.example.swiftdatahop;
 
+import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
+
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,7 @@ public class Fragment_MoreInfo extends Fragment {
 	 */
 	private TaskInfo.TaskItem mItem;
     AppDataManager mAppData = AppDataManager.getInstance();
+    private View mContentView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,24 +52,41 @@ public class Fragment_MoreInfo extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.tdf_moreinfo,
+		mContentView = inflater.inflate(R.layout.tdf_moreinfo,
 				container, false);
 
 		// Show the dummy content as text in a TextView.
 		if (mItem != null) {
-			((TextView) rootView.findViewById(R.id.task_detail))
-					.setText(mItem.content);
-			WifiP2pDevice upStream = mAppData.getUpStreamDevice();
-			WifiP2pDevice downStream = mAppData.getDownStreamDevice();
-			if(upStream != null) {
-			    ((TextView) rootView.findViewById(R.id.upstream_device)).setText(upStream.deviceName);
-			}
-			if(downStream != null) {
-			    ((TextView) rootView.findViewById(R.id.downstream_device)).setText(downStream.deviceName);	
-			}
+			((TextView) mContentView.findViewById(R.id.task_detail)).setText(mItem.content);
+			showDeviceSelections();
 		}
+		
+		(mContentView.findViewById(R.id.btn_clear_settings)).setOnClickListener(
+	                new View.OnClickListener() {
+	                    @Override
+	                    public void onClick(View v) {
+	                    	mAppData.setDownStreamDevice(null);
+	                    	mAppData.setUpStreamDevice(null);
+	                    	showDeviceSelections();
+	                    }
+	                });
 
 
-		return rootView;
+		return mContentView;
+	}
+
+	private void showDeviceSelections() {
+		WifiP2pDevice upStream = mAppData.getUpStreamDevice();
+		WifiP2pDevice downStream = mAppData.getDownStreamDevice();
+		if(upStream != null) {
+		    ((TextView) mContentView.findViewById(R.id.upstream_device)).setText(upStream.deviceName + "\n");
+		} else {
+			((TextView) mContentView.findViewById(R.id.upstream_device)).setText("\n");
+		}
+		if(downStream != null) {
+		    ((TextView) mContentView.findViewById(R.id.downstream_device)).setText(downStream.deviceName);	
+		} else {
+			((TextView) mContentView.findViewById(R.id.downstream_device)).setText("\n");
+		}
 	}
 }

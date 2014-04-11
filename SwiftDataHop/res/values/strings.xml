@@ -36,4 +36,5 @@
     <string name="log_comment_edit_text">Log Comments</string>
     <string name="hint_log_comment">This will be appended to the transfer duration.</string>
     <string name="icon_description">Android Icon</string>
+    <string name="clear_settings">Clear Settings</string>
 </resources>
