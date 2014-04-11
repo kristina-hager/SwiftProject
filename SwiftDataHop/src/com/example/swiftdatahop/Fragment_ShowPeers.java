@@ -266,6 +266,8 @@ public class Fragment_ShowPeers extends ListFragment implements PeerListListener
         void disconnect();
         
         boolean doDiscovery();
+
+		boolean activityConnectUpstream();
     }
 
 }

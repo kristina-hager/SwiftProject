@@ -142,10 +142,9 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                	showToastShort("operate send file clicked");
 	                    Log.d(TAG, "Operate send file clicked");
 	                    assert(mAppData.getDownStreamDevice() == null);
-	                    assert(mAppData.getDownStreamDevice() != null);
+	                    assert(mAppData.getUpStreamDevice() != null);
 	                    mAppData.setOperateState(State.SEND_FILE);
-	                    Log.d(TAG, "about to connect to upstream device");
-	                    updateStatusText("send connect request to upstream device");
+	                    
 	                    connectToUpstream();   //make wifi direct connection	                    
 	                }
 	            });
@@ -193,6 +192,13 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		//open socket to receive file "receiveFile()
         		Log.d(TAG, "receive file at ");
         		receiveFile(); //disconnect handled in FileServerAsyncTask
+        		//handle state change/upstream connect in FSAT too
+//        		if (mAppData.getUpStreamDevice() != null) {
+//        			mAppData.setOperateState(State.SEND_FILE);
+//        			connectToUpstream();
+//        		} else {
+//        			mAppData.setOperateState(State.IDLE_WAIT);
+//        		}
         		//if you have upstream device, go into 'send file' mode (open wifi group w/ upstream (, open socket, sendfile))
         			//mAppData.setOperateState(State.SEND_FILE);
         			//connectToUpstream
@@ -254,7 +260,14 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		}
 	}
 	
-
+	private boolean connectToUpstream() {
+		if (mAppData.getUpStreamDevice()==null) {
+			showToastShort("Upstream device is null!");
+			return false;
+		}	
+        updateStatusText("send connect request to upstream device");
+        return ((DeviceActionListener) getActivity()).activityConnectUpstream();
+	}
 	
 	private void showToastShort(String msg) {
 		Toast.makeText((TaskListActivity)getActivity(), msg,
@@ -272,28 +285,10 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 
     private void updateStatusText(String status) {
     	if (statusBox!= null)
-    		statusBox.setText(status);
+    		statusBox.setText("state(" + Constants.getOperateStateString(mAppData.getOperateState()) + ") " + status);
     }
 
-	private boolean connectToUpstream() {
-		if (mAppData.getUpStreamDevice()==null) {
-			showToastShort("Upstream device is null!");
-			return false;
-		}
-			
-		Log.d(TAG,"operate mode connect attempted");
-		WifiP2pConfig config = new WifiP2pConfig();
-		config.deviceAddress = mAppData.getUpStreamDevice().deviceAddress;
-		config.wps.setup = WpsInfo.PBC;
-		if (progressDialog != null && progressDialog.isShowing()) {
-		    progressDialog.dismiss();
-		}
-		progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
-		    "Connecting to :" + mAppData.getUpStreamDevice().deviceAddress, true, true
-		    );
-		((DeviceActionListener) getActivity()).connect(config);
-		return true;
-	}
+
 
 	private boolean autonomousModeChecks() {
 		if (mAppData.getUpStreamDevice()==null && mAppData.getDownStreamDevice()==null) {

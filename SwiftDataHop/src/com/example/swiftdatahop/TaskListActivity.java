@@ -4,10 +4,12 @@ package com.example.swiftdatahop;
 import com.example.swiftdatahop.Constants.State;
 import com.example.swiftdatahop.Fragment_ShowPeers.DeviceActionListener;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -51,6 +53,7 @@ public class TaskListActivity extends FragmentActivity implements
     private final IntentFilter intentFilter = new IntentFilter();
     private Channel channel;
     private BroadcastReceiver receiver = null;
+    ProgressDialog progressDialog = null;
     
     //other fragments need this data. not sure if this is the best way or not, but it's a test
     AppDataManager mAppData = AppDataManager.getInstance();
@@ -354,6 +357,26 @@ public class TaskListActivity extends FragmentActivity implements
                 });
             }
         }
+    }
+    
+    public boolean activityConnectUpstream() {
+    	if (mAppData.getUpStreamDevice()==null) {
+    		Log.d(TAG,"Upstream device is null, no connect attempt");
+    		return false;
+    	}
+    	Log.d(TAG, "about to connect to upstream device");
+		Log.d(TAG,"operate mode connect attempted");
+		WifiP2pConfig config = new WifiP2pConfig();
+		config.deviceAddress = mAppData.getUpStreamDevice().deviceAddress;
+		config.wps.setup = WpsInfo.PBC;
+		if (progressDialog != null && progressDialog.isShowing()) {
+		    progressDialog.dismiss();
+		}
+		progressDialog = ProgressDialog.show(this, "Press back to cancel",
+		    "Connecting to :" + mAppData.getUpStreamDevice().deviceAddress, true, true
+		    );
+		this.connect(config);
+		return true;
     }
     
     public WifiP2pDevice getSelectedDevice() {
