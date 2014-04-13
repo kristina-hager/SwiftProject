@@ -218,9 +218,14 @@ Therefore, we considered this a good example of the kind of data our application
 We used this data file in all of our experiments and have included a copy of it in both applications.
 
 \subsection{Methodology for Measuring Range and Connectivity}
+Wifi direct operates on the same 2.4Ghz band as most 802.11 based wifi deployments \cite{wifiwhitepaper}.
+Typical indoor deployments of 802.11[bg] have a range of 35m, and outdoor deployments can have a range up to 100m.
+802.11n deployments can have up to twice that range \cite{wikiwifi}.
+
 We found various sources on the internet claiming that the range of Wifi direct was anywhere from 10m to 200m. 
 Of course, the achievable range of the Wifi direct signal can and should vary depending on the topology of the environment, how many other devices are trying to use the same wifi band, and of course any obstructions between the devices trying to communicate.
 
+We designed experiments to evaluate the range of Wifi Direct between our devices in the most ideal deployment environment possible and in an example cave environment.
 For each connectivity and transfer experiment, we followed the same procedure. 
 We started with the devices not connected, but with the wifi direct group already established.
 First, the user of one device would initiate a connection.
