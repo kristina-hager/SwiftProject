@@ -274,11 +274,12 @@ public class TaskListActivity extends FragmentActivity implements
      * @see com.example.android.wifidirect.DeviceListFragment.DeviceActionListener#connect(android.net.wifi.p2p.WifiP2pConfig)
      */
     public void connect(WifiP2pConfig config) {
+
         manager.connect(channel, config, new ActionListener() {
 
             @Override
             public void onSuccess() {
-                // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+            	showToastShort("Wifi Direct Connect called, expect connection info");
             }
 
             @Override
@@ -381,9 +382,10 @@ public class TaskListActivity extends FragmentActivity implements
 		if (progressDialog != null && progressDialog.isShowing()) {
 		    progressDialog.dismiss();
 		}
-		progressDialog = ProgressDialog.show(this, "Press back to cancel",
-		    "Connecting to :" + mAppData.getUpStreamDevice().deviceAddress, true, true
-		    );
+		//progressDialog = ProgressDialog.show(this, "Press back to cancel",
+		//    "Connecting to :" + mAppData.getUpStreamDevice().deviceAddress, true, true
+		//    );
+    	showToastShort("Connecting to: " + mAppData.getUpStreamDevice().deviceName);
 		this.connect(config);
 		return true;
     }

@@ -105,7 +105,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 */
             	//TODO-maybe: could be better to send this to activity itself vs to fragment?
 
-            	Log.d(TAG, "isConnected true");
+            	Log.d(TAG, "CONNECTION CHANGED: isConnected true");
             	if(mAppData.getOperateState() != Constants.State.OFF) {
             		Log.d(TAG, "In autonomous operation mode");
                	    Fragment_OperateMode fragment = 
@@ -117,7 +117,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 	manager.requestConnectionInfo(channel, fragment);
             	}
 
-                Log.d(TAG, "P2P connection changed - request connection info");
+                Log.d(TAG, "P2P connection changed - requesting connection info");
             } else {
                 // It's a disconnect
                 activity.resetData();

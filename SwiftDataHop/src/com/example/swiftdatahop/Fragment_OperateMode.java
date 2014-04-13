@@ -6,6 +6,7 @@ import java.io.File;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.Bundle;
@@ -132,9 +133,12 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                    Log.d(TAG, "Operate send file clicked");
 	                    assert(mAppData.getDownStreamDevice() == null);
 	                    assert(mAppData.getUpStreamDevice() != null);
-	                    mAppData.setOperateState(State.SEND_FILE);
-	                    
-	                    connectToUpstream();   //make wifi direct connection	                    
+	                    if(mAppData.getOperateState() == State.IDLE_WAIT) {
+	                        mAppData.setOperateState(State.SEND_FILE);
+	                        connectToUpstream();   //make wifi direct connection
+	                    } else {
+	                    	showToastShort("Trying to send when send request already made");
+	                    }
 	                }
 	            });
 
@@ -172,20 +176,32 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		
         	if (mAppData.getOperateState() == State.SEND_FILE) {
         		//wait on connect, num retries configurable via FileTransferService extras
+        		showToastShort("Connect info avail: in send state, sending file.");
+        		try {
+                   wait(1000);
+        		}
+                catch (Exception e) {
+                	showToastShort("Interrupted exception");
+                }
         		sendFile(info); //open socket, send file
-        		//todo: check success of send
         		mAppData.setOperateState(State.IDLE_WAIT);
+        		//todo: check success of send
         	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {
         	//else if I am receiving device, in IDLE_WAIT 
-        		mAppData.setOperateState(State.RECEIVE_FILE);
-        		//open socket to receive file "receiveFile()
-        		Log.d(TAG, "receive file at ");
-        		receiveFile(); //disconnect handled in FileServerAsyncTask
-        		//handle state change/upstream connect in FileServerAsyncTask too
-        }
+        		    mAppData.setOperateState(State.RECEIVE_FILE);
+        		    //open socket to receive file "receiveFile()
+        		    showToastShort("Connect info avail: in recieve file state, call receive file.");
+        		    Log.d(TAG, "receive file at ");
+        		    receiveFile(); //disconnect handled in FileServerAsyncTask
+        		    //handle state change/upstream connect in FileServerAsyncTask too
+            } else if (mAppData.getOperateState() == State.RECEIVE_FILE) {
+            	showToastShort("Connection info available, state is receive file");
+            } else if (mAppData.getOperateState() == State.OFF) {
+            	showToastShort("Connection info available, state is receive file");
+            }
         	
         } else {
-        	//todo? error?
+        	showToastShort("Connection info available, but group not formed");
         }
         
 	}
