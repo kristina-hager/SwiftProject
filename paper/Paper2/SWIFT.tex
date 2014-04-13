@@ -34,7 +34,7 @@ In-cave data loggers (sensors) collect data regarding CO$_2$ levels, cave-drip w
 The most common method of retrieving this data from the data loggers in caves is via a human entering the cave, traveling to the collection site, and manually retrieving it. 
 This method is very slow, inconvenient, and in some cases quite perilous. 
 Furthermore, data loggers can and do malfunction.
-A scientist will not know that her data logger has malfunctioned until she is able to visit the datalogger.
+A scientist will not know that her data logger has malfunctioned until she is able to visit the data logger.
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{cavewifi2}
 \caption{Testing Wifi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
@@ -127,7 +127,7 @@ Wifi Direct is a standard developed by the WiFi Alliance which provides a mechan
 This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}
 , therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
-Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbs and up to 200 meters depending on the environment. 
+Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbps and up to 200 meters depending on the environment. 
 Security for WiFi direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
@@ -181,11 +181,11 @@ A broadcast receiver allows you to receive intents broadcast by the Android syst
 The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive()" method.
 The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
 The application also should set up a Peer to Peer manager. 
-The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast reciever.
+The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast receiver.
 
 To discover peer devices, the "discoverPeers()" method is called from the peer to peer manager created for the application.
 Discovery is asynchronous, so an intent is used to notify the application when discovered peers are available.
-Once the application recieves notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
+Once the application receives notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
 This function call is also asynchronous and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
 This provides a list of WifiP2pDevice devices which can be used to establish a connection. \cite{androidp2p}
 
@@ -196,7 +196,7 @@ Once successful, a Wifi direct group has been formed, or reformed, and the devic
 
 \section{Experiments}
 
-\subsection{Typical Sensor, Datalogger Usage and Data File}
+\subsection{Typical Sensor, Data Logger Usage and Data File}
 Wong, et al carried out their experiments with a Telaire 7001 CO2 Sensor \cite{telaire} \cite{wong2010}. 
 This is a hand held CO$_2$ and temperature sensor.
 This sensor can perform environmental readings, but it cannot save data.
@@ -208,7 +208,7 @@ An example inexpensive logger is the HOBO U12 4-Channel External Data Logger equ
 Some data loggers do have larger memory capacities such as 4mb (todo: cite other logger).
 
 Based on the Wong paper and informal interviews with cave researchers, we consider a typical cave research project would use one or a few similar sensors and attached data loggers.
-We also consider that the researchers would attempt to gather their data regularly so that their dataloggers do not overfill, but not so frequently that they are burdened by the overhead of the required caving trips.
+We also consider that the researchers would attempt to gather their data regularly so that their data loggers do not overfill, but not so frequently that they are burdened by the overhead of the required caving trips.
 Of course, we hope to reduce their burden with Wifi Direct technology.
 However, for the sake of our research, we needed to understand the typical experiment setup.
 
@@ -248,7 +248,7 @@ This initial application was developed based on a Wifi Direct example provided b
 The example was used to learn how to create the necessary Wifi Direct components, and understand how the significant asynchronous function calls operate together.
 To perform the range experiments the example was modified to open a connection to a single device, load a data file from the device, and send the data file. 
 The original application provided the ability for the client to launch the other device's photo gallery and select a photo to be copied.
-This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a datalogger.
+This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a data logger.
 
 The Android application followed the architecture described in the section outlining the Android Wifi Direct APIs for creating peer to peer connections. 
 This Wifi Direct application has the ability to be either the sender or the receiver of the test data file.
@@ -258,11 +258,11 @@ The user can then select from the list of devices which brings up a menu to conn
 Once the Wifi Direct connection is established, the user may either disconnect or select a button to transfer the data file.
 
 After the connection is established, the device which is designated to be the receiver has slightly different functionality.
-For the receiver they have the option of terminating the connection, but also have a button to allow them to reset the applicaiton to be prepared to receive the next data file.
+For the receiver they have the option of terminating the connection, but also have a button to allow them to reset the application to be prepared to receive the next data file.
 The GUI provides the user a mechanism to take a note to be logged to the log file so that data may be captured about the test being performed at the time.
 The application timestamps the start and end of the data transfer, calculates duration, and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
 
-The goal of the application was to have a means to test connectivity throughout the cave and ensure that the full data file could be tranfered.
+The goal of the application was to have a means to test connectivity throughout the cave and ensure that the full data file could be transferred.
 The duration of the transfer was captured as measured from one side of the connection, in the event that a benchmark was possible.
 In general, the most important result provided by the application was to confirm or deny a successful file transfer.
 
