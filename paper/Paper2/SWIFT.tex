@@ -317,7 +317,57 @@ However, we would like to state here that their work found that wifi signals att
 This experiment has not yet been performed, and is planned to be completed before the final report.
 
 \section{Conclusions and Future Work}
-Currently the research is still underway, so this section will be completed in the final report.
+
+\subsection{Application in Cave Systems}
+We performed our wifi direct experiments in a cave easily accessible to us and fairly typical of caves in this part of central Texas.
+Cave systems around the world present with a wide variety of morphologies, and a given cave system will usually contain a wide variety of morphologies within it.
+Morphology examples include passages that are passable only to water and insects and, in contrast, passages that are the size of large buildings and navigable by commercial aircraft.
+Passages are horizontal, vertical or any angle between the two.
+Some passages can be adequately described as enclosed, underground "rooms" or "pits" where the top is open to the sky.
+
+We would like to theorize further about how our research might generalize to other caves and where this technology will have the greatest value.
+Wifi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in the Related Work section.
+However, Wifi Direct signals only work in caves when a direct line of sight is available, 
+and of course the devices require a consistent source of energy.
+Therefore, we propose a few example scenarios where Wifi direct could be particularly useful as part of an in-cave communication system.
+
+The cave Krubera-Varonya in West Caucasus in Abkhazia, Georgia is presently the world's deepest cave system with a depth of nearly 2200m and with 13.4km of passage. 
+Speleologists, cavers and cave divers have been exploring and mapping this cave since at least 1982.
+Expeditions in this cave are complex operations where an example cave exploration trip will span multiple weeks with at least 19 people including cavers and cave divers.
+On these expeditions, cavers will survey and map the cave, specially trained cave divers will proceed through and map underwater passages, place data loggers to measure water levels, and more.
+The cavers will need to be underground for weeks at a time and stay in one or more of a handful of underground camps \cite{krub_it}.
+A communication system to coordinate re-supply, logistics, and, in the worst case, coordinate a rescue operation is almost a requirement for an expedition of this magnitude.
+While it is difficult to determine potential length of line of sight by looking at published photos and maps, 
+it certainly seems quite possible that this cave has many passages that would be great candidates for using wifi direct.
+Published photos and maps show that the cave has some very long (100m) vertical drops in large, fairly straight passages and some similarly large and long horizontal passages \cite{krub_it}.
+Cavers train in specialized single rope techniques to ascend and descend such vertical passages.
+Even given extensive training and experience, it takes quite a long time (multiple hours) for a team of cavers to ascend or descend long vertical drops particularly since those cavers are usually carrying very heavy gear and supplies.
+Therefore, there is a great opportunity to ease the physical exertion and time burden if messages can be communicated at wifi speed and bandwidth through such a passage.
+Between wifi direct points, communication could even potentially be as high fidelity as voice and video such as between the top and bottom of a particular pit.
+Since this cave has several sections of very tight passage and underwater passages,
+a realistic system enabling communication throughout the cave such as from camp to camp to surface would most likely need to be hybrid:
+consisting of wifi direct relays wherever practical to achieve distance with ease of installation, using single wire systems in winding passages, using underwater radio signals through sump passages (only passable by trained cave divers), and so on.
+In such a hybrid system, our prototype application which can automatically transfer messages from device to device would be particularly helpful.
+
+We can envision a purely wifi direct cave communication system being used to enable communication system in certain cases such as from a pit bottom to the surface.
+We can also envision wifi direct being a very important part of a hybrid system enabling communication through other extensive cave systems that are similar to Krubera-Varonya in size and complexity. 
+
+TODO: add some Krubera photos from online - very cool pics available
+
+
+
+
+
+\subsection{Future Work}
+items to consider discussing here:
+
+power savings
+
+enabling on smaller devices than a nexus
+
+improvements in wifi direct middleware 
+
+ 
 
 \section{Acknowledgements}
 We would like to thank David Ochel for accompanying us on our trip and for taking photos. 
