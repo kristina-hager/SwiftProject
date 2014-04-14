@@ -97,6 +97,8 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 
 	                @Override
 	                public void onClick(View v) {
+	                	mAppData.setIfFileSent(false);
+	                	mAppData.setIfFileReceived(false);
 	                	if(mAppData.getOperateState() == State.OFF) {
 	                		boolean pass = autonomousModeChecks();
 	                		if (pass) {
@@ -131,6 +133,8 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                public void onClick(View v) {
 	                	showToastShort("operate send file clicked");
 	                    Log.d(TAG, "Operate send file clicked");
+	                	mAppData.setIfFileSent(false);
+	                	mAppData.setIfFileReceived(false);
 	                    assert(mAppData.getDownStreamDevice() == null);
 	                    assert(mAppData.getUpStreamDevice() != null);
 	                    if(mAppData.getOperateState() == State.IDLE_WAIT) {
@@ -178,26 +182,29 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
         		//wait on connect, num retries configurable via FileTransferService extras
         		showToastShort("Connect info avail: in send state, sending file.");
         		try {
-                   wait(1000);
+                   wait(2000);
         		}
                 catch (Exception e) {
                 	showToastShort("Interrupted exception");
                 }
-        		sendFile(info); //open socket, send file
         		mAppData.setOperateState(State.IDLE_WAIT);
+        		sendFile(info); //open socket, send file
+        		updateStatusText("My state: " + Constants.getOperateStateString(mAppData.getOperateState()));        		
         		//todo: check success of send
         	} else if (mAppData.getOperateState() == State.IDLE_WAIT) {
         	//else if I am receiving device, in IDLE_WAIT 
         		    mAppData.setOperateState(State.RECEIVE_FILE);
         		    //open socket to receive file "receiveFile()
-        		    showToastShort("Connect info avail: in recieve file state, call receive file.");
-        		    Log.d(TAG, "receive file at ");
+        		    mAppData.setIfFileReceived(false);
         		    receiveFile(); //disconnect handled in FileServerAsyncTask
+        		    showToastShort("Connect info avail: in recieve file state, just called receive file.");
+        		    Log.d(TAG, "receive file at ");
         		    //handle state change/upstream connect in FileServerAsyncTask too
+
             } else if (mAppData.getOperateState() == State.RECEIVE_FILE) {
-            	showToastShort("Connection info available, state is receive file");
+            	showToastShort("NOT EXPECTING THIS: Connection info available, state is receive file");
             } else if (mAppData.getOperateState() == State.OFF) {
-            	showToastShort("Connection info available, state is receive file");
+            	showToastShort("NOT EXPECTING THIS: Connection info available, state is receive file");
             }
         	
         } else {
@@ -207,10 +214,10 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	}
 
 	private void receiveFile() {
+		new FileServerAsyncTask(getActivity(), statusBox, true, ((DeviceActionListener) getActivity())).execute(); //[AR] Need to add a text field
 		Time now = new Time(); now.setToNow();
 		Log.d(TAG, "Recieve File Called at time: " + now.toString());
 		showToastShort("Recieve File Called at time " + now.toString());
-		new FileServerAsyncTask(getActivity(), statusBox, true, ((DeviceActionListener) getActivity())).execute(); //[AR] Need to add a text field
 	}
 	
     /*

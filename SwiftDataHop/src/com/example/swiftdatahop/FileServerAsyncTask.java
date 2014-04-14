@@ -30,6 +30,7 @@ import android.widget.TextView;
         private static final String TAG = "FileServerAsync";
         private boolean autoDisconnect;
         private DeviceActionListener deviceAction;
+        private AppDataManager mAppData;
 
         /**
          * @param context
@@ -40,6 +41,7 @@ import android.widget.TextView;
             this.statusText = (TextView) statusText;
             this.autoDisconnect = autoDisconnect;
             this.deviceAction = xx;
+            this.mAppData = AppDataManager.getInstance();
         }
         
         public FileServerAsyncTask(Context context, View statusText) {
@@ -67,6 +69,7 @@ import android.widget.TextView;
                 long duration = FileHelper.copyFile(inputstream, new FileOutputStream(f), errMsg);
                 Log.d(TAG,"Socket, copyFile errMsg: " + errMsg);
                 serverSocket.close();
+                mAppData.setIfFileReceived(true);
                 logDuration(duration, f.getName());
                 if (duration < 0){
                 	return errMsg.toString();
@@ -119,9 +122,22 @@ import android.widget.TextView;
                 Log.d(TAG,"File copied to - " + result + "\nAt: " + Utils.getDateAndTime());
             }
             if (autoDisconnect) {
-            	statusUpdate.append("Disconnected connection\n");
-            	Log.d(TAG,"Auto disconnect");
+            	statusUpdate.append("Disconnecting connection\n");
+            	while(!mAppData.getIfFileReceived()) {
+	            	try {
+	            		wait(1000);
+	        			statusUpdate.append("Autodisconnect wait, file not received yet.");
+	            	} catch(Exception e) {
+	        			statusUpdate.append("Autodisconnect wait, file not received yet, interrupted exception.");
+	            	}
+            	}
+            	Log.d(TAG,"Auto disconnect & file received.");
             	deviceAction.disconnect();
+            	try {
+            		wait(5000);
+            	} catch (Exception e) {
+            		Log.d(TAG, "Wait interrupted before new connect.");
+            	}
             	AppDataManager appData = AppDataManager.getInstance();
     			if (appData.getUpStreamDevice() != null) {
         			appData.setOperateState(State.SEND_FILE);
@@ -134,7 +150,7 @@ import android.widget.TextView;
             	statusUpdate.append("did not force disconnect\n");
             	Log.d(TAG,"no disconnect");
             }
-    		
+    		mAppData.setIfFileReceived(false);
             statusText.setText(statusUpdate);
         }
 

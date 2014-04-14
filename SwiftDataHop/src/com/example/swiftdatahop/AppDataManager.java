@@ -14,6 +14,9 @@ public class AppDataManager {
 	private WifiP2pDevice lastSelectedDevice;
 	private WifiP2pDevice upStreamDevice;
 	private WifiP2pDevice downStreamDevice;
+	private boolean fileSent = false;
+	private boolean fileReceived = false;
+	
 	private State operateState = State.OFF;
 
 	public WifiP2pDevice getLastSelectedDevice() {
@@ -24,6 +27,18 @@ public class AppDataManager {
 	}
 	public WifiP2pDevice getUpStreamDevice() {
 		return upStreamDevice;
+	}
+	public boolean getIfFileSent() {
+		return fileSent;
+	}
+	public void setIfFileSent(boolean sent) {
+		fileSent = sent;
+	}
+	public boolean getIfFileReceived() {
+		return fileReceived;
+	}
+	public void setIfFileReceived(boolean rec) {
+		fileReceived = rec;
 	}
 	public void setUpStreamDevice(WifiP2pDevice upDevice) {
 		this.upStreamDevice = upDevice;
