@@ -34,6 +34,7 @@ public class FileTransferService extends IntentService {
     public static final String EXTRAS_LOG_COMMENT = "log_comment";
     public static final String EXTRAS_DELAY_BEFORE_CONNECT = "connect_delay";
     public static final String EXTRAS_NUMBER_CONNECT_TRIES = "num_retry";
+    private AppDataManager mAppData;
 
     private BroadcastNotifier mBroadcaster = new BroadcastNotifier(this);
 
@@ -43,6 +44,7 @@ public class FileTransferService extends IntentService {
 
     public FileTransferService() {
         super("FileTransferService");
+        mAppData = AppDataManager.getInstance();
     }
 
     /*
@@ -85,7 +87,7 @@ public class FileTransferService extends IntentService {
 //            	}
 
             	if (connectSuccess) {
-            		Log.d(TAG, "Client socket - " + socket.isConnected());
+            		Log.d(TAG, "FTSintentService: (client socket)" + socket.isConnected());
             		OutputStream stream = socket.getOutputStream();
             		ContentResolver cr = context.getContentResolver();
             		InputStream is = null;
@@ -101,18 +103,23 @@ public class FileTransferService extends IntentService {
             			StringBuilder errMsg = new StringBuilder();
             			clientDuration = FileHelper.copyFile(is, stream, errMsg);
             			if (clientDuration == -1 ) {
-            				Log.d(TAG, "Client: Data write error. ErrMsg: " + errMsg );
-            				mBroadcaster.broadcastIntentWithMessage("Data write error: " +errMsg);
+            				Log.d(TAG, "FTSintentService:(Client) Data write error. ErrMsg: " + errMsg );
+            				mBroadcaster.broadcastIntentWithMessage("FTSintentService:(Client)Data write error: " +errMsg);
             			} else {
             				logDuration(clientDuration, logComment);
-            				mBroadcaster.broadcastIntentWithMessage("File sent! Took this long: " + clientDuration);
+            				mAppData.setIfFileSent(true);
+            				mBroadcaster.broadcastIntentWithMessage("FTSintentService:(Client)File sent! Took this long: " + clientDuration);
             			}
-            		} //is!=null
+            		} else {
+            			Log.e(TAG, "FTSintentService: File to send not opened.");
+            		}
+            	} else {
+            		Log.e(TAG, "FTS intentService: was unable to connect to socket.");
             	}
             	//\todo - consider adding output message to user indicating file doesn't exist
             } catch (IOException e) {
-            	mBroadcaster.broadcastIntentWithMessage("IOException Error: " + e.getMessage());
-                Log.e(TAG, "IOException on FileXfer: " + e.getMessage());
+            	mBroadcaster.broadcastIntentWithMessage("FTSintentService:(Client)IOException Error: " + e.getMessage());
+                Log.e(TAG, "FTSintentService:(Client)IOException on FileXfer: " + e.getMessage());
             } finally {
                 socketCleanup(socket);
             }

@@ -52,9 +52,9 @@ import android.widget.TextView;
         protected String doInBackground(Void... params) {
             try {
                 ServerSocket serverSocket = new ServerSocket(Constants.PORT);
-                Log.d(TAG, "Server: Socket opened");
+                Log.d(TAG, "doInbackground: Socket opened");
                 Socket client = serverSocket.accept();
-                Log.d(TAG, "Server: connection done for receive.");
+                Log.d(TAG, "doInbackground: connection ready for receive.");
                 final File f = new File(FileHelper.getDataStorageDir(Constants.DIR_WI_FI_DIRECT_DEMO), 
                 		"test_data." + System.currentTimeMillis() + ".csv");
                 File dirs = new File(f.getParent());
@@ -62,12 +62,12 @@ import android.widget.TextView;
                     dirs.mkdirs();
                 f.createNewFile();
 
-                Log.d(TAG, "server: copying files " + f.toString());
+                Log.d(TAG, "doInBackground: file handle opened to write file " + f.toString());
                 InputStream inputstream = client.getInputStream();
                 //[AR] - This call to copy file reads in from the socket and writes to a file
                 StringBuilder errMsg = new StringBuilder();
                 long duration = FileHelper.copyFile(inputstream, new FileOutputStream(f), errMsg);
-                Log.d(TAG,"Socket, copyFile errMsg: " + errMsg);
+                Log.d(TAG,"doInBackground: Receiving file copyFile returned Msg: " + errMsg);
                 serverSocket.close();
                 mAppData.setIfFileReceived(true);
                 logDuration(duration, f.getName());
@@ -78,7 +78,7 @@ import android.widget.TextView;
                 }                       
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
-                return "IO Exception receiving the file and writing it to disk: " + e;
+                return "doInBackground: IO Exception receiving the file and writing it to disk: " + e;
             }
         }
         
@@ -115,40 +115,41 @@ import android.widget.TextView;
         	StringBuilder statusUpdate = new StringBuilder();
             if (result != null) {
             	File file = new File(result);
-                statusUpdate.append("File copied to - " + result 
+                statusUpdate.append("onPostExecute: File copied to - " + result 
                 		+ "\nAt: " + Utils.getDateAndTime() 
                 		+ "\nSize: " + file.length() + " B"                		
                 		+ "\n\n");
-                Log.d(TAG,"File copied to - " + result + "\nAt: " + Utils.getDateAndTime());
+                Log.d(TAG,"onPostExecute: file copied to - " + result + "\nAt: " + Utils.getDateAndTime());
             }
             if (autoDisconnect) {
-            	statusUpdate.append("Disconnecting connection\n");
+            	statusUpdate.append("onPostExecute: In autodisconnect mode, disconnecting connection\n");
             	while(!mAppData.getIfFileReceived()) {
 	            	try {
 	            		wait(1000);
-	        			statusUpdate.append("Autodisconnect wait, file not received yet.");
+	        			statusUpdate.append("onPostExecute: Autodisconnect wait, file not received yet.");
 	            	} catch(Exception e) {
-	        			statusUpdate.append("Autodisconnect wait, file not received yet, interrupted exception.");
+	        			statusUpdate.append("onPostExecute: Autodisconnect wait, file not received yet, interrupted exception.");
 	            	}
             	}
-            	Log.d(TAG,"Auto disconnect & file received.");
+            	Log.d(TAG,"onPostExecute: Auto disconnect & file received.");
             	deviceAction.disconnect();
             	try {
             		wait(5000);
             	} catch (Exception e) {
-            		Log.d(TAG, "Wait interrupted before new connect.");
+            		Log.d(TAG, "onPostExecute: wait interrupted before new connect.");
             	}
+            	//waiting to ensure disconnect, but should we verify w/variable?
             	AppDataManager appData = AppDataManager.getInstance();
     			if (appData.getUpStreamDevice() != null) {
         			appData.setOperateState(State.SEND_FILE);
         			deviceAction.activityConnectUpstream();
-        			statusUpdate.append("try to connect upstream\n");
+        			statusUpdate.append("onPostExecute: file received, try to connect to next upstream\n");
         		} else {
         			appData.setOperateState(State.IDLE_WAIT);
         		}
             } else {
-            	statusUpdate.append("did not force disconnect\n");
-            	Log.d(TAG,"no disconnect");
+            	statusUpdate.append("onPostExecute: Not in auto mode, did not force disconnect\n");
+            	Log.d(TAG,"onPostExecute: Not in automode, no disconnect");
             }
     		mAppData.setIfFileReceived(false);
             statusText.setText(statusUpdate);
@@ -160,7 +161,7 @@ import android.widget.TextView;
          */
         @Override
         protected void onPreExecute() {
-            statusText.setText("Prepared to receive file via socket");
+            statusText.setText("onPreExecute: Prepared to receive file via socket");
         }
 
     }

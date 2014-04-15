@@ -91,7 +91,8 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		}
 
 		updateStatusText("My state: " + Constants.getOperateStateString(mAppData.getOperateState()));
-		
+		mAppData.setOperateState(State.OFF);
+		mAppData.setIfFileReceived(false);
 	    mContentView.findViewById(R.id.btn_operate_on_off).setOnClickListener(
 	            new View.OnClickListener() {
 
@@ -110,6 +111,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 	                		//todo: abort, disconnect, etc
 	                		operateSendFile.setVisibility(View.INVISIBLE);
 	                		mAppData.setOperateState(State.OFF);
+	                        //((DeviceActionListener) getActivity()).disconnect();
 	                	} else if (mAppData.getOperateState() == State.SEND_FILE) {
 	                		//todo: abort, disconnect etc
 	                		//if there is some connection, do a disconnect?
@@ -131,7 +133,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 
 	                @Override
 	                public void onClick(View v) {
-	                	showToastShort("operate send file clicked");
+	                	showToastShort("Operate send file clicked");
 	                    Log.d(TAG, "Operate send file clicked");
 	                	mAppData.setIfFileSent(false);
 	                	mAppData.setIfFileReceived(false);
@@ -156,8 +158,13 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 		//	showDetails(device);
 		//kh - does the below help? not sure.
 		updateStatusText("My state: "+ Constants.getOperateStateString(mAppData.getOperateState()));
-		if (info!=null)
+		if (info!=null) {
+			mAppData.setOperateState(State.OFF);
+			mAppData.setIfFileReceived(false);
+			mAppData.setIfFileSent(false);
 			onConnectionInfoAvailable(info);
+			showToastShort("Onresume: Connection info available called.");
+		}
 
 	}
 
@@ -185,9 +192,10 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
                    wait(2000);
         		}
                 catch (Exception e) {
-                	showToastShort("Interrupted exception");
+                	showToastShort("onConnectionInfo: Wait interrupted.");
                 }
         		mAppData.setOperateState(State.IDLE_WAIT);
+        		mAppData.setIfFileSent(false);
         		sendFile(info); //open socket, send file
         		updateStatusText("My state: " + Constants.getOperateStateString(mAppData.getOperateState()));        		
         		//todo: check success of send
@@ -236,7 +244,6 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 				Log.d(TAG,"Preparing to send  file: " + uri.toString() 
 						+ "\nAt: " + Utils.getDateAndTime() 
 						+ "\n of size: " + file.length() + " B");
-				Log.d(TAG, "Preparing to send  file: " + uri.toString() + "\nAt: " + Utils.getDateAndTime());
 				Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
 				serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
 				serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
@@ -265,7 +272,7 @@ public class Fragment_OperateMode extends Fragment implements ConnectionInfoList
 			showToastShort("Upstream device is null!");
 			return false;
 		}	
-        updateStatusText("send connect request to upstream device");
+        updateStatusText("Send connect request to upstream device");
         return ((DeviceActionListener) getActivity()).activityConnectUpstream();
 	}
 	
