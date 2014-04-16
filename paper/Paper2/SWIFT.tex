@@ -267,7 +267,12 @@ The duration of the transfer was captured as measured from one side of the conne
 In general, the most important result provided by the application was to confirm or deny a successful file transfer.
 
 \subsection{Data Ferry Software}
-The data ferry software has currently been started, but is still under development.
+The second phase of the project was to build an Android application that would utilize Wifi Direct to do an automated transfer of a datalogger datafile across multiple mobile devices acting as a data ferry. 
+This project leveraged some of the Wifi Direct data transfer code from the range software, but implemented a state machine to allow the application to execute in "Operate Mode" where data hops from device to device. 
+During this project the interface to the datalogger was simulated with a prepopulated datafile.
+The application was notified of the presence of the datafile via a button click on the user interface.   
+
+TODO: Amy finish this section.
 
 \section{Results}
 
@@ -314,7 +319,24 @@ However, we would like to state here that their work found that wifi signals att
 
 
 \subsection{Data Ferry Experiment Results}
-This experiment has not yet been performed, and is planned to be completed before the final report.
+An earlier section covered the design of the WifiDirect data ferry application called SwiftDataHop. 
+Using this prototype it was demonstrated that WifiDirect could be used to pass data from device to device in an automated fashion. 
+During the course of this project four Nexus 7 tablets running Android 4.4.2 were tested and could successfully execute the transfer.
+The project was limited to four devices simply by the number of available tablets.
+In theory additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
+While the SwiftDataHop application was able to execute the automated transfer across four devices, ther are still several issues that would need to be resolved before the application could be put to practical use.
+Timing was a key challenge in implementing the Operate Mode, or automated mode, of this application.
+The application was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
+For example, once the first phase of creating the Wifi Direct group was completed, the sending device would receive notification that the group was established.  
+Upon this notification, if the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
+Since the goal of the initial prototype was just to prove the feasibilty of Wifi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
+In addition, the Android Wifi Direct APIs had some inconsistent behavior.
+These APIs were very sensitive to other operations being performed on the device and offered little in terms of visibility and debug into the lower level system functions taking place on the device.
+During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to either manually disconnect from all devices, or disable and re-enable wireless services on the mobile device.
+If there were additional time to dig into the source for the APIs it is highly likely that this issue could root caused and overcome.
+Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
+This would be a reasonable constraint in the cave environment as no other wireless infrastructure would be available.
+In summary, this application was an effective prototype to prove that Wifi Direct could be used to leverage peer to peer connectivity in the absense of infrastructure to act as a ferry for data from in-cave loggers.
 
 \section{Conclusions and Future Work}
 
@@ -359,15 +381,27 @@ TODO: add some Krubera photos from online - very cool pics available
 
 
 \subsection{Future Work}
-items to consider discussing here:
+There are numerous areas that could be considered for future work that were out of scope for this project due to the time available.
 
-power savings
+Power conservation would be fairly important in a cave environment as access to a power outlet would be unlikely.
+During this project no effort was placed on looking at power consumption in general, or any methods to optimize or minimize the time that wireless would need to be active.
+This application would be particularly challenging to implement downtime for wireless since upstream devices currently don't have any mechanism to know when a downstream device might try to make a connection.
 
-enabling on smaller devices than a nexus
+Early in development of the data ferry application a design decision was made to drop support for smaller screened devices where the application was having difficulty rendering properly.
+This was due to code that was leveraged from the range experiment and the direction taken to implement the user interface.
+Since rendering correctly on any Android device was not a key goal of this project, the focus stayed on ensuring that the application functioned on large screen devices like the Nexus 7.
+Future work could be considered to refactor
 
 improvements in wifi direct middleware 
 
- 
+As noted in the results section, timing was a key challenge due to the highly asynchronous nature of the application.
+There is additional work that could be spent implementing a better mechanism to determine that a device in any phase is in the desired state and ready before operations are executed.
+In the prototype application, delays were injected to give time for devices to completed known longer running tasks, but a better mechanism could be to look at some sort of handshake, acknownledge, and retry design.
+Handling endpoints is another area that was not explored during this project.
+Both interfacing to actual dataloggers as well as interfacing to the broader Internet for data uploads once the application has successfully ferried data from the cave.
+
+Environmental issues such as dust and possibly flooding are both areas that might need to be considered in some or all cases for a practical implementation.
+The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
 
 \section{Acknowledgements}
 We would like to thank David Ochel for accompanying us on our trip and for taking photos. 
