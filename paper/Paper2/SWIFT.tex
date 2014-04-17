@@ -267,12 +267,50 @@ The duration of the transfer was captured as measured from one side of the conne
 In general, the most important result provided by the application was to confirm or deny a successful file transfer.
 
 \subsection{Data Ferry Software}
-The second phase of the project was to build an Android application that would utilize Wifi Direct to do an automated transfer of a datalogger datafile across multiple mobile devices acting as a data ferry. 
-This project leveraged some of the Wifi Direct data transfer code from the range software, but implemented a state machine to allow the application to execute in "Operate Mode" where data hops from device to device. 
+The second phase of the project was to build an Android application called SwiftDataHop, that would utilize Wifi Direct to do an automated transfer of a datalogger datafile across multiple mobile devices acting as a data ferry. 
+This project leveraged some of the Wifi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
+To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
 During this project the interface to the datalogger was simulated with a prepopulated datafile.
-The application was notified of the presence of the datafile via a button click on the user interface.   
+The application was notified of the presence of the datafile via a button click on the user interface.
 
-TODO: Amy finish this section.
+SwiftDataHop has two modes of execution, Manual Mode and Operate Mode.
+Manual Mode performs the same data transfer capability as was used in the range experiment software which allows WPS to be executed between device so that user intervention is not required during Operate Mode.
+Manual Mode also provides a mechanism through the GUI to set device roles.
+The roles that can be configured are data file initiator, a sender-receiver, and an endpoint.
+A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device are configured.
+As part of configuration in Manual Mode each device has the capability to set an upstream device, a downstream device, or both.  
+A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
+A device with no downstream device set will have the capability to initiate the file transfer of the data file in Operate Mode.
+A device with both an upstream and downstream device configured will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
+A device with no upstream device is an endpoint or file destination and will display the file recieved and location to which it is copied on the filesystem.
+In manual mode, upstream and downstream device configuration information may be viewed.
+
+Operate mode is the automated mode of the application.
+A device cannot enter Operate mode without at least one upstream or downstream device set.
+Overall the application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, RECEIVE\_FILE.
+The OFF state means that the application is in manual mode.
+When Operate Mode is entered, the device initially goes into the IDLE\_WAIT state.
+There are three possible ways to transition out of the IDLE\_WAIT state.
+The first, if someone clicks the button to turn Operate Mode Off, in which case the applicaiton would transition back to the OFF state.
+The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
+Here the application would transition to the SEND\_FILE state.
+The third if a Wifi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
+If a device is in the SEND\_FILE state, after operations are performed to send the data file upstream, the device will return to the IDLE\_WAIT state.
+If a device is in the RECEIVE\_FILE state, it will perform operations to receive a file, and then if an upstream device has been configured it will transition into the SEND\_FILE state.
+If an upstream device has not been configured, it will transition back to the IDLE\_WAIT state as that indicates it is the final device in the transfer.
+
+TODO: Add state machine diagram.  
+The operations to send and receive a file are those required to execute Wifi Direct group formation, and once completed, to create a socket connection and perform the transfer. 
+Once the send file button is clicked and a device goes into the SEND\_FILE state, it performs a Wifi Direct "Connect". 
+Android APIs handle the initiation of the Wifi Direct group.
+The device is notified of the successful group formation by the "onConnectionInfoAvailable" callback.
+At this point a TCP socket connection to the upstream device is created using the connection info returned from the previous callback.
+Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the Wifi Direct group is disconnected.
+The sending device returns to the IDLE\_WAIT state.
+The recieving device enters the RECEIVE\_FILE state when the "onConnectionInfoAvailable" callback is executed, meaning a downstream device has requested group formation.
+The device in RECEIVE\_FILE state immediately opens a socket and waits for the downstream device to connect.
+Once a connection is received, the device reads the data file from the socket, closes the socket, disconnects with WifiDirect group.
+The receiving device then either transitions to the IDLE\_WAIT state if it is an endpoint, or transitions to the SEND\_FILE state and performs send operations if it has an upstream device.
 
 \section{Results}
 
