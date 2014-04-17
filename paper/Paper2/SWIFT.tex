@@ -54,7 +54,7 @@ Most caves are difficult and dangerous to travel through to some degree and data
 Therefore, a researcher expends a great deal of time, logistics and even risk to her life when she needs to access her sensors and the data logger attached to the sensor.
 Also, most cave climates have nearly 100\% humidity at all times and some caves flood or in general have conditions that make sensors and data loggers prone to failure.
 When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
-Therefore, cave researchers are interested in mechanisms that would make their data easier to access and available in a more timely manner.
+Therefore, cave researchers are interested in mechanisms that would make their data easier to access.
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{cavewifi2}
@@ -66,8 +66,8 @@ Therefore, cave researchers are interested in mechanisms that would make their d
 We propose here to automatically ferry data collected by a sensor from within a cave back to the surface using WiFi Direct enabled devices. 
 % This technology is now common in many mobile devices.
 This would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
-The WiFi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which 
-provides a simple and power effective means of setting up the network and transferring data. 
+The WiFi Direct standard provides infrastructure mechanisms for discovery, addressing, and security. 
+This infrastructure allows applications a simple and power effective means of setting up the network and transferring data. 
 
 We will focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
 First, we will investigate the range of the WiFi Direct technology in a cave environment.
@@ -79,7 +79,7 @@ However, the still nascent implementation of the WiFi Direct standard poses some
 Since the data will need to travel from device to device beyond the range of a single wifi direct group, 
 each device will need to participate in one or two groups. 
 The current implementation of WiFi Direct on Android devices does not allow a device to be simultaneously connected to two WiFi Direct groups.
-Therefore, our prototype application will manage the disconnect from one group and connection to the next group automatically.
+Therefore, our prototype application will manage the disconnection from one group and connection to the next group automatically.
 
 In addition, the current Wifi Protected Setup (WPS) implementation requires the human user of the device to approve any new connections.
 However, once a device has gained user permission once to a join a group, the Android platform "remembers" that permission and allows the device to automatically rejoin that group.
@@ -116,7 +116,7 @@ Therefore, the drawbacks of wired telephone technology are the cost and weight o
 
 The APRS Cave-Link system is capable of sending text based messages via VHF/UHF walkie talkies or relay boxes placed along a cave passage.
 In their experiments in a large cave, the average hop length was an average of 390' and 440' for VHF and UHF respectively.
-The advantages of this system over wired systems is that the radio units and relay boxes are approximately hand-sized and are relatively lightweight.
+The advantages of this system over wired systems are that the radio units and relay boxes are approximately hand-sized and are relatively lightweight.
 The authors were using the system to essentially send text messages and did not address the general data capacity of the system \cite{cavelink}.
 
 In Postojna Cave in Slovenia, a research team created a system for delay tolerant automatic data transfer from environmental monitoring systems deep in the cave.
@@ -141,20 +141,19 @@ In some use cases, broader connectivity to infrastructure is not required and th
 This is WiFi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
 
 WiFi Direct is a standard developed by the WiFi Alliance which provides a mechanism for peer to peer communication in the absence of a dedicated wireless infrastructure. 
-This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}
-, therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
+This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}, therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
 Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbps and up to 200 meters depending on the environment. 
 Security for WiFi direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
-All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
+All of these benefits make WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
 
 The basic concepts of WiFi Direct are as follows. 
 At the core of WiFi Direct is the WiFi Direct Group. 
-The WiFi Direct group basically functions as an infrastructure basic service set(BSS). 
+The WiFi Direct group basically functions as an infrastructure basic service set (BSS). 
 All components that can connect into a wireless medium in a network are referred to as stations. 
 The BSS is a set of all stations that can communicate with each other. 
-An infrastructure BSS includes both access points and stations in a wireless connection scenario.\cite{wirelesslanwiki}
+An infrastructure BSS includes both access points and stations in a wireless connection scenario \cite{wirelesslanwiki}.
 All WiFi Direct devices must be capable of becoming the group owner. 
 Within a group, a single device takes on this role.
  
@@ -173,12 +172,12 @@ With Persistent, a device identifies that a peer has been established as part of
 The group can be reformed, and the formation process can occur with a significantly reduced WPS phase because credentials for the devices have been stored.
 With Autonomous, a device declares itself a group owner without involvement from any other peer devices. 
 As part of providing the BSS functionality for the network, the group owner is responsible for providing DHCP addresses to devices on the network.
-Data I/O can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established\cite{wifiwhitepaper}.
+Data I/O can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established \cite{wifiwhitepaper}.
 
 As part of the connection process, WPS is used to obtain credentials and authenticate the WiFi Direct device.  
 This type of security requires user intervention in the form of the user either pushing a button or providing a PIN on the device.
 To execute WPS, the group owner generates and issues the security keys to other devices in the group. 
-WPS, which is based on WPA-2 security, uses Advanced Encryption Standard (AES)-CCMP as cipher, and a randomly generated Pre-Shared Key (PSK) for mutual authentication\cite{wifiwhitepaper}.
+WPS, which is based on WPA-2 security, uses Advanced Encryption Standard (AES)-CCMP as cipher, and a randomly generated Pre-Shared Key (PSK) for mutual authentication \cite{wifiwhitepaper}.
 After this part of the process devices disconnect and reconnect using their new authentication credentials.
 With persistent groups, since credentials have been stored, the previous process of establishing authentication can be skipped and the two devices can use their credentials to connect.
 
@@ -190,7 +189,7 @@ These are the WiFi manager, Listeners, and Intents.
 The WiFi manager class provides methods to allow you to interact with the Wi-Fi hardware on your device to do things like discover and connect to peers. 
 Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
 Intents notify you of specific events detected by the Wi-Fi P2P framework, such as a dropped connection or a newly discovered peer. 
-Actual data transfer between devices are handled by standard TCP/IP socket objects and I/O operations.
+Actual data transfer between devices is handled by standard TCP/IP socket objects and I/O operations.
 Android devices making use of the WiFi Direct functionality are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
 
 An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
@@ -199,10 +198,10 @@ A broadcast receiver allows you to receive intents broadcast by the Android syst
 The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive()" method.
 The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
 The application also should set up a Peer to Peer manager. 
-The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast receiver.x
+The peer to peer manager known as "WifiP2pManager" class will be instantiated in the application, and it will be used to create a channel which will be passed to the broadcast receiver.x
 
 To discover peer devices, the "discoverPeers()" method is called from the peer to peer manager created for the application.
-Discovery is asynchronous, so an intent is used to notify the application when discovered peers are available.
+Discovery is asynchronous, so an Intent is used to notify the application when discovered peers are available.
 Once the application receives notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
 This function call is also asynchronous and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
 This provides a list of WifiP2pDevice devices which can be used to establish a connection. \cite{androidp2p}
@@ -221,13 +220,13 @@ This is a hand held CO$_2$ and temperature sensor.
 This sensor can perform environmental readings, but it cannot save data.
 To save data from the sensor, you must attach it to a compatible logger.
 HOBO offers a variety of loggers.
-Some loggers have a USB output, others have Wifi, Cellular, or Ethernet communications.
+Some loggers have a USB output; others have Wifi, Cellular, or Ethernet communications.
 In a cave, none of these connections is usually possible, so I suspect most research teams opt for the less expensive systems without external communications.
 An example inexpensive logger is the HOBO U12 4-Channel External Data Logger equipped with 64K bytes of memory which is enough for 43,000 12-bit measurements \cite{logger}. 
 Some data loggers do have larger memory capacities such as 4mb (todo: cite other logger).
 
-Based on the Wong paper and informal interviews with cave researchers, we consider a typical cave research project would use one or a few similar sensors and attached data loggers.
-We also consider that the researchers would attempt to gather their data regularly so that their data loggers do not overfill, but not so frequently that they are burdened by the overhead of the required caving trips.
+Based on the Wong paper and informal interviews with cave researchers, we learned that a cave research project will typically use one or a few similar sensors and attached data loggers.
+Also, the researchers will attempt to gather their data regularly so that their data loggers do not overfill but not so frequently that they are burdened by the overhead of the required caving trips.
 Of course, we hope to reduce their burden with WiFi Direct technology.
 However, for the sake of our research, we needed to understand the typical experiment setup.
 
@@ -289,17 +288,18 @@ In general, the most important result provided by the application was to confirm
 
 \subsection{Data Ferry Software}
 \label{sec:Data Ferry Software}
-The second phase of the project was to build an Android application called SwiftDataHop, that would utilize WiFi Direct to do an automated transfer of a data logger data file across multiple mobile devices acting as a data ferry. 
+The second phase of the project was to build an Android application called SwiftDataHop that would utilize WiFi Direct to do an automated transfer of a data logger data file across multiple mobile devices acting as a data ferry. 
 This project leveraged some of the WiFi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
 During this project the interface to the data logger was simulated with a pre-populated data file.
 The application was notified of the presence of the data file via a button click on the user interface.
 
-SwiftDataHop has two modes of execution, Manual Mode and Operate Mode.
-Manual Mode performs the same data transfer capability as was used in the range experiment software which allows WPS to be executed between device so that user intervention is not required during Operate Mode.
-Manual Mode also provides a mechanism through the GUI to set device roles.
+SwiftDataHop has two modes of execution: Manual Mode and Operate Mode.
+Manual Mode has the same connect and transfer capability as described in the range experiment software.
+This capability allows WPS to be established between devices so that user intervention is not required during Operate Mode.
+Manual Mode also allows the user to configure device roles via the GUI.
 The roles that can be configured are data file initiator, a sender-receiver, and an endpoint.
-A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device are configured.
+A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device is configured.
 As part of configuration in Manual Mode each device has the capability to set an upstream device, a downstream device, or both.  
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
 A device with no downstream device set will have the capability to initiate the file transfer of the data file in Operate Mode.
@@ -308,15 +308,20 @@ A device with no upstream device is an endpoint or file destination and will dis
 In manual mode, upstream and downstream device configuration information may be viewed.
 
 Operate mode is the automated mode of the application.
-A device cannot enter Operate mode without at least one upstream or downstream device set.
-Overall the application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, RECEIVE\_FILE.
+A device cannot enter Operate Mode without at least one upstream or downstream device set.
+Overall the application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, and RECEIVE\_FILE.
 The OFF state means that the application is in manual mode.
 When Operate Mode is entered, the device initially goes into the IDLE\_WAIT state.
-There are three possible ways to transition out of the IDLE\_WAIT state.
-The first, if someone clicks the button to turn Operate Mode Off, in which case the application would transition back to the OFF state.
-The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
-Here the application would transition to the SEND\_FILE state.
-The third if a WiFi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
+There are three possible ways to transition out of the IDLE\_WAIT state:
+\begin{enumerate}
+  \item When someone clicks the button to turn Operate Mode Off, the application would transition back to the OFF state.
+  \item When someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set, the application would transition to the SEND\_FILE state.
+  \item When a WiFi Direct Group is initiated from a downstream device, the device would transition into the RECEIVE\_FILE state.
+\end{enumerate}
+% The first, if someone clicks the button to turn Operate Mode Off, in which case the application would transition back to the OFF state.
+% The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
+% Here the application would transition to the SEND\_FILE state.
+% The third if a WiFi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
 If a device is in the SEND\_FILE state, after operations are performed to send the data file upstream, the device will return to the IDLE\_WAIT state.
 If a device is in the RECEIVE\_FILE state, it will perform operations to receive a file, and then if an upstream device has been configured it will transition into the SEND\_FILE state.
 If an upstream device has not been configured, it will transition back to the IDLE\_WAIT state as that indicates it is the final device in the transfer.
@@ -331,8 +336,8 @@ Once a successful connection is established, the file data is written to the soc
 The sending device returns to the IDLE\_WAIT state.
 The receiving device enters the RECEIVE\_FILE state when the "onConnectionInfoAvailable" callback is executed, meaning a downstream device has requested group formation.
 The device in RECEIVE\_FILE state immediately opens a socket and waits for the downstream device to connect.
-Once a connection is received, the device reads the data file from the socket, closes the socket, disconnects with WiFi Direct group.
-The receiving device then either transitions to the IDLE\_WAIT state if it is an endpoint, or transitions to the SEND\_FILE state and performs send operations if it has an upstream device.
+Once a connection is received, the device reads the data file from the socket, closes the socket, and disconnects the WiFi Direct group.
+The receiving device then will transition to the IDLE\_WAIT state if it is an endpoint, or it will transition to the SEND\_FILE state in order to perform send operations if it has an upstream device.
 
 \section{Results}
 
@@ -340,12 +345,12 @@ The receiving device then either transitions to the IDLE\_WAIT state if it is an
 \label{sec:WiFi Direct Range in Open Field}
 We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
 An open field, with no line of site obstructions and no other wifi devices around, should be the most ideal setting for WiFi Direct ranges.
-We started our tests at 100' apart and increased the distance by 50' to 100' at at time.
+We started our tests at 100' apart and increased the distance by 50' to 100' at a time.
 We found that our devices were easily able to connect and transfer a sample data file at distances up to 300' (91meters). 
 We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
 At times, the connection would take longer than usual.
 Also, the initial file transfer took multiple attempts.
-Once the initial file was received, then subsequent transfers went much better.
+Once the initial file was received, then subsequent transfers went much well.
 However, at 650' (198m) the devices had a lot of trouble connecting, so we stopped measurements then.
 This is very close to the claimed range of 200' meters.
 
@@ -358,7 +363,7 @@ Most of the passages are traveled by crawling.
 However, an adult can stand in some of the larger rooms.
 
 We began our range experiments in the largest room known as Travis County room which has the longest possible horizontal line of sight available in the cave.
-In this room, our device were able to easily connect and transmit test files at distances of 55', 80' and 97'. 
+In this room, our devices were able to easily connect and transmit test files at distances of 55', 80' and 97'. 
 After 97' we were no longer able to achieve line of sight.
 This distance represents nearly the maximum length of the room. 
 Behind our respective survey stations, the ceiling and floor of the room quickly meet.
@@ -372,7 +377,7 @@ Our Nexus devices successfully connected at 8' and 28' feet apart.
 After 28' apart, the passage starts to turn making line of sight was impossible to maintain, so our devices could not connect.
 Furthermore, since this passage was so narrow and filled with rubble, we had to take great care to maintain a line of sight between the devices.
 
-Since the cave offers no larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
+Since the cave offers neiher larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
 However, we suspect that in a larger cave or with straighter passages longer range should be possible.
 Moore, et al carried out wifi range experiments in straight mine tunnels where they claim that signal loss attenuates there less quickly than in free space.
 We refer you to that work for details.
@@ -424,7 +429,7 @@ Therefore, we propose a few example scenarios where WiFi Direct could be particu
 The cave Krubera-Varonya in West Caucasus in Abkhazia, Georgia is presently the world's deepest cave system with a depth of nearly 2200m and with 13.4km of passage. 
 Speleologists, cavers and cave divers have been exploring and mapping this cave since at least 1982.
 Expeditions in this cave are complex operations where an example cave exploration trip will span multiple weeks with at least 19 people including cavers and cave divers.
-On these expeditions, cavers will survey and map the cave, specially trained cave divers will proceed through and map underwater passages, place data loggers to measure water levels, and more.
+On these expeditions, cavers will survey and map the cave; specially trained cave divers will proceed through and map underwater passages, place data loggers to measure water levels, and more.
 The cavers will need to be underground for weeks at a time and stay in one or more of a handful of underground camps \cite{krub_it}.
 A communication system to coordinate re-supply, logistics, and, in the worst case, coordinate a rescue operation is almost a requirement for an expedition of this magnitude.
 While it is difficult to determine potential length of line of sight by looking at published photos and maps, 
@@ -488,7 +493,7 @@ If the final endpoint is not located within wifi or cellular data range,
 then the final device will be responsible for storing accumulated data until the data is retrieved.
 This final data retrieval could easily be done with WiFi Direct.
 
-The exposure of the device to environmental issues such as dust, humidity, and water need to be considered in a practical implementation.
+In a deployment of electronic devices in a cave environment, the researcher must consider the exposure of the devices to environmental issues such as dust, humidity, and water.
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
 If smaller devices are used, it will be easier to harden them to the elements.
 
