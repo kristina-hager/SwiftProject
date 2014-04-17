@@ -281,10 +281,10 @@ The duration of the transfer was captured as measured from one side of the conne
 In general, the most important result provided by the application was to confirm or deny a successful file transfer.
 
 \subsection{Data Ferry Software}
-The second phase of the project was to build an Android application called SwiftDataHop, that would utilize Wifi Direct to do an automated transfer of a datalogger datafile across multiple mobile devices acting as a data ferry. 
+The second phase of the project was to build an Android application called SwiftDataHop, that would utilize Wifi Direct to do an automated transfer of a data logger datafile across multiple mobile devices acting as a data ferry. 
 This project leveraged some of the Wifi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
-During this project the interface to the datalogger was simulated with a prepopulated datafile.
+During this project the interface to the data logger was simulated with a pre-populated datafile.
 The application was notified of the presence of the datafile via a button click on the user interface.
 
 SwiftDataHop has two modes of execution, Manual Mode and Operate Mode.
@@ -296,7 +296,7 @@ As part of configuration in Manual Mode each device has the capability to set an
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
 A device with no downstream device set will have the capability to initiate the file transfer of the data file in Operate Mode.
 A device with both an upstream and downstream device configured will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
-A device with no upstream device is an endpoint or file destination and will display the file recieved and location to which it is copied on the filesystem.
+A device with no upstream device is an endpoint or file destination and will display the file received and location to which it is copied on the filesystem.
 In manual mode, upstream and downstream device configuration information may be viewed.
 
 Operate mode is the automated mode of the application.
@@ -305,7 +305,7 @@ Overall the application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FIL
 The OFF state means that the application is in manual mode.
 When Operate Mode is entered, the device initially goes into the IDLE\_WAIT state.
 There are three possible ways to transition out of the IDLE\_WAIT state.
-The first, if someone clicks the button to turn Operate Mode Off, in which case the applicaiton would transition back to the OFF state.
+The first, if someone clicks the button to turn Operate Mode Off, in which case the application would transition back to the OFF state.
 The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
 Here the application would transition to the SEND\_FILE state.
 The third if a Wifi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
@@ -321,7 +321,7 @@ The device is notified of the successful group formation by the "onConnectionInf
 At this point a TCP socket connection to the upstream device is created using the connection info returned from the previous callback.
 Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the Wifi Direct group is disconnected.
 The sending device returns to the IDLE\_WAIT state.
-The recieving device enters the RECEIVE\_FILE state when the "onConnectionInfoAvailable" callback is executed, meaning a downstream device has requested group formation.
+The receiving device enters the RECEIVE\_FILE state when the "onConnectionInfoAvailable" callback is executed, meaning a downstream device has requested group formation.
 The device in RECEIVE\_FILE state immediately opens a socket and waits for the downstream device to connect.
 Once a connection is received, the device reads the data file from the socket, closes the socket, disconnects with WifiDirect group.
 The receiving device then either transitions to the IDLE\_WAIT state if it is an endpoint, or transitions to the SEND\_FILE state and performs send operations if it has an upstream device.
@@ -376,19 +376,19 @@ Using this prototype it was demonstrated that WifiDirect could be used to pass d
 During the course of this project four Nexus 7 tablets running Android 4.4.2 were tested and could successfully execute the transfer.
 The project was limited to four devices simply by the number of available tablets.
 In theory additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
-While the SwiftDataHop application was able to execute the automated transfer across four devices, ther are still several issues that would need to be resolved before the application could be put to practical use.
+While the SwiftDataHop application was able to execute the automated transfer across four devices, there are still several issues that would need to be resolved before the application could be put to practical use.
 Timing was a key challenge in implementing the Operate Mode, or automated mode, of this application.
 The application was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
 For example, once the first phase of creating the Wifi Direct group was completed, the sending device would receive notification that the group was established.  
 Upon this notification, if the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
-Since the goal of the initial prototype was just to prove the feasibilty of Wifi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
+Since the goal of the initial prototype was just to prove the feasibility of Wifi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
 In addition, the Android Wifi Direct APIs had some inconsistent behavior.
 These APIs were very sensitive to other operations being performed on the device and offered little in terms of visibility and debug into the lower level system functions taking place on the device.
 During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to either manually disconnect from all devices, or disable and re-enable wireless services on the mobile device.
 If there were additional time to dig into the source for the APIs it is highly likely that this issue could root caused and overcome.
 Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
 This would be a reasonable constraint in the cave environment as no other wireless infrastructure would be available.
-In summary, this application was an effective prototype to prove that Wifi Direct could be used to leverage peer to peer connectivity in the absense of infrastructure to act as a ferry for data from in-cave loggers.
+In summary, this application was an effective prototype to prove that Wifi Direct could be used to leverage peer to peer connectivity in the absence of infrastructure to act as a ferry for data from in-cave loggers.
 
 \section{Conclusions and Future Work}
 
@@ -435,13 +435,13 @@ There are numerous areas that could be considered for future work that were out 
 
 During this project we did not focus on measuring or reducing power consumption.
 Rather, we were focused on a showing that the Wifi Direct technology has the capability to automatically ferry data within a cave.
-One reported advantage of the Wifi Direct standard over other ad hoc wireless connection standars is that it provides for better power efficiency during discovery and connect \cite{wifiwhitepaper}.
+One reported advantage of the Wifi Direct standard over other ad hoc wireless connection standards is that it provides for better power efficiency during discovery and connect \cite{wifiwhitepaper}.
 Therefore, the Wifi Direct technology is a good starting point for building a low power data ferrying solution.
 However, power conservation is very important in a cave environment as access to a power source is unlikely unless the cave is a tourist cave already outfitted with a lighting system.
 We propose that future work in this area can reduce power requirements beyond what is provided inherently with Wifi Direct.
 For instance, the data transfer can be done with smaller, lower power devices.
 One way to reduce power consumption is to minimize the human interface component.
-Sepcifically, large screens consume a lot of power, so realistic implementations could use a smaller screen or no screen.
+Specifically, large screens consume a lot of power, so realistic implementations could use a smaller screen or no screen.
 
 Another area of future research will be to better coordinate the timing of data exchange in the interests of reducing power.
 For example, data transfer does not usually need to be continuous or too frequent in our target use case.
