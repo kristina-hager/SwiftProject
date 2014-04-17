@@ -25,10 +25,10 @@ University of Texas at Austin\\
 	the cave, traveling to the collection site, and manually retrieving it. 
 	This method is very slow, inconvenient, and sometimes dangerous.
 	We propose a new means of data retrieval from cave sensors which is to automatically 
-	ferry data back to the surface using Wifi Direct enabled devices. 
-	We will focus on two key questions in this paper regarding the potential of the Wifi Direct technology for this application.
-	First, we will create an application to determine the achievable range of the Wifi Direct technology in a cave environment.
-	Next, we will create a prototype application for ferrying data using Wifi Direct as provided by the Android platform. 
+	ferry data back to the surface using WiFi Direct enabled devices. 
+	We will focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
+	First, we will create an application to determine the achievable range of the WiFi Direct technology in a cave environment.
+	Next, we will create a prototype application for ferrying data using WiFi Direct as provided by the Android platform. 
 	We will outline the implementation of both applications and describe any nuances associated with the current Android 
 	support for WiFi Direct.
 \end{abstract}
@@ -58,27 +58,27 @@ Therefore, cave researchers are interested in mechanisms that would make their d
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{cavewifi2}
-\caption{Testing Wifi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
+\caption{Testing WiFi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
 \end{figure*}
 
-\subsection{Outline of Wifi Direct Investigation}
+\subsection{Outline of WiFi Direct Investigation}
 \label{sec:Outline}
-We propose here to automatically ferry data collected by a sensor from within a cave back to the surface using Wifi Direct enabled devices. 
+We propose here to automatically ferry data collected by a sensor from within a cave back to the surface using WiFi Direct enabled devices. 
 % This technology is now common in many mobile devices.
 This would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
-The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which 
+The WiFi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which 
 provides a simple and power effective means of setting up the network and transferring data. 
 
-We will focus on two key questions in this paper regarding the potential of the Wifi Direct technology for this application.
-First, we will investigate the range of the Wifi Direct technology in a cave environment.
+We will focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
+First, we will investigate the range of the WiFi Direct technology in a cave environment.
 WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology. 
-However, we would like to determine the potential range of Wifi Direct specifically in a cave environment which has different characteristics from a usual surface environment. 
-Next, we will investigate how to ferry data from device to device using Wifi Direct as provided by the Android platform. 
+However, we would like to determine the potential range of WiFi Direct specifically in a cave environment which has different characteristics from a usual surface environment. 
+Next, we will investigate how to ferry data from device to device using WiFi Direct as provided by the Android platform. 
 
 However, the still nascent implementation of the WiFi Direct standard poses some limitations for our use case.
 Since the data will need to travel from device to device beyond the range of a single wifi direct group, 
 each device will need to participate in one or two groups. 
-The current implementation of Wifi Direct on Android devices does not allow a device to be simultaneously connected to two WifiDirect groups.
+The current implementation of WiFi Direct on Android devices does not allow a device to be simultaneously connected to two WiFi Direct groups.
 Therefore, our prototype application will manage the disconnect from one group and connection to the next group automatically.
 
 In addition, the current Wifi Protected Setup (WPS) implementation requires the human user of the device to approve any new connections.
@@ -86,16 +86,16 @@ However, once a device has gained user permission once to a join a group, the An
 Since we want our devices to be able to operate autonomously, we will show how to accommodate the approval issue by pre-configuring the devices in their planned sequence.
  
 For the first phase of this project, we created a prototype application for Android devices. 
-We used this application to test the ability to make Wifi Direct connections within Whirlpool Cave, a popular cave in south Austin with a variety of passage characteristics. 
-The ultimate goal of this initial application and the cave excursion is to determine if the range and bandwidth of Wifi Direct is sufficient to support passing messages out of the cave.
+We used this application to test the ability to make WiFi Direct connections within Whirlpool Cave, a popular cave in south Austin with a variety of passage characteristics. 
+The ultimate goal of this initial application and the cave excursion is to determine if the range and bandwidth of WiFi Direct is sufficient to support passing messages out of the cave.
 The results of this initial testing showed that WiFi Direct had significant range in areas of the cave where direct line of sight was achievable between devices.
 Just as a note, in typical deployment environments, wifi signals do not require direct line of sight as they can travel through common building materials.
 However, the radio waves of wifi signals cannot travel through substances like rock or concrete.
-We will discuss these experiments in Section~\ref{sec:Wifi Direct Range in a Cave}.
+We will discuss these experiments in Section~\ref{sec:WiFi Direct Range in a Cave}.
 
 For the second phase of the project, we developed a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
-Ultimately the second application successfully demonstrates that passing data from peer to peer using Wifi Direct is achievable. 
-In the development of this application, we developed code to manage a device's participation in multiple Wifi Direct groups.
+Ultimately the second application successfully demonstrates that passing data from peer to peer using WiFi Direct is achievable. 
+In the development of this application, we developed code to manage a device's participation in multiple WiFi Direct groups.
 We also spent considerable effort managing timing, connection, and synchronization issues between the devices.
 We explain these issues later in the paper, and we consider these issues to indicate areas of future work for middleware solutions
 such as the Android platform.
@@ -131,16 +131,16 @@ Therefore, their experiments with wifi signal attenuation in the tunnel environm
 
 \section{WiFi Direct and Android Support}
 
-\subsection{Wifi Direct Overview}
+\subsection{WiFi Direct Overview}
 \label{sec:WifiD Overview}
 Today, wireless connectivity is largely taken for granted. 
 There are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
 % Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
 The WiFi Direct standard is one means of potentially filling that gap. 
 In some use cases, broader connectivity to infrastructure is not required and there is value to simple device to device communication. 
-This is Wifi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
+This is WiFi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
 
-Wifi Direct is a standard developed by the WiFi Alliance which provides a mechanism for peer to peer communication in the absence of a dedicated wireless infrastructure. 
+WiFi Direct is a standard developed by the WiFi Alliance which provides a mechanism for peer to peer communication in the absence of a dedicated wireless infrastructure. 
 This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}
 , therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
@@ -150,8 +150,8 @@ Since power management is especially important for mobile devices WiFi direct in
 All of these benefits makes WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
 
 The basic concepts of WiFi Direct are as follows. 
-At the core of Wifi Direct is the WiFi Direct Group. 
-The Wifi Direct group basically functions as an infrastructure basic service set(BSS). 
+At the core of WiFi Direct is the WiFi Direct Group. 
+The WiFi Direct group basically functions as an infrastructure basic service set(BSS). 
 All components that can connect into a wireless medium in a network are referred to as stations. 
 The BSS is a set of all stations that can communicate with each other. 
 An infrastructure BSS includes both access points and stations in a wireless connection scenario.\cite{wirelesslanwiki}
@@ -164,7 +164,7 @@ Group owners may optionally provide features such as simultaneous (concurrent) c
 In addition to being able to execute the group owner role, WiFi Direct devices must also be capable of group ownership negotiation, discovery, and power management functions.
  
 Devices adhering to the standard enter into a discovery phase where peers within range are found. 
-Once a list of peers is retrieved, devices wishing to connect may either form a new  Wifi Direct group or connect to an existing group. 
+Once a list of peers is retrieved, devices wishing to connect may either form a new  WiFi Direct group or connect to an existing group. 
 As part of the group formation process, the devices wishing to connect establish which device will become the group owner.
 
 A device obtains the role of group owner through one of three mechanisms: Standard, Autonomous, or Persistent. 
@@ -185,7 +185,7 @@ With persistent groups, since credentials have been stored, the previous process
 \section{Android APIs For WiFi Direct}
 \label{sec:Android APIs For WiFi Direct}
 For this project, we used the Android platform to evaluate WiFi Direct for the Swift use case.
-Starting with Android 4.0(API 14 and higher), Android provides three main areas within their API to support Wifi Direct.
+Starting with Android 4.0(API 14 and higher), Android provides three main areas within their API to support WiFi Direct.
 These are the WiFi manager, Listeners, and Intents.
 The WiFi manager class provides methods to allow you to interact with the Wi-Fi hardware on your device to do things like discover and connect to peers. 
 Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
@@ -210,7 +210,7 @@ This provides a list of WifiP2pDevice devices which can be used to establish a c
 When a device is selected for a connection, the wifi peer to peer manager is used to call the "connect()" function to establish the connection to the device. 
 This method is passed a WifiP2pConfig object which can be assigned parameters from the WifiP2pDevice such as the device's address.
 The "connect()" method is another asynchronous call. 
-Once successful, a Wifi direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
+Once successful, a WiFi Direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
 
 \section{Experiments}
 
@@ -228,7 +228,7 @@ Some data loggers do have larger memory capacities such as 4mb (todo: cite other
 
 Based on the Wong paper and informal interviews with cave researchers, we consider a typical cave research project would use one or a few similar sensors and attached data loggers.
 We also consider that the researchers would attempt to gather their data regularly so that their data loggers do not overfill, but not so frequently that they are burdened by the overhead of the required caving trips.
-Of course, we hope to reduce their burden with Wifi Direct technology.
+Of course, we hope to reduce their burden with WiFi Direct technology.
 However, for the sake of our research, we needed to understand the typical experiment setup.
 
 Zara Environmental gave us an example data file gathered from a logger and sensor setup that was measuring various environmental features like temperature, wind speed, pressure and so on.
@@ -238,14 +238,14 @@ We used this data file in all of our experiments and have included a copy of it 
 
 \subsection{Methodology for Measuring Range and Connectivity}
 \label{sec:Methodology}
-Wifi direct operates on the same 2.4Ghz band as most 802.11 based wifi deployments \cite{wifiwhitepaper}.
+WiFi Direct operates on the same 2.4Ghz band as most 802.11 based wifi deployments \cite{wifiwhitepaper}.
 Typical indoor deployments of 802.11[bg] have a range of 35m, and outdoor deployments can have a range up to 100m.
 802.11n deployments can have up to twice that range \cite{wikiwifi}.
 
-We found various sources on the internet claiming that the range of Wifi direct was anywhere from 10m to 200m. 
-Of course, the achievable range of the Wifi direct signal can and should vary depending on the topology of the environment, how many other devices are trying to use the same wifi band, and of course any obstructions between the devices trying to communicate.
+We found various sources on the internet claiming that the range of WiFi Direct was anywhere from 10m to 200m. 
+Of course, the achievable range of the WiFi Direct signal can and should vary depending on the topology of the environment, how many other devices are trying to use the same wifi band, and of course any obstructions between the devices trying to communicate.
 
-We designed experiments to evaluate the range of Wifi Direct between our devices in the most ideal deployment environment possible and in an example cave environment.
+We designed experiments to evaluate the range of WiFi Direct between our devices in the most ideal deployment environment possible and in an example cave environment.
 For each connectivity and transfer experiment, we followed the same procedure. 
 We started with the devices not connected, but with the wifi direct group already established.
 First, the user of one device would initiate a connection.
@@ -254,7 +254,7 @@ Last, we disconnected the device, and moved to a new position for the next exper
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{cavewifi}
-\caption{Testing Wifi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
+\caption{Testing WiFi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
 \end{figure}
 
 % \begin{figure}
@@ -264,19 +264,19 @@ Last, we disconnected the device, and moved to a new position for the next exper
 
 \subsection{Range Experiment Software}
 \label{sec:Range Experiment Software}
-An Android application was developed to perform the range experiments in a cave and to test distances that could be achieved by Wifi Direct on a mobile device.
-This initial application was developed based on a Wifi Direct example provided by the Android SDK.
-The example was used to learn how to create the necessary Wifi Direct components, and understand how the significant asynchronous function calls operate together.
+An Android application was developed to perform the range experiments in a cave and to test distances that could be achieved by WiFi Direct on a mobile device.
+This initial application was developed based on a WiFi Direct example provided by the Android SDK.
+The example was used to learn how to create the necessary WiFi Direct components, and understand how the significant asynchronous function calls operate together.
 To perform the range experiments the example was modified to open a connection to a single device, load a data file from the device, and send the data file. 
 The original application provided the ability for the client to launch the other device's photo gallery and select a photo to be copied.
 This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a data logger.
 
 The Android application followed the architecture described in Section~\ref{sec:Android APIs For WiFi Direct} for creating peer to peer connections. 
-This Wifi Direct application has the ability to be either the sender or the receiver of the test data file.
+This WiFi Direct application has the ability to be either the sender or the receiver of the test data file.
 The main application presents a fairly simple GUI interface allowing the user to kick off discovery of peer devices. 
 Upon completion of discovery a list of available peers is displayed on the GUI.
 The user can then select from the list of devices which brings up a menu to connect to that device.
-Once the Wifi Direct connection is established, the user may either disconnect or select a button to transfer the data file.
+Once the WiFi Direct connection is established, the user may either disconnect or select a button to transfer the data file.
 
 After the connection is established, the device which is designated to be the receiver has slightly different functionality.
 For the receiver they have the option of terminating the connection, but also have a button to allow them to reset the application to be prepared to receive the next data file.
@@ -289,8 +289,8 @@ In general, the most important result provided by the application was to confirm
 
 \subsection{Data Ferry Software}
 \label{sec:Data Ferry Software}
-The second phase of the project was to build an Android application called SwiftDataHop, that would utilize Wifi Direct to do an automated transfer of a data logger datafile across multiple mobile devices acting as a data ferry. 
-This project leveraged some of the Wifi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
+The second phase of the project was to build an Android application called SwiftDataHop, that would utilize WiFi Direct to do an automated transfer of a data logger datafile across multiple mobile devices acting as a data ferry. 
+This project leveraged some of the WiFi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
 During this project the interface to the data logger was simulated with a pre-populated datafile.
 The application was notified of the presence of the datafile via a button click on the user interface.
@@ -316,30 +316,30 @@ There are three possible ways to transition out of the IDLE\_WAIT state.
 The first, if someone clicks the button to turn Operate Mode Off, in which case the application would transition back to the OFF state.
 The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
 Here the application would transition to the SEND\_FILE state.
-The third if a Wifi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
+The third if a WiFi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
 If a device is in the SEND\_FILE state, after operations are performed to send the data file upstream, the device will return to the IDLE\_WAIT state.
 If a device is in the RECEIVE\_FILE state, it will perform operations to receive a file, and then if an upstream device has been configured it will transition into the SEND\_FILE state.
 If an upstream device has not been configured, it will transition back to the IDLE\_WAIT state as that indicates it is the final device in the transfer.
 
 TODO: Add state machine diagram.  
-The operations to send and receive a file are those required to execute Wifi Direct group formation, and once completed, to create a socket connection and perform the transfer. 
-Once the send file button is clicked and a device goes into the SEND\_FILE state, it performs a Wifi Direct "Connect". 
-Android APIs handle the initiation of the Wifi Direct group.
+The operations to send and receive a file are those required to execute WiFi Direct group formation, and once completed, to create a socket connection and perform the transfer. 
+Once the send file button is clicked and a device goes into the SEND\_FILE state, it performs a WiFi Direct "Connect". 
+Android APIs handle the initiation of the WiFi Direct group.
 The device is notified of the successful group formation by the "onConnectionInfoAvailable" callback.
 At this point a TCP socket connection to the upstream device is created using the connection info returned from the previous callback.
-Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the Wifi Direct group is disconnected.
+Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the WiFi Direct group is disconnected.
 The sending device returns to the IDLE\_WAIT state.
 The receiving device enters the RECEIVE\_FILE state when the "onConnectionInfoAvailable" callback is executed, meaning a downstream device has requested group formation.
 The device in RECEIVE\_FILE state immediately opens a socket and waits for the downstream device to connect.
-Once a connection is received, the device reads the data file from the socket, closes the socket, disconnects with WifiDirect group.
+Once a connection is received, the device reads the data file from the socket, closes the socket, disconnects with WiFi Direct group.
 The receiving device then either transitions to the IDLE\_WAIT state if it is an endpoint, or transitions to the SEND\_FILE state and performs send operations if it has an upstream device.
 
 \section{Results}
 
-\subsection{Wifi Direct Range in Open Field}
-\label{sec:Wifi Direct Range in Open Field}
+\subsection{WiFi Direct Range in Open Field}
+\label{sec:WiFi Direct Range in Open Field}
 We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
-An open field, with no line of site obstructions and no other wifi devices around, should be the most ideal setting for Wifi direct ranges.
+An open field, with no line of site obstructions and no other wifi devices around, should be the most ideal setting for WiFi Direct ranges.
 We started our tests at 100' apart and increased the distance by 50' to 100' at at time.
 We found that our devices were easily able to connect and transfer a sample data file at distances up to 300' (91meters). 
 We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
@@ -349,8 +349,8 @@ Once the initial file was received, then subsequent transfers went much better.
 However, at 650' (198m) the devices had a lot of trouble connecting, so we stopped measurements then.
 This is very close to the claimed range of 200' meters.
 
-\subsection{Wifi Direct Range in a Cave}
-\label{sec:Wifi Direct Range in a Cave}
+\subsection{WiFi Direct Range in a Cave}
+\label{sec:WiFi Direct Range in a Cave}
 We gained access to Whirlpool Cave in south Austin with the permission of the managing entity, TCMA (http://www.tcmacaves.org/) and experimented with the range and connectivity of our Nexus 7 devices on March 16, 2014.
 Whirlpool Cave is a relatively typical cave for central Texas.
 It has over 400m of total passage \cite{whirlpool}. 
@@ -381,25 +381,25 @@ However, we would like to state here that their work found that wifi signals att
 
 \subsection{Data Ferry Experiment Results}
 \label{sec:Data Ferry Experiment Results}
-Section~\ref{sec:Data Ferry Software} covered the design of the WifiDirect data ferry application called SwiftDataHop. 
+Section~\ref{sec:Data Ferry Software} covered the design of the WiFi Direct data ferry application called SwiftDataHop. 
 
-Using this prototype it was demonstrated that WifiDirect could be used to pass data from device to device in an automated fashion. 
+Using this prototype it was demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
 During the course of this project four Nexus 7 tablets running Android 4.4.2 were tested and could successfully execute the transfer.
 The project was limited to four devices simply by the number of available tablets.
 In theory additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
 While the SwiftDataHop application was able to execute the automated transfer across four devices, there are still several issues that would need to be resolved before the application could be put to practical use.
 Timing was a key challenge in implementing the Operate Mode, or automated mode, of this application.
 The application was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
-For example, once the first phase of creating the Wifi Direct group was completed, the sending device would receive notification that the group was established.  
+For example, once the first phase of creating the WiFi Direct group was completed, the sending device would receive notification that the group was established.  
 Upon this notification, if the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
-Since the goal of the initial prototype was just to prove the feasibility of Wifi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
-In addition, the Android Wifi Direct APIs had some inconsistent behavior.
+Since the goal of the initial prototype was just to prove the feasibility of WiFi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
+In addition, the Android WiFi Direct APIs had some inconsistent behavior.
 These APIs were very sensitive to other operations being performed on the device and offered little in terms of visibility and debug into the lower level system functions taking place on the device.
 During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to either manually disconnect from all devices, or disable and re-enable wireless services on the mobile device.
 If there were additional time to dig into the source for the APIs it is highly likely that this issue could root caused and overcome.
 Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
 This would be a reasonable constraint in the cave environment as no other wireless infrastructure would be available.
-In summary, this application was an effective prototype to prove that Wifi Direct could be used to leverage peer to peer connectivity in the absence of infrastructure to act as a ferry for data from in-cave loggers.
+In summary, this application was an effective prototype to prove that WiFi Direct could be used to leverage peer to peer connectivity in the absence of infrastructure to act as a ferry for data from in-cave loggers.
 
 \section{Conclusions and Future Work}
 
@@ -416,10 +416,10 @@ Passages are horizontal, vertical or any angle between the two.
 Some passages can be adequately described as enclosed, underground "rooms" or "pits" where the top is open to the sky.
 
 We would like to theorize further about how our research might generalize to other caves and where this technology will have the greatest value.
-Wifi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in Related Work, Section~\ref{sec:Related}.
-However, Wifi Direct signals only work in caves when a direct line of sight is available, 
+WiFi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in Related Work, Section~\ref{sec:Related}.
+However, WiFi Direct signals only work in caves when a direct line of sight is available, 
 and of course the devices require a consistent source of energy.
-Therefore, we propose a few example scenarios where Wifi direct could be particularly useful as part of an in-cave communication system.
+Therefore, we propose a few example scenarios where WiFi Direct could be particularly useful as part of an in-cave communication system.
 
 The cave Krubera-Varonya in West Caucasus in Abkhazia, Georgia is presently the world's deepest cave system with a depth of nearly 2200m and with 13.4km of passage. 
 Speleologists, cavers and cave divers have been exploring and mapping this cave since at least 1982.
@@ -447,11 +447,11 @@ We can also envision wifi direct being a very important part of a hybrid system 
 There are numerous areas that could be considered for future work that were out of scope for this project due to the time available.
 
 During this project we did not focus on measuring or reducing power consumption.
-Rather, we were focused on a showing that the Wifi Direct technology has the capability to automatically ferry data within a cave.
-One reported advantage of the Wifi Direct standard over other ad hoc wireless connection standards is that it provides for better power efficiency during discovery and connect \cite{wifiwhitepaper}.
-Therefore, the Wifi Direct technology is a good starting point for building a low power data ferrying solution.
+Rather, we were focused on a showing that the WiFi Direct technology has the capability to automatically ferry data within a cave.
+One reported advantage of the WiFi Direct standard over other ad hoc wireless connection standards is that it provides for better power efficiency during discovery and connect \cite{wifiwhitepaper}.
+Therefore, the WiFi Direct technology is a good starting point for building a low power data ferrying solution.
 However, power conservation is very important in a cave environment as access to a power source is unlikely unless the cave is a tourist cave already outfitted with a lighting system.
-We propose that future work in this area can reduce power requirements beyond what is provided inherently with Wifi Direct.
+We propose that future work in this area can reduce power requirements beyond what is provided inherently with WiFi Direct.
 For instance, the data transfer can be done with smaller, lower power devices.
 One way to reduce power consumption is to minimize the human interface component.
 Specifically, large screens consume a lot of power, so realistic implementations could use a smaller screen or no screen.
@@ -486,13 +486,13 @@ If the final endpoint is located where wifi or cellular data is available,
 then the final device can be responsible for uploading data to the internet.
 If the final endpoint is not located within wifi or cellular data range, 
 then the final device will be responsible for storing accumulated data until the data is retrieved.
-This final data retrieval could easily be done wirelessly with Wifi Direct.
+This final data retrieval could easily be done wirelessly with WiFi Direct.
 
 The exposure of the device to environmental issues such as dust, humidity, and water need to be considered in a practical implementation.
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
 If smaller devices are used, it will be easier to harden them to the elements.
 
-Further work could be done to improve Wifi Direct support and reliability in middleware platforms such as Android per the issues discussed in Section~\ref{sec:Data Ferry Experiment Results}.
+Further work could be done to improve WiFi Direct support and reliability in middleware platforms such as Android per the issues discussed in Section~\ref{sec:Data Ferry Experiment Results}.
 
 \section{Acknowledgements}
 \label{sec:Acknowledgements}
