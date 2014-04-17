@@ -18,38 +18,62 @@ University of Texas at Austin\\
 \maketitle
 \thispagestyle{empty}
 
-% \begin{abstract}
-%    This is a simple sample of a document created using \LaTeX
-%    (specifically pdflatex)
-%    that includes a figure from the Vergil visual editor for Ptolemy II
-%    that was created by printing to the Acrobat Distiller to get a PDF file.
-%    It also illustrates a simple two-column conference paper style,
-%    and use of bibtex to handle bibliographies.
-% \end{abstract}
+\begin{abstract}
+	We will consider a common problem scientists face when doing research in caves 
+	involving sensors and associated data loggers.
+	The most common method of retrieving this data from the data loggers is via a human entering 
+	the cave, traveling to the collection site, and manually retrieving it. 
+	This method is very slow, inconvenient, and sometimes dangerous.
+	We propose a new means of data retrieval from cave sensors which is to automatically 
+	ferry data back to the surface using Wifi Direct enabled devices. 
+	We will focus on two key questions in this paper regarding the potential of the Wifi Direct technology for this application.
+	First, we will create an application to determine the achievable range of the Wifi Direct technology in a cave environment.
+	Next, we will create a prototype application for ferrying data using Wifi Direct as provided by the Android platform. 
+	We will outline the implementation of both applications and describe any nuances associated with the current Android 
+	support for WiFi Direct.
+\end{abstract}
+
+% \tableofcontents
 
 \section{Introduction}
-Research takes scientists to places difficult to access to retrieve their study data. 
-For this project, we will consider a common problem scientists face when doing research in caves involving sensors and associated data loggers. 
-In-cave data loggers (sensors) collect data regarding CO$_2$ levels, cave-drip water, temperature, humidity, and more. 
-The most common method of retrieving this data from the data loggers in caves is via a human entering the cave, traveling to the collection site, and manually retrieving it. 
-This method is very slow, inconvenient, and in some cases quite perilous. 
-Furthermore, data loggers can and do malfunction.
-A scientist will not know that her data logger has malfunctioned until she is able to visit the data logger.
+
+\subsection{Usage of Sensors and Data Loggers in Caves}
+
+Many types of scientists such as geologists, hydrogeologists, climatologists and more conduct research in the interior of caves. 
+These scientists are usually looking for information about the cave's microclimate and changes to the caves microclimate. 
+For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
+
+Caves present a wide variety of size and shape of passage and climate. 
+% kh - Out of place.. might fit in better elsewhere
+% Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
+For example, Son Doong Cave in Thailand has a large room that is over five kilometers long, 200 meters high and 150 meters wide \cite{sondoong}.
+However, in the cave we visited for our research, most passages are just large enough to permit an adult to crawl through them.
+Some rooms in this cave do allow an adult to stand up in just a few spots.
+
+Most caves are difficult and dangerous to travel through to some degree and data loggers are often placed deep in the cave.
+Therefore, a researcher expends a great deal of time, logistics and even risk to her life when she needs to access her sensors and the data logger attached to the sensor.
+Also, most cave climates have nearly 100\% humidity at all times and some caves flood or in general have conditions that make sensors and data loggers prone to failure.
+When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
+Therefore, cave researchers are interested in mechanisms that would make their data easier to access and available in a more timely manner.
+
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{cavewifi2}
 \caption{Testing Wifi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
 \end{figure*}
-We propose a more automatic means of data retrieval from in-cave loggers. 
-We propose to ferry data back to the surface using Wifi Direct enabled devices. 
+
+\subsection{Using Wifi Direct to Retrieve Sensor Data}
+We propose here to automatically ferry data back to the surface using Wifi Direct enabled devices. 
 This technology is now common in many mobile devices.
 This would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
-The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which could provide a simple and power effective means of setting up the network and transferring data. 
+The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which could 
+provide a simple and power effective means of setting up the network and transferring data. 
 
 We will focus on two key questions in this paper regarding the potential of the Wifi Direct technology for this application.
 First, we will investigate the range of the Wifi Direct technology in a cave environment.
 WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology. 
 However, we would like to determine the potential range of Wifi Direct specifically in a cave environment which has different characteristics from a usual surface environment. 
 Next, we will create a prototype application for ferrying data using Wifi Direct as provided by the Android platform. 
+
 However, the still nascent implementation of the WiFi Direct APIs will pose some limitations for our use case.
 The current implementation of Wifi Direct on Android devices does not allow a device to be simultaneously connected to two WifiDirect groups.
 Since the data will need to travel from device to device, each device will need to participate in one or two groups. 
@@ -66,30 +90,15 @@ In typical deployments, wifi signals do not require direct line of sight as they
 However, the radio waves of wifi signals cannot travel through substances like rock or concrete.
 We will discuss these experiments in a subsequent section of the paper.
 
-For the second phase of the project, we will develop a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
+For the second phase of the project, we developed a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
 While WiFi Direct can easily be used to transfer data files within a single WiFi Direct group, in some cases our application would require data transfers beyond the range of what a single group can provide.
-Ultimately the second application will determine if passing information from peer to peer to ferry the data from the cave is achievable. 
-In addition to the key concern that the application could support multiple WiFi direct groups on the same device, we have concerns about timing of discovery and connectivity.
+Ultimately the second application shows that passing information from peer to peer to ferry the data from the cave is achievable. 
+In addition to the key concern that the application could support multiple WiFi direct groups on the same device, we had concerns about timing of discovery and connectivity.
 These must be implemented in such a way that a single wireless interface on the device can be shared.
 
-We have not yet finished our research project. 
-This paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
+% We have not yet finished our research project. 
+% This paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
 
-\section{Usage of sensors and data loggers in caves}
-
-Many types of scientists such as geologists, hydrogeologists, climatologists and more conduct research in the interior of caves. 
-These scientists are usually looking for information about the cave's microclimate and changes to the caves microclimate. 
-For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
-
-Caves present a wide variety of size and shape of passage and climate. 
-Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
-For example, Son Doong Cave in Thailand has a large room that is over five kilometers long, 200 meters high and 150 meters wide \cite{sondoong}.
-
-Most caves, however, are difficult and dangerous to some degree or another to access and data loggers are often placed deep in the cave.
-Therefore, a researcher expends a great deal of time, logistics and even risk to her life when she needs to access her sensors and the data logger attached to the sensor.
-Also, most cave climates have nearly 100\% humidity at all times and some caves flood or in general have conditions that make sensors and data loggers prone to failure.
-When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
-Therefore, cave researchers are interested in mechanisms that would make their data easier to access and available in a more timely manner.
 
 \section{Related Work}
 Cave explorers and researchers need in cave communication systems in order to carry out complex group tasks such as expedition management, rescues, or photography projects.
@@ -115,10 +124,10 @@ Moore, et al \cite{moore2012} considers using autonomous mobile radio nodes to w
 Tunnel environments share some similarities with cave environments in that the passages usually consist of rough, concrete (rock-like) walls with straighter, longer passages of more consistent dimensions. 
 Therefore, their experiments with wifi signal attenuation in the tunnel environment give us useful data to use in predicting range possibilities in a cave environment.
 
-\section{WiFi Direct}
-In today's world, wireless connectivity is, for the most part taken for granted. 
-There are still a few circumstances that remind us that the Internet and network connectivity are not guaranteed. 
-Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
+\section{WiFi Direct Overview}
+Today, wireless connectivity is largely taken for granted. 
+There are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
+% Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
 The WiFi Direct standard is one means of potentially filling that gap. 
 In some use cases, broader connectivity to infrastructure is not required and there is value to simple device to device communication. 
 This is Wifi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
@@ -421,23 +430,51 @@ TODO: add some Krubera photos from online - very cool pics available
 \subsection{Future Work}
 There are numerous areas that could be considered for future work that were out of scope for this project due to the time available.
 
-Power conservation would be fairly important in a cave environment as access to a power outlet would be unlikely.
-During this project no effort was placed on looking at power consumption in general, or any methods to optimize or minimize the time that wireless would need to be active.
-This application would be particularly challenging to implement downtime for wireless since upstream devices currently don't have any mechanism to know when a downstream device might try to make a connection.
+During this project we did not focus on measuring or reducing power consumption.
+Rather, we were focused on a showing that the Wifi Direct technology has the capability to automatically ferry data within a cave.
+However, power conservation is very important in a cave environment as access to a power source is unlikely unless the cave is a tourist cave already outfitted with a lighting system.
+We propose that future work in this area focus on reducing power requirements.
+For instance, the data transfer can be done with smaller, lower power devices.
+One way to reduce power consumption is to minimize the human interface component.
+Sepcifically, large screens consume a lot of power, so realistic implementations could use a smaller screen or no screen.
 
-Early in development of the data ferry application a design decision was made to drop support for smaller screened devices where the application was having difficulty rendering properly.
-This was due to code that was leveraged from the range experiment and the direction taken to implement the user interface.
-Since rendering correctly on any Android device was not a key goal of this project, the focus stayed on ensuring that the application functioned on large screen devices like the Nexus 7.
-Future work could be considered to refactor improvements in wifi direct middleware 
+Another area of future research will be to better coordinate the timing of data exchange in the interests of reducing power.
+For example, data transfer does not usually need to be continuous or too frequent in our target use case.
+The upstream devices in our implementation do not have any way to know when a downstream device might make a connection, 
+so all devices remain active at all times.
+In a realistic deployment, data transfer could take place on a relatively infrequent, such as daily or weekly, basis.
+Therefore, a mechanism to incorporate pre-programmed periods for the devices to be inactive
+and a time schedule for all devices to awake to do a scheduled data transfer would reduce power consumption.
 
-As noted in the results section, timing was a key challenge due to the highly asynchronous nature of the application.
-There is additional work that could be spent implementing a better mechanism to determine that a device in any phase is in the desired state and ready before operations are executed.
-In the prototype application, delays were injected to give time for devices to completed known longer running tasks, but a better mechanism could be to look at some sort of handshake, acknownledge, and retry design.
-Handling endpoints is another area that was not explored during this project.
-Both interfacing to actual dataloggers as well as interfacing to the broader Internet for data uploads once the application has successfully ferried data from the cave.
 
-Environmental issues such as dust and possibly flooding are both areas that might need to be considered in some or all cases for a practical implementation.
+
+% - KH - I don't think this is particularly worth mentioning if we include mention of using smaller/small screen devices..
+% Early in development of the data ferry application a design decision was made to drop support for smaller screened devices where the application was having difficulty rendering properly.
+% This was due to code that was leveraged from the range experiment and the direction taken to implement the user interface.
+% Since rendering correctly on any Android device was not a key goal of this project, the focus stayed on ensuring that the application functioned on large screen devices like the Nexus 7.
+
+
+As noted in the Data Ferry Experiment Results section, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
+In the prototype, we injected pre-configured delays based on our experiments to allow time for devices to complete known longer running tasks.
+A better mechanism could be to look at some sort of handshake, acknowledge, and retry design.
+% (kh: unclear what is meant here, or perhaps it's covered by the above)
+% There could be a better mechanism to determine that a device is in the desired state and ready before operations are executed.
+
+We did not connect to actual data loggers in our experiments although we did use example data logger output in our experiments.
+However, given that all data loggers and data storage modules provide a way to connect to another device or to the internet, 
+we expect that the connection to the first ferry device should be technically possible and may be specific to the logger or storage device.
+Once data has reached the final endpoint, it is accessible at the very least as a file in the device's file system.
+If the final endpoint is located where wifi or cellular data is available, 
+then the final device can be responsible for uploading data to the internet.
+If the final endpoint is not located within wifi or cellular data range, 
+then the final device will be responsible for storing accumulated data until the data is retrieved.
+This final data retrieval could easily be done wirelessly with Wifi Direct.
+
+The exposure of the device to environmental issues such as dust, humidity, and water need to be considered in a practical implementation.
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
+If smaller devices are used, it will be easier to harden them to the elements.
+
+Further work could be done to improve Wifi Direct support and reliability in middleware platforms such as Android per the issues discussed in the Data Ferry Experiment Results section.
 
 \section{Acknowledgements}
 We would like to thank David Ochel for accompanying us on our trip and for taking photos. 
