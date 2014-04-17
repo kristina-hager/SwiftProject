@@ -125,7 +125,7 @@ Their system treats this train as a data mule by equipping it with a wifi enable
 Overall, this is a very interesting approach. 
 However, it requires a cave with regular traffic of some type to act as the data mule.
 
-Moore, et al \cite{moore2012} considers using autonomous mobile radio nodes to wirelessly (via wifi) connect a base station to a leader node in tunnel exploration. 
+Moore, et al \cite{moore2012} considers using autonomous mobile radio nodes to connect a base station to a leader node via wifi in tunnel exploration. 
 Tunnel environments share some similarities with cave environments in that the passages usually consist of rough, concrete (rock-like) walls with straighter, longer passages of more consistent dimensions. 
 Therefore, their experiments with wifi signal attenuation in the tunnel environment give us useful data to use in predicting range possibilities in a cave environment.
 
@@ -172,7 +172,7 @@ With Standard, devices negotiate to become the group owner.
 With Persistent, a device identifies that a peer has been established as part of a past group. 
 The group can be reformed, and the formation process can occur with a significantly reduced WPS phase because credentials for the devices have been stored.
 With Autonomous, a device declares itself a group owner without involvement from any other peer devices. 
-As part of providing the the BSS functionality for the network, the group owner is responsible for providing DHCP addresses to devices on the network.
+As part of providing the BSS functionality for the network, the group owner is responsible for providing DHCP addresses to devices on the network.
 Data I/O can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established\cite{wifiwhitepaper}.
 
 As part of the connection process, WPS is used to obtain credentials and authenticate the WiFi Direct device.  
@@ -191,7 +191,7 @@ The WiFi manager class provides methods to allow you to interact with the Wi-Fi 
 Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
 Intents notify you of specific events detected by the Wi-Fi P2P framework, such as a dropped connection or a newly discovered peer. 
 Actual data transfer between devices are handled by standard TCP/IP socket objects and I/O operations.
-Android devices making use of the WiFI Direct functionalities are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
+Android devices making use of the WiFi Direct functionality are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
 
 An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
 First, the application must setup a Broadcast Receiver. 
@@ -199,7 +199,7 @@ A broadcast receiver allows you to receive intents broadcast by the Android syst
 The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive()" method.
 The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
 The application also should set up a Peer to Peer manager. 
-The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast receiver.
+The peer to peer manager, or "WifiP2pManager" class will be instantiated in the application, and used to create a channel which will be passed to the broadcast receiver.x
 
 To discover peer devices, the "discoverPeers()" method is called from the peer to peer manager created for the application.
 Discovery is asynchronous, so an intent is used to notify the application when discovered peers are available.
@@ -289,11 +289,11 @@ In general, the most important result provided by the application was to confirm
 
 \subsection{Data Ferry Software}
 \label{sec:Data Ferry Software}
-The second phase of the project was to build an Android application called SwiftDataHop, that would utilize WiFi Direct to do an automated transfer of a data logger datafile across multiple mobile devices acting as a data ferry. 
+The second phase of the project was to build an Android application called SwiftDataHop, that would utilize WiFi Direct to do an automated transfer of a data logger data file across multiple mobile devices acting as a data ferry. 
 This project leveraged some of the WiFi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
-During this project the interface to the data logger was simulated with a pre-populated datafile.
-The application was notified of the presence of the datafile via a button click on the user interface.
+During this project the interface to the data logger was simulated with a pre-populated data file.
+The application was notified of the presence of the data file via a button click on the user interface.
 
 SwiftDataHop has two modes of execution, Manual Mode and Operate Mode.
 Manual Mode performs the same data transfer capability as was used in the range experiment software which allows WPS to be executed between device so that user intervention is not required during Operate Mode.
@@ -304,7 +304,7 @@ As part of configuration in Manual Mode each device has the capability to set an
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
 A device with no downstream device set will have the capability to initiate the file transfer of the data file in Operate Mode.
 A device with both an upstream and downstream device configured will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
-A device with no upstream device is an endpoint or file destination and will display the file received and location to which it is copied on the filesystem.
+A device with no upstream device is an endpoint or file destination and will display the file received and location to which it is copied on the file system.
 In manual mode, upstream and downstream device configuration information may be viewed.
 
 Operate mode is the automated mode of the application.
@@ -461,7 +461,7 @@ For example, data transfer does not usually need to be continuous or too frequen
 The upstream devices in our implementation do not have any way to know when a downstream device might make a connection, 
 so all devices remain active at all times.
 In a realistic deployment, data transfer could take place on a relatively infrequent, such as daily or weekly, basis.
-Therefore, a mechanism to incorporate pre-programmed periods for the devices to be inactive
+Therefore, a mechanism to incorporate preprogrammed periods for the devices to be inactive
 and a time schedule for all devices to awake to do a scheduled data transfer would reduce power consumption.
 
 
@@ -473,7 +473,7 @@ and a time schedule for all devices to awake to do a scheduled data transfer wou
 
 
 As noted in Section~\ref{sec:Data Ferry Experiment Results}, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
-In the prototype, we injected pre-configured delays based on our experiments to allow time for devices to complete known longer running tasks.
+In the prototype, we injected preconfigured delays based on our experiments to allow time for devices to complete known longer running tasks.
 A better mechanism could be to look at some sort of handshake, acknowledge, and retry design.
 % (kh: unclear what is meant here, or perhaps it's covered by the above)
 % There could be a better mechanism to determine that a device is in the desired state and ready before operations are executed.
@@ -486,7 +486,7 @@ If the final endpoint is located where wifi or cellular data is available,
 then the final device can be responsible for uploading data to the internet.
 If the final endpoint is not located within wifi or cellular data range, 
 then the final device will be responsible for storing accumulated data until the data is retrieved.
-This final data retrieval could easily be done wirelessly with WiFi Direct.
+This final data retrieval could easily be done with WiFi Direct.
 
 The exposure of the device to environmental issues such as dust, humidity, and water need to be considered in a practical implementation.
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
