@@ -61,40 +61,43 @@ Therefore, cave researchers are interested in mechanisms that would make their d
 \caption{Testing Wifi Direct range in Whirlpool cave. \textit{Image courtesy of David Ochel.}}
 \end{figure*}
 
-\subsection{Using Wifi Direct to Retrieve Sensor Data}
-We propose here to automatically ferry data back to the surface using Wifi Direct enabled devices. 
-This technology is now common in many mobile devices.
+\subsection{Outline of Wifi Direct Investigation}
+We propose here to automatically ferry data collected by a sensor from within a cave back to the surface using Wifi Direct enabled devices. 
+% This technology is now common in many mobile devices.
 This would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
-The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which could 
-provide a simple and power effective means of setting up the network and transferring data. 
+The Wifi Direct standard provides infrastructure mechanisms for discovery, addressing, and security which 
+provides a simple and power effective means of setting up the network and transferring data. 
 
 We will focus on two key questions in this paper regarding the potential of the Wifi Direct technology for this application.
 First, we will investigate the range of the Wifi Direct technology in a cave environment.
 WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology. 
 However, we would like to determine the potential range of Wifi Direct specifically in a cave environment which has different characteristics from a usual surface environment. 
-Next, we will create a prototype application for ferrying data using Wifi Direct as provided by the Android platform. 
+Next, we will investigate how to ferry data from device to device using Wifi Direct as provided by the Android platform. 
 
-However, the still nascent implementation of the WiFi Direct APIs will pose some limitations for our use case.
+However, the still nascent implementation of the WiFi Direct standard poses some limitations for our use case.
+Since the data will need to travel from device to device beyond the range of a single wifi direct group, 
+each device will need to participate in one or two groups. 
 The current implementation of Wifi Direct on Android devices does not allow a device to be simultaneously connected to two WifiDirect groups.
-Since the data will need to travel from device to device, each device will need to participate in one or two groups. 
-Since the connection to those groups cannot be simultaneous, our prototype application will manage the disconnect from one group and connect to the next group automatically.
-In addition, the current Wifi Protected Setup(WPS) implementation requires the human user of the device to approve any new connections.
+Therefore, our prototype application will manage the disconnect from one group and connection to the next group automatically.
+
+In addition, the current Wifi Protected Setup (WPS) implementation requires the human user of the device to approve any new connections.
 However, once a device has gained user permission once to a join a group, the Android platform "remembers" that permission and allows the device to automatically rejoin that group.
-Since we want our devices to be able to operate autonomously underground, we will show how to accommodate the approval issue by pre-configuring the devices in their planned sequence.
+Since we want our devices to be able to operate autonomously, we will show how to accommodate the approval issue by pre-configuring the devices in their planned sequence.
  
 For the first phase of this project, we created a prototype application for Android devices. 
 We used this application to test the ability to make Wifi Direct connections within Whirlpool Cave, a popular cave in south Austin with a variety of passage characteristics. 
-The ultimate goal of this initial application and the cave excursion is to determine if the range of Wifi Direct is sufficient to support passing messages out of the cave.
+The ultimate goal of this initial application and the cave excursion is to determine if the range and bandwidth of Wifi Direct is sufficient to support passing messages out of the cave.
 The results of this initial testing showed that WiFi Direct had significant range in areas of the cave where direct line of sight was achievable between devices.
-In typical deployments, wifi signals do not require direct line of sight as they can travel through common building materials.
+Just as a note, in typical deployment environments, wifi signals do not require direct line of sight as they can travel through common building materials.
 However, the radio waves of wifi signals cannot travel through substances like rock or concrete.
 We will discuss these experiments in a subsequent section of the paper.
 
 For the second phase of the project, we developed a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
-While WiFi Direct can easily be used to transfer data files within a single WiFi Direct group, in some cases our application would require data transfers beyond the range of what a single group can provide.
-Ultimately the second application shows that passing information from peer to peer to ferry the data from the cave is achievable. 
-In addition to the key concern that the application could support multiple WiFi direct groups on the same device, we had concerns about timing of discovery and connectivity.
-These must be implemented in such a way that a single wireless interface on the device can be shared.
+Ultimately the second application successfully demonstrates that passing data from peer to peer using Wifi Direct is achievable. 
+In the development of this application, we developed code to manage a device's participation in multiple Wifi Direct groups.
+We also spent considerable effort managing timing, connection, and synchronization issues between the devices.
+We explain these issues later in the paper, and we consider these issues to indicate areas of future work for middleware solutions
+such as the Android platform.
 
 % We have not yet finished our research project. 
 % This paper serves to cover the progress that has been made thus far into answering the questions outlined in this introduction. 
@@ -126,7 +129,7 @@ Therefore, their experiments with wifi signal attenuation in the tunnel environm
 
 \section{WiFi Direct and Android Support}
 
-\subsection{WifiDirect Overview}
+\subsection{Wifi Direct Overview}
 Today, wireless connectivity is largely taken for granted. 
 There are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
 % Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
@@ -432,8 +435,10 @@ There are numerous areas that could be considered for future work that were out 
 
 During this project we did not focus on measuring or reducing power consumption.
 Rather, we were focused on a showing that the Wifi Direct technology has the capability to automatically ferry data within a cave.
+One reported advantage of the Wifi Direct standard over other ad hoc wireless connection standars is that it provides for better power efficiency during discovery and connect \cite{wifiwhitepaper}.
+Therefore, the Wifi Direct technology is a good starting point for building a low power data ferrying solution.
 However, power conservation is very important in a cave environment as access to a power source is unlikely unless the cave is a tourist cave already outfitted with a lighting system.
-We propose that future work in this area focus on reducing power requirements.
+We propose that future work in this area can reduce power requirements beyond what is provided inherently with Wifi Direct.
 For instance, the data transfer can be done with smaller, lower power devices.
 One way to reduce power consumption is to minimize the human interface component.
 Sepcifically, large screens consume a lot of power, so realistic implementations could use a smaller screen or no screen.
