@@ -33,7 +33,7 @@ University of Texas at Austin\\
 	support for WiFi Direct.
 \end{abstract}
 
-\tableofcontents
+% \tableofcontents
 
 \section{Introduction}
 
@@ -134,7 +134,7 @@ Therefore, their experiments with wifi signal attenuation in the tunnel environm
 \subsection{WiFi Direct Overview}
 \label{sec:WifiD Overview}
 Today, wireless connectivity is largely taken for granted. 
-There are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
+However, there are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
 % Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
 The WiFi Direct standard is one means of potentially filling that gap. 
 In some use cases, broader connectivity to infrastructure is not required and there is value to simple device to device communication. 
@@ -145,11 +145,11 @@ This standard has several benefits, first and foremost being that it does not re
 In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
 Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbps and up to 200 meters depending on the environment. 
 Security for WiFi direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
-Since power management is especially important for mobile devices WiFi direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
-All of these benefits make WiFi Direct an ideal consideration to utilize as the technology for ferrying data from an underground cave.
+Since power management is especially important for mobile devices WiFi Direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
+All of these benefits make WiFi Direct an ideal selection as the technology for ferrying data from an underground cave.
 
 The basic concepts of WiFi Direct are as follows. 
-At the core of WiFi Direct is the WiFi Direct Group. 
+The WiFi Direct Group is a core component of WiFi Direct. 
 The WiFi Direct group basically functions as an infrastructure basic service set (BSS). 
 All components that can connect into a wireless medium in a network are referred to as stations. 
 The BSS is a set of all stations that can communicate with each other. 
@@ -158,11 +158,11 @@ All WiFi Direct devices must be capable of becoming the group owner.
 Within a group, a single device takes on this role.
  
 The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, WPS Internal Registrar functionality, and communication between Clients in the Group. 
-The Group owner decides if the group is temporary or persistent, a persistent group may be formed again without reinitiating WPS.
+The Group owner decides if the group is temporary or persistent. A persistent group may be formed again without reinitiating WPS.
 Group owners may optionally provide features such as simultaneous (concurrent) connection with an infrastructure network and sharing of that infrastructure connection. 
+
 In addition to being able to execute the group owner role, WiFi Direct devices must also be capable of group ownership negotiation, discovery, and power management functions.
- 
-Devices adhering to the standard enter into a discovery phase where peers within range are found. 
+ Devices adhering to the standard enter into a discovery phase where peers within range are found. 
 Once a list of peers is retrieved, devices wishing to connect may either form a new  WiFi Direct group or connect to an existing group. 
 As part of the group formation process, the devices wishing to connect establish which device will become the group owner.
 
@@ -174,40 +174,46 @@ With Autonomous, a device declares itself a group owner without involvement from
 As part of providing the BSS functionality for the network, the group owner is responsible for providing DHCP addresses to devices on the network.
 Data I/O can be handled via typical TCP/IP sockets, using the DHCP address provided by the group owner once the group is established \cite{wifiwhitepaper}.
 
-As part of the connection process, WPS is used to obtain credentials and authenticate the WiFi Direct device.  
+WPS is used to obtain credentials and authenticate the WiFi Direct device as part of the connection process.  
 This type of security requires user intervention in the form of the user either pushing a button or providing a PIN on the device.
-To execute WPS, the group owner generates and issues the security keys to other devices in the group. 
-WPS, which is based on WPA-2 security, uses Advanced Encryption Standard (AES)-CCMP as cipher, and a randomly generated Pre-Shared Key (PSK) for mutual authentication \cite{wifiwhitepaper}.
-After this part of the process devices disconnect and reconnect using their new authentication credentials.
-With persistent groups, since credentials have been stored, the previous process of establishing authentication can be skipped and the two devices can use their credentials to connect.
+The group owner generates and issues the security keys to other devices in the group to execute WPS. 
+WPS, based on WPA-2 security, uses Advanced Encryption Standard (AES)-CCMP as cipher and a randomly generated Pre-Shared Key (PSK) for mutual authentication \cite{wifiwhitepaper}.
+After this step, devices disconnect and reconnect using their new authentication credentials.
+When using persistent groups, credentials will be stored by the devices.
+Therefore, the previous process of establishing authentication can be skipped, and the two devices can use their stored credentials to connect.
 
 \section{Android APIs For WiFi Direct}
 \label{sec:Android APIs For WiFi Direct}
-For this project, we used the Android platform to evaluate WiFi Direct for the Swift use case.
-Starting with Android 4.0(API 14 and higher), Android provides three main areas within their API to support WiFi Direct.
-These are the WiFi manager, Listeners, and Intents.
-The WiFi manager class provides methods to allow you to interact with the Wi-Fi hardware on your device to do things like discover and connect to peers. 
+We used the Android platform to evaluate WiFi Direct for the Swift use case.
+Starting with Android 4.0 (API 14 and higher), Android provides three main areas within their API to support WiFi Direct:
+the WiFi Manager, Listeners, and Intents.
+The WiFi Manager class provides methods to allow you to interact with the Wi-Fi hardware on your device to do things like discover and connect to peers. 
 Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
-Intents notify you of specific events detected by the Wi-Fi P2P framework, such as a dropped connection or a newly discovered peer. 
+Intents notify you of specific events detected by the Wi-Fi P2P framework such as a dropped connection or a newly discovered peer. 
 Actual data transfer between devices is handled by standard TCP/IP socket objects and I/O operations.
 Android devices making use of the WiFi Direct functionality are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
 
 An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
 First, the application must setup a Broadcast Receiver. 
-A broadcast receiver allows you to receive intents broadcast by the Android system, in this case the application should respond to Wi-Fi peer to peer intents.
-The broadcast receiver should implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive()" method.
+A broadcast receiver allows you to receive intents broadcast by the Android system. In this case the application should respond to Wi-Fi peer to peer intents.
+The broadcast receiver must implement necessary function calls to handle these intents in the Broadcast Receiver's "onReceive()" method.
 The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
 The application also should set up a Peer to Peer manager. 
-The peer to peer manager known as "WifiP2pManager" class will be instantiated in the application, and it will be used to create a channel which will be passed to the broadcast receiver.x
+The peer to peer manager known as "WifiP2pManager" class will be instantiated in the application, and it will be used to create a channel which will be passed to the broadcast receiver.
 
-To discover peer devices, the "discoverPeers()" method is called from the peer to peer manager created for the application.
+The peer to peer manager created for the application invokes the "discoverPeers()" method to discover peer devices.
 Discovery is asynchronous, so an Intent is used to notify the application when discovered peers are available.
-Once the application receives notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
-This function call is also asynchronous and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
-This provides a list of WifiP2pDevice devices which can be used to establish a connection. \cite{androidp2p}
+% KH - Amy, the below sentence is passive -- can you turn it around? I didn't know for sure which component queries the peer to peer manager
+% i.e.
+Once the application receives notification of available peers, xx component can query the peer to peer manager for the last of available peers by calling the "requestPeers()" function.
+% Once the application receives notification of available peers, the peer to peer manager can be queried for the list of available peers by calling the "requestPeers()" function. 
+This function call is also asynchronous, and the function "onPeersAvailable()" is executed when the "requestPeers()" function succeeds. 
+The result is a list of WifiP2pDevice devices with which a WiFi Direct connection can be made. \cite{androidp2p}
 
-When a device is selected for a connection, the wifi peer to peer manager is used to call the "connect()" function to establish the connection to the device. 
-This method is passed a WifiP2pConfig object which can be assigned parameters from the WifiP2pDevice such as the device's address.
+% amy, verify the below sentence change for accuracy
+The application invokes the "connect()" function provided by the wifi peer to peer manager to establish a connection to a selected device.
+% When a device is selected for a connection, the wifi peer to peer manager is used to call the "connect()" function to establish the connection to the device. 
+This function takes WifiP2pConfig object as a parameter which can include details from the WifiP2pDevice such as the device's address.
 The "connect()" method is another asynchronous call. 
 Once successful, a WiFi Direct group has been formed, or reformed, and the device is ready to transfer data using socket methods.
 
@@ -263,81 +269,91 @@ Last, we disconnected the device, and moved to a new position for the next exper
 
 \subsection{Range Experiment Software}
 \label{sec:Range Experiment Software}
-An Android application was developed to perform the range experiments in a cave and to test distances that could be achieved by WiFi Direct on a mobile device.
-This initial application was developed based on a WiFi Direct example provided by the Android SDK.
-The example was used to learn how to create the necessary WiFi Direct components, and understand how the significant asynchronous function calls operate together.
-To perform the range experiments the example was modified to open a connection to a single device, load a data file from the device, and send the data file. 
-The original application provided the ability for the client to launch the other device's photo gallery and select a photo to be copied.
-This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a data logger.
+Using the Wifi Direct example provided by the Android SDK, 
+we developed an Android application to perform the range experiments in a cave and to test distances that could be achieved by WiFi Direct on a mobile device.
+This example application taught us how to create the necessary WiFi Direct components and how the significant asynchronous function calls operate together.
+To perform the range experiments, we modified the example to open a connection to another device, load a data file from the device, and send the data file. 
+% needed? The original application provided the ability for the client to launch the other device's photo gallery and select a photo to be copied.
+% This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a data logger.
 
-The Android application followed the architecture described in Section~\ref{sec:Android APIs For WiFi Direct} for creating peer to peer connections. 
-This WiFi Direct application has the ability to be either the sender or the receiver of the test data file.
-The main application presents a fairly simple GUI interface allowing the user to kick off discovery of peer devices. 
-Upon completion of discovery a list of available peers is displayed on the GUI.
-The user can then select from the list of devices which brings up a menu to connect to that device.
-Once the WiFi Direct connection is established, the user may either disconnect or select a button to transfer the data file.
+The example application and our derived application followed the architecture described in Section~\ref{sec:Android APIs For WiFi Direct} for creating peer to peer connections. 
+% A device running our application has the ability to be either the sender or the receiver of the test data file.
+Either application presents a simple GUI interface allowing the user to kick off discovery of peer devices. 
+Upon completion of discovery the GUI displays a list of available peers.
+The user can then select a device from the list of available devices which brings up a menu to connect to that device.
 
-After the connection is established, the device which is designated to be the receiver has slightly different functionality.
-For the receiver they have the option of terminating the connection, but also have a button to allow them to reset the application to be prepared to receive the next data file.
-The GUI provides the user a mechanism to take a note to be logged to the log file so that data may be captured about the test being performed at the time.
-The application timestamps the start and end of the data transfer, calculates duration, and logs this information to a log file, in addition to any input the user provides from the GUI about the test.
+Once the WiFi Direct connection is established, the user may either disconnect or, optionally, select a button to transfer the data file.
+The device selected as the "group owner" during the negotiation process is the receiver of the file, and the other device is the sender of the file.
+There is no technical reason for this distinction; it is just how the example application was configured.
+The device which is designated to be the receiver has slightly different functionality.
+It has the option of terminating the connection and, in our derived application, a button to reset the socket in order to receive the next data file.
 
-The goal of the application was to have a means to test connectivity throughout the cave and ensure that the full data file could be transferred.
-The duration of the transfer was captured as measured from one side of the connection, in the event that a benchmark was possible.
-In general, the most important result provided by the application was to confirm or deny a successful file transfer.
+We added a log file to our application to capture the time required to send or receive a file just for further information.
+The application timestamps the start and end of the data transfer, calculates duration, and logs this information to a log file.
+In addition, the GUI of our application allows the user to enter a note to be included in the log file to help identify the test being performed at the time.
+
+We developed this application in order to test the ability to establish a connection throughout the cave and to verify the successful transfer of the full data.
+% The duration of the transfer was captured as measured from one side of the connection, in the event that a benchmark was possible.
+% The most important result provided by our application was to confirm or deny a successful file transfer.
 
 \subsection{Data Ferry Software}
 \label{sec:Data Ferry Software}
-The second phase of the project was to build an Android application called SwiftDataHop that would utilize WiFi Direct to do an automated transfer of a data logger data file across multiple mobile devices acting as a data ferry. 
+In the second phase of the project we designed and built an Android application called SwiftDataHop to automatically transfer a data file sequentially from device to device. 
 This project leveraged some of the WiFi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
-To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
-During this project the interface to the data logger was simulated with a pre-populated data file.
-The application was notified of the presence of the data file via a button click on the user interface.
+To utilize Operate Mode, the user must configure each device to identify device roles and execute WPS to store credentials.
+% I didn't follow the below two lines - at least in this context
+% During this project the interface to the data logger was simulated with a pre-populated data file.
+% The application was notified of the presence of the data file via a button click on the user interface.
 
 SwiftDataHop has two modes of execution: Manual Mode and Operate Mode.
 Manual Mode has the same connect and transfer capability as described in the range experiment software.
-This capability allows WPS to be established between devices so that user intervention is not required during Operate Mode.
-Manual Mode also allows the user to configure device roles via the GUI.
-The roles that can be configured are data file initiator, a sender-receiver, and an endpoint.
-A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device is configured.
-As part of configuration in Manual Mode each device has the capability to set an upstream device, a downstream device, or both.  
+In Manual Mode, the user can initiate WPS between devices so that user intervention is not required during Operate Mode.
+She can also establish which devices are upstream and/or downstream of a device and view or reset this configuration.
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
-A device with no downstream device set will have the capability to initiate the file transfer of the data file in Operate Mode.
-A device with both an upstream and downstream device configured will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
-A device with no upstream device is an endpoint or file destination and will display the file received and location to which it is copied on the file system.
-In manual mode, upstream and downstream device configuration information may be viewed.
 
-Operate mode is the automated mode of the application.
+A device can have one of these roles: data file initiator, a sender-receiver, and an endpoint.
+A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device are set.
+A device with no downstream device set is a data file initiator and will have the capability to initiate the file transfer of the data file in Operate Mode.
+A device with both an upstream and downstream device is a sender-receiver and will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
+A device with no upstream device is an endpoint and will display the file received and location to which it is copied on the file system.
+
+Operate Mode is the automated mode of the application.
 A device cannot enter Operate Mode without at least one upstream or downstream device set.
-Overall the application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, and RECEIVE\_FILE.
+The application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, and RECEIVE\_FILE.
 The OFF state means that the application is in manual mode.
+
 When Operate Mode is entered, the device initially goes into the IDLE\_WAIT state.
 There are three possible ways to transition out of the IDLE\_WAIT state:
 \begin{enumerate}
-  \item When someone clicks the button to turn Operate Mode Off, the application would transition back to the OFF state.
-  \item When someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set, the application would transition to the SEND\_FILE state.
-  \item When a WiFi Direct Group is initiated from a downstream device, the device would transition into the RECEIVE\_FILE state.
+  \item When someone clicks the button to disable Operate Mode, the application transitions back to the OFF state.
+  \item When someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set, the application transitions to the SEND\_FILE state.
+  \item When a WiFi Direct Group is initiated from a downstream device, the device transitions to the RECEIVE\_FILE state.
 \end{enumerate}
 % The first, if someone clicks the button to turn Operate Mode Off, in which case the application would transition back to the OFF state.
 % The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
 % Here the application would transition to the SEND\_FILE state.
 % The third if a WiFi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
+
 If a device is in the SEND\_FILE state, after operations are performed to send the data file upstream, the device will return to the IDLE\_WAIT state.
+
 If a device is in the RECEIVE\_FILE state, it will perform operations to receive a file, and then if an upstream device has been configured it will transition into the SEND\_FILE state.
 If an upstream device has not been configured, it will transition back to the IDLE\_WAIT state as that indicates it is the final device in the transfer.
 
 TODO: Add state machine diagram.  
-The operations to send and receive a file are those required to execute WiFi Direct group formation, and once completed, to create a socket connection and perform the transfer. 
-Once the send file button is clicked and a device goes into the SEND\_FILE state, it performs a WiFi Direct "Connect". 
-Android APIs handle the initiation of the WiFi Direct group.
-The device is notified of the successful group formation by the "onConnectionInfoAvailable" callback.
-At this point a TCP socket connection to the upstream device is created using the connection info returned from the previous callback.
+
+The operations to send and receive a file can be broken down into the operations required to execute WiFi Direct group formation, create a socket connection, and perform a file transfer. 
+Once the send file button is clicked and a device goes into the SEND\_FILE state, it initiates a WiFi Direct "Connect" which is handled by Android APIs.
+Both devices are notified of the successful group formation by the "onConnectionInfoAvailable" callback.
+
+At this point the downstream device creates a TCP socket connection to the upstream device using the connection info returned from the previous callback.
 Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the WiFi Direct group is disconnected.
 The sending device returns to the IDLE\_WAIT state.
-The receiving device enters the RECEIVE\_FILE state when the "onConnectionInfoAvailable" callback is executed, meaning a downstream device has requested group formation.
-The device in RECEIVE\_FILE state immediately opens a socket and waits for the downstream device to connect.
+
+Approximately simultaneously, the upstream device enters the RECEIVE\_FILE state and immediately opens a socket for the downstream device to connect.
 Once a connection is received, the device reads the data file from the socket, closes the socket, and disconnects the WiFi Direct group.
 The receiving device then will transition to the IDLE\_WAIT state if it is an endpoint, or it will transition to the SEND\_FILE state in order to perform send operations if it has an upstream device.
+
+It is actually the timing and synchronization of the group formation, subsequent socket connection, and file transfer that was the most tricky to implement in the application.
 
 \section{Results}
 
@@ -388,20 +404,20 @@ However, we would like to state here that their work found that wifi signals att
 \label{sec:Data Ferry Experiment Results}
 Section~\ref{sec:Data Ferry Software} covered the design of the WiFi Direct data ferry application called SwiftDataHop. 
 
-Using this prototype it was demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
-During the course of this project four Nexus 7 tablets running Android 4.4.2 were tested and could successfully execute the transfer.
+Using this prototype we demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
+During the course of this project, we confirmed that four Nexus 7 tablets running Android 4.4.2 could successfully and automatically execute the transfer of a data file.
 The project was limited to four devices simply by the number of available tablets.
-In theory additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
-While the SwiftDataHop application was able to execute the automated transfer across four devices, there are still several issues that would need to be resolved before the application could be put to practical use.
+Additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
+While the SwiftDataHop application was able to execute the automated transfer across the devices, there are still several issues that need to be resolved before the application can be put to practical use.
 Timing was a key challenge in implementing the Operate Mode, or automated mode, of this application.
 The application was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
 For example, once the first phase of creating the WiFi Direct group was completed, the sending device would receive notification that the group was established.  
-Upon this notification, if the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
+However, if the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
 Since the goal of the initial prototype was just to prove the feasibility of WiFi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
-In addition, the Android WiFi Direct APIs had some inconsistent behavior.
-These APIs were very sensitive to other operations being performed on the device and offered little in terms of visibility and debug into the lower level system functions taking place on the device.
-During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to either manually disconnect from all devices, or disable and re-enable wireless services on the mobile device.
-If there were additional time to dig into the source for the APIs it is highly likely that this issue could root caused and overcome.
+In addition, the Android WiFi Direct APIs showed inconsistent behavior.
+These APIs are very sensitive to other operations being performed on the device and offer little in terms of visibility and debug into the lower level system functions taking place on the device.
+During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to basically reset the device either by manually disconnecting from all devices or by disabling and re-enabling wireless services on the mobile device.
+If we had additional time to dig into the source for the Android APIs, it is highly likely that the root cause of this issue could be found and overcome.
 Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
 This would be a reasonable constraint in the cave environment as no other wireless infrastructure would be available.
 In summary, this application was an effective prototype to prove that WiFi Direct could be used to leverage peer to peer connectivity in the absence of infrastructure to act as a ferry for data from in-cave loggers.
