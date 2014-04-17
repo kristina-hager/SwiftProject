@@ -38,7 +38,7 @@ University of Texas at Austin\\
 \section{Introduction}
 
 \subsection{Usage of Sensors and Data Loggers in Caves}
-
+\label{sec:Usage of Sensors and Data Loggers in Caves}
 Many types of scientists such as geologists, hydrogeologists, climatologists and more conduct research in the interior of caves. 
 These scientists are usually looking for information about the cave's microclimate and changes to the caves microclimate. 
 For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
@@ -62,6 +62,7 @@ Therefore, cave researchers are interested in mechanisms that would make their d
 \end{figure*}
 
 \subsection{Outline of Wifi Direct Investigation}
+\label{sec:Outline}
 We propose here to automatically ferry data collected by a sensor from within a cave back to the surface using Wifi Direct enabled devices. 
 % This technology is now common in many mobile devices.
 This would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
@@ -90,7 +91,7 @@ The ultimate goal of this initial application and the cave excursion is to deter
 The results of this initial testing showed that WiFi Direct had significant range in areas of the cave where direct line of sight was achievable between devices.
 Just as a note, in typical deployment environments, wifi signals do not require direct line of sight as they can travel through common building materials.
 However, the radio waves of wifi signals cannot travel through substances like rock or concrete.
-We will discuss these experiments in a subsequent section of the paper.
+We will discuss these experiments in Section~\ref{sec:Wifi Direct Range in a Cave}.
 
 For the second phase of the project, we developed a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
 Ultimately the second application successfully demonstrates that passing data from peer to peer using Wifi Direct is achievable. 
@@ -104,6 +105,7 @@ such as the Android platform.
 
 
 \section{Related Work}
+\label{sec:Related}
 Cave explorers and researchers need in cave communication systems in order to carry out complex group tasks such as expedition management, rescues, or photography projects.
 
 Wired telephone technology is popular with expedition and rescue teams because they are simple and robust \cite{cavecomm}.
@@ -130,6 +132,7 @@ Therefore, their experiments with wifi signal attenuation in the tunnel environm
 \section{WiFi Direct and Android Support}
 
 \subsection{Wifi Direct Overview}
+\label{sec:WifiD Overview}
 Today, wireless connectivity is largely taken for granted. 
 There are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
 % Whether due to physical or technological constraints, occasionally device connectivity cannot be achieved. 
@@ -180,6 +183,7 @@ After this part of the process devices disconnect and reconnect using their new 
 With persistent groups, since credentials have been stored, the previous process of establishing authentication can be skipped and the two devices can use their credentials to connect.
 
 \section{Android APIs For WiFi Direct}
+\label{sec:Android APIs For WiFi Direct}
 For this project, we used the Android platform to evaluate WiFi Direct for the Swift use case.
 Starting with Android 4.0(API 14 and higher), Android provides three main areas within their API to support Wifi Direct.
 These are the WiFi manager, Listeners, and Intents.
@@ -211,6 +215,7 @@ Once successful, a Wifi direct group has been formed, or reformed, and the devic
 \section{Experiments}
 
 \subsection{Typical Sensor, Data Logger Usage and Data File}
+\label{sec:TypicalUsage}
 Wong, et al carried out their experiments with a Telaire 7001 CO2 Sensor \cite{telaire} \cite{wong2010}. 
 This is a hand held CO$_2$ and temperature sensor.
 This sensor can perform environmental readings, but it cannot save data.
@@ -232,6 +237,7 @@ Therefore, we considered this a good example of the kind of data our application
 We used this data file in all of our experiments and have included a copy of it in both applications.
 
 \subsection{Methodology for Measuring Range and Connectivity}
+\label{sec:Methodology}
 Wifi direct operates on the same 2.4Ghz band as most 802.11 based wifi deployments \cite{wifiwhitepaper}.
 Typical indoor deployments of 802.11[bg] have a range of 35m, and outdoor deployments can have a range up to 100m.
 802.11n deployments can have up to twice that range \cite{wikiwifi}.
@@ -257,6 +263,7 @@ Last, we disconnected the device, and moved to a new position for the next exper
 % \end{figure}
 
 \subsection{Range Experiment Software}
+\label{sec:Range Experiment Software}
 An Android application was developed to perform the range experiments in a cave and to test distances that could be achieved by Wifi Direct on a mobile device.
 This initial application was developed based on a Wifi Direct example provided by the Android SDK.
 The example was used to learn how to create the necessary Wifi Direct components, and understand how the significant asynchronous function calls operate together.
@@ -264,7 +271,7 @@ To perform the range experiments the example was modified to open a connection t
 The original application provided the ability for the client to launch the other device's photo gallery and select a photo to be copied.
 This functionality was removed for the purposes of our experiment, and replaced with functionality that would allow us to transfer a true sample data file from a data logger.
 
-The Android application followed the architecture described in the section outlining the Android Wifi Direct APIs for creating peer to peer connections. 
+The Android application followed the architecture described in Section~\ref{sec:Android APIs For WiFi Direct} for creating peer to peer connections. 
 This Wifi Direct application has the ability to be either the sender or the receiver of the test data file.
 The main application presents a fairly simple GUI interface allowing the user to kick off discovery of peer devices. 
 Upon completion of discovery a list of available peers is displayed on the GUI.
@@ -281,6 +288,7 @@ The duration of the transfer was captured as measured from one side of the conne
 In general, the most important result provided by the application was to confirm or deny a successful file transfer.
 
 \subsection{Data Ferry Software}
+\label{sec:Data Ferry Software}
 The second phase of the project was to build an Android application called SwiftDataHop, that would utilize Wifi Direct to do an automated transfer of a data logger datafile across multiple mobile devices acting as a data ferry. 
 This project leveraged some of the Wifi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, a configuration phase is required to identify device roles and execute WPS to store credentials.
@@ -329,7 +337,7 @@ The receiving device then either transitions to the IDLE\_WAIT state if it is an
 \section{Results}
 
 \subsection{Wifi Direct Range in Open Field}
-
+\label{sec:Wifi Direct Range in Open Field}
 We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
 An open field, with no line of site obstructions and no other wifi devices around, should be the most ideal setting for Wifi direct ranges.
 We started our tests at 100' apart and increased the distance by 50' to 100' at at time.
@@ -342,6 +350,7 @@ However, at 650' (198m) the devices had a lot of trouble connecting, so we stopp
 This is very close to the claimed range of 200' meters.
 
 \subsection{Wifi Direct Range in a Cave}
+\label{sec:Wifi Direct Range in a Cave}
 We gained access to Whirlpool Cave in south Austin with the permission of the managing entity, TCMA (http://www.tcmacaves.org/) and experimented with the range and connectivity of our Nexus 7 devices on March 16, 2014.
 Whirlpool Cave is a relatively typical cave for central Texas.
 It has over 400m of total passage \cite{whirlpool}. 
@@ -371,7 +380,9 @@ However, we would like to state here that their work found that wifi signals att
 
 
 \subsection{Data Ferry Experiment Results}
-An earlier section covered the design of the WifiDirect data ferry application called SwiftDataHop. 
+\label{sec:Data Ferry Experiment Results}
+Section~\ref{sec:Data Ferry Software} covered the design of the WifiDirect data ferry application called SwiftDataHop. 
+
 Using this prototype it was demonstrated that WifiDirect could be used to pass data from device to device in an automated fashion. 
 During the course of this project four Nexus 7 tablets running Android 4.4.2 were tested and could successfully execute the transfer.
 The project was limited to four devices simply by the number of available tablets.
@@ -393,6 +404,7 @@ In summary, this application was an effective prototype to prove that Wifi Direc
 \section{Conclusions and Future Work}
 
 \subsection{Application in Cave Systems}
+\label{sec:Application in Cave Systems}
 \begin{figure}
 \includegraphics[width=\columnwidth]{krubera_pit_dark}
 \caption{Vertical passage in Krubera-Varonya \textit{Image found in article \cite{krub_blaze}}}
@@ -404,7 +416,7 @@ Passages are horizontal, vertical or any angle between the two.
 Some passages can be adequately described as enclosed, underground "rooms" or "pits" where the top is open to the sky.
 
 We would like to theorize further about how our research might generalize to other caves and where this technology will have the greatest value.
-Wifi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in the Related Work section.
+Wifi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in Related Work, Section~\ref{sec:Related}.
 However, Wifi Direct signals only work in caves when a direct line of sight is available, 
 and of course the devices require a consistent source of energy.
 Therefore, we propose a few example scenarios where Wifi direct could be particularly useful as part of an in-cave communication system.
@@ -431,6 +443,7 @@ We can envision a purely wifi direct cave communication system being used to ena
 We can also envision wifi direct being a very important part of a hybrid system enabling communication through other extensive cave systems that are similar to Krubera-Varonya in size and complexity. 
 
 \subsection{Future Work}
+\label{sec:Future Work}
 There are numerous areas that could be considered for future work that were out of scope for this project due to the time available.
 
 During this project we did not focus on measuring or reducing power consumption.
@@ -459,7 +472,7 @@ and a time schedule for all devices to awake to do a scheduled data transfer wou
 % Since rendering correctly on any Android device was not a key goal of this project, the focus stayed on ensuring that the application functioned on large screen devices like the Nexus 7.
 
 
-As noted in the Data Ferry Experiment Results section, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
+As noted in Section~\ref{sec:Data Ferry Experiment Results}, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
 In the prototype, we injected pre-configured delays based on our experiments to allow time for devices to complete known longer running tasks.
 A better mechanism could be to look at some sort of handshake, acknowledge, and retry design.
 % (kh: unclear what is meant here, or perhaps it's covered by the above)
@@ -479,9 +492,10 @@ The exposure of the device to environmental issues such as dust, humidity, and w
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
 If smaller devices are used, it will be easier to harden them to the elements.
 
-Further work could be done to improve Wifi Direct support and reliability in middleware platforms such as Android per the issues discussed in the Data Ferry Experiment Results section.
+Further work could be done to improve Wifi Direct support and reliability in middleware platforms such as Android per the issues discussed in Section~\ref{sec:Data Ferry Experiment Results}.
 
 \section{Acknowledgements}
+\label{sec:Acknowledgements}
 We would like to thank David Ochel for accompanying us on our trip and for taking photos. 
 We would like to thank TCMA and Matt Turner for granting access to Whirlpool Cave. 
 We would also like to thank Zara Environmental for providing a sample data file
