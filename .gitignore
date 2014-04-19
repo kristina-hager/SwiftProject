@@ -66,4 +66,4 @@ proguard/
 
 ##and ignore pdfs too - by default. I don't think we need to save these
 *.pdf
-*.pdf
+*.rtf
