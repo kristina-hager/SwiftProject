@@ -1,10 +1,19 @@
 \documentclass[10pt,twocolumn]{article} 
+\PassOptionsToPackage{hyphens}{url}
+\usepackage {xcolor}
+\usepackage{hyperref} 
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  linkbordercolor=blue
+}
 \usepackage{simpleConference}
 \usepackage{times}
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 \usepackage{amssymb}
-\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \begin{document}
 
 \title{Subterranean WiFi (SWIFT)}
@@ -304,7 +313,7 @@ The application was notified to intiatiate the transfer of the pre-populated dat
 
 SwiftDataHop has two modes of execution: Manual Mode and Operate Mode.
 Manual Mode has the same connect and transfer capability as described in the range experiment software.
-In Manual Mode, the user can initiate WPS between devices so that user intervention is not required during Operate Mode to accepta a connection.
+In addition, a user runs in Manual Mode to initiate WPS between devices so that user intervention is not required during Operate Mode to accepta a connection.
 In this mode, devices are identified as upstream and/or downstream and this configuration can be viewed or reset if necessary.
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
 
@@ -322,15 +331,15 @@ A device with no upstream device is an endpoint, and will display the file recei
 Operate Mode is the automated mode of the application.
 A device cannot enter Operate Mode without at least one upstream or downstream device set.
 The application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, and RECEIVE\_FILE.
-The OFF state means that the application is in manual mode.
+The OFF state means that the application is in Manual Mode.
 Figure 3 shows the states, key state activities, and the transition conditions for each state.
 
 When Operate Mode is entered, the device initially goes into the IDLE\_WAIT state.
 There are three possible ways to transition out of the IDLE\_WAIT state:
 \begin{enumerate}
   \item When someone clicks the button to disable Operate Mode, the application transitions back to the OFF state.
-  \item When someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set, the application transitions to the SEND\_FILE state.
-  \item When a WiFi Direct Group is initiated from a downstream device, the device transitions to the RECEIVE\_FILE state.
+  \item When someone clicks the button to "Send File", which is enabled on a device with only an upstream device set, the application transitions to the SEND\_FILE state.
+  \item When a WiFi Direct Group is initiated from a downstream device, the upstream device transitions to the RECEIVE\_FILE state.
 \end{enumerate}
 \begin{figure}
 \includegraphics[width=\columnwidth]{statemachine}
@@ -345,7 +354,8 @@ The operations to send and receive a file can be broken down into the operations
 Once the send file button is clicked and a device goes into the SEND\_FILE state, it initiates a WiFi Direct "Connect" which is handled by Android APIs.
 Both devices are notified of the successful group formation by the "onConnectionInfoAvailable" callback.
 
-At this point the downstream device creates a TCP socket connection to the upstream device using the connection info returned from "onConnectionInfoAvailable".
+A small, arbitrary delay is injected here to give the upstream device an opportunity to be available for a socket connection.
+After this delay, the downstream device creates a TCP socket connection to the upstream device using the connection info returned from "onConnectionInfoAvailable".
 Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the WiFi Direct group is disconnected.
 The sending device returns to the IDLE\_WAIT state.
 
@@ -369,12 +379,12 @@ The receiving device then will transition to the IDLE\_WAIT state if it is an en
 We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
 An open field, with no line of site obstructions and no other WiFi devices around, should be the most ideal setting for WiFi Direct ranges.
 We started our tests at 100' apart and increased the distance by 50' to 100' at a time.
-We found that our devices were easily able to connect and transfer a sample data file at distances up to 300' (91meters). 
+Our devices easily connected and transfered a sample data file at distances up to 300' (91meters). 
 We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
 At times, the connection would take longer than usual.
 Also, the initial file transfer took multiple attempts.
-Once the initial file was received, then subsequent transfers went much well.
-However, at 650' (198m) the devices had a lot of trouble connecting, so we stopped measurements then.
+Once the initial file was received, then subsequent transfers went much better.
+However, at 650' (198m) the devices had a lot of trouble connecting, so we stopped measurements at that point.
 This is very close to the claimed range of 200' meters.
 
 \subsection{WiFi Direct Range in a Cave}
@@ -402,12 +412,11 @@ Furthermore, since this passage was so narrow and filled with rubble, we had to 
 
 Please see Figure ~\ref{fig:whirlpool_map} for an illustration of the cave and where we performed our range experiments.
 
-
 Since the cave offers neiher larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
 However, we suspect that in a larger cave or with straighter passages longer range should be possible.
 Moore, et al carried out WiFi range experiments in straight mine tunnels where they claim that signal loss attenuates there less quickly than in free space.
 We refer you to that work for details.
-However, we would like to state here that their work found that WiFi signals attenuated less quickly in a tunnel of 8' rough diameters versus a tunnel of 15' rough diameter, so we are optimistic about the range possibilities in longer cave passages. \cite{moore2012}.
+We would like to state here that their work found that WiFi signals attenuated less quickly in a tunnel of 8' rough diameters versus a tunnel of 15' rough diameter, so we are optimistic about the range possibilities in longer cave passages. \cite{moore2012}.
 
 
 \subsection{Data Ferry Experiment Results}
@@ -415,18 +424,18 @@ However, we would like to state here that their work found that WiFi signals att
 Section~\ref{sec:Data Ferry Software} covered the design of the WiFi Direct data ferry application called SwiftDataHop. 
 
 The data ferry software prototype demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
-During the course of this project, four Nexus 7 tablets running Android 4.4.2 were able to successfully and automatically execute the transfer of a data file.
+During the course of this project, our four Nexus 7 tablets running Android 4.4.2 successfully and automatically executed the transfer of a data file.
 The project was limited to four devices simply by the number of available tablets.
-Additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
-While the SwiftDataHop application was able to execute the automated transfer across the devices, there are still several issues that need to be resolved before the application can be put to practical use.
-Timing was a key challenge in implementing the Operate Mode, or automated mode, of this application.
-The application was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
+Additional devices could be added to achieve further distances or deal with a larger number of topology challenges in the cave that could prevent line of sight connectivity. 
+While the SwiftDataHop application executed the automated transfer across the devices, there are still several issues that need to be resolved before the application can be put to practical use.
+Timing was a key challenge in implementing Operate Mode, or the automated mode of this application.
+SwiftDataHop was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
 For example, once the first phase of creating the WiFi Direct group was completed, the sending device would receive notification that the group was established.  
-However, if the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
+If the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
 Since the goal of the initial prototype was just to prove the feasibility of WiFi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
 In addition, the Android WiFi Direct APIs showed inconsistent behavior.
 These APIs are very sensitive to other operations being performed on the device and offer little in terms of visibility and debug into the lower level system functions taking place on the device.
-During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to basically reset the device either by manually disconnecting from all devices or by disabling and re-enabling wireless services on the mobile device.
+During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to reset the device either by manually disconnecting from all devices or by disabling and re-enabling wireless services on the mobile device.
 If we had additional time to dig into the source for the Android APIs, it is highly likely that the root cause of this issue could be found and overcome.
 Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
 This would be a reasonable constraint in the cave environment as no other wireless infrastructure would be available.
@@ -441,15 +450,15 @@ In summary, this application was an effective prototype to prove that WiFi Direc
 \caption{Vertical passage in Krubera-Varonya \textit{Image found in article \cite{krub_blaze}}}
 \end{figure}
 We performed our WiFi Direct experiments in a cave easily accessible to us and fairly typical of caves in this part of central Texas.
+%This sentence seems redundant?
 Cave systems around the world present with a wide variety of morphologies, and a given cave system will usually contain a wide variety of morphologies within it.
 Morphology examples include passages that are passable only to water and insects and, in contrast, passages that are the size of large buildings and navigable by commercial aircraft.
-Passages are horizontal, vertical or any angle between the two.
+Passages are horizontal, vertical, or any angle between the two.
 Some passages can be adequately described as enclosed, underground "rooms" or "pits" where the top is open to the sky.
 
 We would like to theorize further about how our research might generalize to other caves and where this technology will have the greatest value.
 WiFi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in Related Work, Section~\ref{sec:Related}.
-However, WiFi Direct signals only work in caves when a direct line of sight is available, 
-and of course the devices require a consistent source of energy.
+It is important to note, that WiFi Direct signals only work in caves when a direct line of sight is available, and the devices require a consistent source of energy.
 Therefore, we propose a few example scenarios where WiFi Direct could be particularly useful as part of an in-cave communication system.
 
 The cave Krubera-Varonya in West Caucasus in Abkhazia, Georgia is presently the world's deepest cave system with a depth of nearly 2200m and with 13.4km of passage. 
@@ -470,8 +479,8 @@ a realistic system enabling communication throughout the cave such as from camp 
 consisting of WiFi direct relays wherever practical to achieve distance with ease of installation, using single wire systems in winding passages, using underwater radio signals through sump passages (only passable by trained cave divers), and so on.
 In such a hybrid system, our prototype application which can automatically transfer messages from device to device would be particularly helpful.
 
-We can envision a purely WiFi direct cave communication system being used to enable communication system in certain cases such as from a pit bottom to the surface.
-We can also envision WiFi direct being a very important part of a hybrid system enabling communication through other extensive cave systems that are similar to Krubera-Varonya in size and complexity. 
+We can envision a purely WiFi direct cave system being used to enable communication in certain cases such as from a pit bottom to the surface.
+WiFi Direct could also play a key role in a hybrid scenarios enabling communication through other extensive cave systems that are similar to Krubera-Varonya in size and complexity. 
 
 \subsection{Future Work}
 \label{sec:Future Work}
@@ -481,7 +490,7 @@ During this project we did not focus on measuring or reducing power consumption.
 Rather, we were focused on a showing that the WiFi Direct technology has the capability to automatically ferry data within a cave.
 One reported advantage of the WiFi Direct standard over other ad hoc wireless connection standards is that it provides for better power efficiency during discovery and connect \cite{wifiwhitepaper}.
 Therefore, the WiFi Direct technology is a good starting point for building a low power data ferrying solution.
-However, power conservation is very important in a cave environment as access to a power source is unlikely unless the cave is a tourist cave already outfitted with a lighting system.
+Power conservation is very important in a cave environment as access to a power source is unlikely unless the cave is a tourist cave already outfitted with a lighting system.
 We propose that future work in this area can reduce power requirements beyond what is provided inherently with WiFi Direct.
 For instance, the data transfer can be done with smaller, lower power devices.
 One way to reduce power consumption is to minimize the human interface component.
@@ -489,39 +498,29 @@ Specifically, large screens consume a lot of power, so realistic implementations
 
 Another area of future research will be to better coordinate the timing of data exchange in the interests of reducing power.
 For example, data transfer does not usually need to be continuous or too frequent in our target use case.
-The upstream devices in our implementation do not have any way to know when a downstream device might make a connection, 
-so all devices remain active at all times.
+The upstream devices in our implementation do not have any way to know when a downstream device might make a connection, so all devices remain active at all times.
 In a realistic deployment, data transfer could take place on a relatively infrequent, such as daily or weekly, basis.
 Therefore, a mechanism to incorporate preprogrammed periods for the devices to be inactive
 and a time schedule for all devices to awake to do a scheduled data transfer would reduce power consumption.
 
-
-
-% - KH - I don't think this is particularly worth mentioning if we include mention of using smaller/small screen devices..
-% Early in development of the data ferry application a design decision was made to drop support for smaller screened devices where the application was having difficulty rendering properly.
-% This was due to code that was leveraged from the range experiment and the direction taken to implement the user interface.
-% Since rendering correctly on any Android device was not a key goal of this project, the focus stayed on ensuring that the application functioned on large screen devices like the Nexus 7.
-
-
 As noted in Section~\ref{sec:Data Ferry Experiment Results}, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
 In the prototype, we injected preconfigured delays based on our experiments to allow time for devices to complete known longer running tasks.
-A better mechanism could be to look at some sort of handshake, acknowledge, and retry design.
-% (kh: unclear what is meant here, or perhaps it's covered by the above)
-% There could be a better mechanism to determine that a device is in the desired state and ready before operations are executed.
+In the future a design including handshake, acknowledge, and retry could allow us to determine for certain that a device is in the desired state and ready before operations are executed as opposed to injecting arbitrary delays.
 
 We did not connect to actual data loggers in our experiments although we did use example data logger output in our experiments.
-However, given that all data loggers and data storage modules provide a way to connect to another device or to the internet, 
+Given that all data loggers and data storage modules provide a way to connect to another device or to the internet, 
 we expect that the connection to the first ferry device should be technically possible and may be specific to the logger or storage device.
 Once data has reached the final endpoint, it is accessible at the very least as a file in the device's file system.
-If the final endpoint is located where WiFi or cellular data is available, 
-then the final device can be responsible for uploading data to the internet.
-If the final endpoint is not located within WiFi or cellular data range, 
-then the final device will be responsible for storing accumulated data until the data is retrieved.
+If the final endpoint is located where WiFi or cellular data is available, then the final device can be responsible for uploading data to the internet.
+If the final endpoint is not located within WiFi or cellular data range, then the final device will be responsible for storing accumulated data until the data is retrieved.
 This final data retrieval could easily be done with WiFi Direct.
 
 In a deployment of electronic devices in a cave environment, the researcher must consider the exposure of the devices to environmental issues such as dust, humidity, and water.
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
-If smaller devices are used, it will be easier to harden them to the elements.
+% I would take this out, size doesn't really have any correlation to industrial or harsh
+% environment specification...and the below sentence is definately not true.  I don't think I wrote the
+% sentence below, but if I did, I think we should take it out.
+% If smaller devices are used, it will be easier to harden them to the elements.
 
 Further work could be done to improve WiFi Direct support and reliability in middleware platforms such as Android per the issues discussed in Section~\ref{sec:Data Ferry Experiment Results}.
 
@@ -531,16 +530,6 @@ We would like to thank David Ochel for accompanying us on our trip and for takin
 We would like to thank TCMA and Matt Turner for granting access to Whirlpool Cave. 
 We would also like to thank Zara Environmental for providing a sample data file
 and our various friends for informally advising us on cave research needs and practices.
-
-% \begin{figure}[!b]
-%   \begin{center}
-%     \includegraphics[width=3.5in]{figure.pdf}
-%   \end{center}
-% 
-%   \caption{\small Figure caption. To get a figure to span two columns, use the environment figure* rather than figure.}
-%   \label{fig-label}
-% \end{figure}
-
 \bibliographystyle{abbrv}
 \bibliography{refs}
 \end{document}
