@@ -301,26 +301,32 @@ We developed this application in order to test the ability to establish a connec
 In the second phase of the project we designed and built an Android application called SwiftDataHop to automatically transfer a data file sequentially from device to device. 
 This project leveraged some of the WiFi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, the user must configure each device to identify device roles and execute WPS to store credentials.
-% I didn't follow the below two lines - at least in this context
-% During this project the interface to the data logger was simulated with a pre-populated data file.
-% The application was notified of the presence of the data file via a button click on the user interface.
+During this project the application did not interface to an actual data logger.
+Instead, a datalogger was simulated with a pre-populated data file.
+The application was notified to intiatiate the transfer of the pre-populated data file via a button click on the user interface.
 
 SwiftDataHop has two modes of execution: Manual Mode and Operate Mode.
 Manual Mode has the same connect and transfer capability as described in the range experiment software.
-In Manual Mode, the user can initiate WPS between devices so that user intervention is not required during Operate Mode.
-She can also establish which devices are upstream and/or downstream of a device and view or reset this configuration.
+In Manual Mode, the user can initiate WPS between devices so that user intervention is not required during Operate Mode to accepta a connection.
+In this mode, devices are identified as upstream and/or downstream and this configuration can be viewed or reset if necessary.
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
 
-A device can have one of these roles: data file initiator, a sender-receiver, and an endpoint.
+A device can have one of three roles: 
+\begin{enumerate}
+\item Data file initiator
+\item Sender-receiver
+\item Endpoint
+\end{enumerate}
 A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device are set.
 A device with no downstream device set is a data file initiator and will have the capability to initiate the file transfer of the data file in Operate Mode.
 A device with both an upstream and downstream device is a sender-receiver and will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
-A device with no upstream device is an endpoint and will display the file received and location to which it is copied on the file system.
+A device with no upstream device is an endpoint, and will display the file received and location to which it is copied on the file system.
 
 Operate Mode is the automated mode of the application.
 A device cannot enter Operate Mode without at least one upstream or downstream device set.
 The application may be in one of four states: OFF, IDLE\_WAIT, SEND\_FILE, and RECEIVE\_FILE.
 The OFF state means that the application is in manual mode.
+Figure 3 shows the states, key state activities, and the transition conditions for each state.
 
 When Operate Mode is entered, the device initially goes into the IDLE\_WAIT state.
 There are three possible ways to transition out of the IDLE\_WAIT state:
@@ -329,31 +335,29 @@ There are three possible ways to transition out of the IDLE\_WAIT state:
   \item When someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set, the application transitions to the SEND\_FILE state.
   \item When a WiFi Direct Group is initiated from a downstream device, the device transitions to the RECEIVE\_FILE state.
 \end{enumerate}
-% The first, if someone clicks the button to turn Operate Mode Off, in which case the application would transition back to the OFF state.
-% The second if someone clicks the button to "Send File", which is only enabled on a device with only an upstream device set.
-% Here the application would transition to the SEND\_FILE state.
-% The third if a WiFi Direct Group is formed from a downstream device, in which case the device would transition into the RECEIVE\_FILE state.
-
+\begin{figure}
+\includegraphics[width=\columnwidth]{statemachine}
+\caption{Operate Mode State Machine.}
+\end{figure}
 If a device is in the SEND\_FILE state, after operations are performed to send the data file upstream, the device will return to the IDLE\_WAIT state.
 
 If a device is in the RECEIVE\_FILE state, it will perform operations to receive a file, and then if an upstream device has been configured it will transition into the SEND\_FILE state.
 If an upstream device has not been configured, it will transition back to the IDLE\_WAIT state as that indicates it is the final device in the transfer.
 
-TODO: Add state machine diagram.  
-
 The operations to send and receive a file can be broken down into the operations required to execute WiFi Direct group formation, create a socket connection, and perform a file transfer. 
 Once the send file button is clicked and a device goes into the SEND\_FILE state, it initiates a WiFi Direct "Connect" which is handled by Android APIs.
 Both devices are notified of the successful group formation by the "onConnectionInfoAvailable" callback.
 
-At this point the downstream device creates a TCP socket connection to the upstream device using the connection info returned from the previous callback.
+At this point the downstream device creates a TCP socket connection to the upstream device using the connection info returned from "onConnectionInfoAvailable".
 Once a successful connection is established, the file data is written to the socket, the socket connection is closed, and the WiFi Direct group is disconnected.
 The sending device returns to the IDLE\_WAIT state.
 
-Approximately simultaneously, the upstream device enters the RECEIVE\_FILE state and immediately opens a socket for the downstream device to connect.
+Upon Wifi Direct Group Formation, the upstream device enters the RECEIVE\_FILE state and immediately opens a socket for the downstream device to connect to.
 Once a connection is received, the device reads the data file from the socket, closes the socket, and disconnects the WiFi Direct group.
 The receiving device then will transition to the IDLE\_WAIT state if it is an endpoint, or it will transition to the SEND\_FILE state in order to perform send operations if it has an upstream device.
 
-It is actually the timing and synchronization of the group formation, subsequent socket connection, and file transfer that was the most tricky to implement in the application.
+%This seems out of place here. I think this probably better suited to the results section. 
+%It is actually the timing and synchronization of the group formation, %subsequent socket connection, and file transfer that was the most tricky to %implement in the application.
 
 \section{Results}
 
@@ -413,8 +417,8 @@ However, we would like to state here that their work found that wifi signals att
 \label{sec:Data Ferry Experiment Results}
 Section~\ref{sec:Data Ferry Software} covered the design of the WiFi Direct data ferry application called SwiftDataHop. 
 
-Using this prototype we demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
-During the course of this project, we confirmed that four Nexus 7 tablets running Android 4.4.2 could successfully and automatically execute the transfer of a data file.
+The data ferry software prototype demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
+During the course of this project, four Nexus 7 tablets running Android 4.4.2 were able to successfully and automatically execute the transfer of a data file.
 The project was limited to four devices simply by the number of available tablets.
 Additional devices could be added to achieve further distances or deal with larger number of topology challenges in the cave that could prevent line of sight connectivity. 
 While the SwiftDataHop application was able to execute the automated transfer across the devices, there are still several issues that need to be resolved before the application can be put to practical use.
