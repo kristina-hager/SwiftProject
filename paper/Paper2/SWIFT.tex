@@ -54,7 +54,7 @@ Many types of scientists such as geologists, hydrogeologists, climatologists and
 These scientists are usually looking for information and variances within the cave's microclimate. 
 For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
 
-Caves present a wide variety of size and shape of passage and climate. 
+Caves present a wide variety of sizes, shapes of passage, and climate. 
 % kh - Out of place.. might fit in better elsewhere - yeah, dunno how that
 % sentence on power got there, probably a copy paste accident or something
 % with a merge conflict...Cutting it.
@@ -63,8 +63,8 @@ We visited Whirlpool cave in South Austin for our research.
 Here, most passages are just large enough to permit an adult to crawl through them, although a few rooms do provide ample clearance for an adult to stand. 
 
 Many caves are difficult and dangerous to travel through and data loggers are often placed deep in the cave.
-Therefore, a researcher expends a great deal of time, logistics and even risk to her life when she needs to access her sensors and the data logger attached to the sensor.
-Also, most cave climates have nearly 100\% humidity at all times and some caves flood or in general have conditions that make sensors and data loggers prone to failure.
+Researchers expend a great deal of time, logistics, and even risk to their lives when they need to access sensors and their data loggers.
+Most cave climates have nearly 100\% humidity at all times and some caves flood or have conditions that make sensors and data loggers prone to failure.
 When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
 Therefore, cave researchers are interested in mechanisms that would make their data easier to access.
 
@@ -82,12 +82,13 @@ This infrastructure allows applications a simple and power effective means of se
 
 We will focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
 \begin{enumerate}
-\item Does WiFi Direct provide an effective range in acave environment?
+\item Does WiFi Direct provide an effective range in a cave environment?
 \item Can WiFi Direct, as provided by the Android platform, be used to form and disolve connections automatically to ferry data files from device to device.
 \end{enumerate} 
-WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology. 
-However, we would like to determine the potential range of WiFi Direct specifically in a cave environment.
+WiFi Direct theoretically provides a range of up to 200m, which is greater than that of Bluetooth technology. 
+We would like to determine the potential range of WiFi Direct specifically in a cave environment.
 A cave environment is distincly different from a usual surface environment in that there are significantly more obstructions between devices. 
+
 The still nascent implementation of the WiFi Direct standard poses some potential limitations for our use case.
 Since the data will need to travel from device to device beyond the range of a single WiFi Direct group, 
 each device will need to participate in one or two groups. 
@@ -95,7 +96,7 @@ The current implementation of WiFi Direct on Android devices does not allow a de
 Therefore, our prototype application will manage the disconnection from one group and connection to the next group automatically.
 
 In addition, the current WiFi Protected Setup (WPS) implementation requires the human user of the device to approve any new connections.
-However, once a device has gained user permission once to a join a group, the Android platform "remembers" the credentials for the device and allows the device to automatically rejoin that group without user intervention.
+Once a device has gained user permission once to a join a group, the Android platform "remembers" the credentials for the device and allows the device to automatically rejoin that group without user intervention.
 Since we want our devices to be able to operate autonomously, we will show how to accommodate the approval issue by manually pre-configuring the devices for connections.
 This allows the devices to bypass the step of a user key press when initiating a connection.
  
@@ -103,7 +104,7 @@ For the first phase of this project, we created a prototype application for Andr
 We used this application to test the ability to make WiFi Direct connections within Whirlpool Cave, a popular cave in south Austin with a variety of passage characteristics. 
 The ultimate goal of this initial application and the cave excursion is to determine if the range and bandwidth of WiFi Direct is sufficient to support passing messages out of the cave.
 The results of this initial testing showed that WiFi Direct had significant range in areas of the cave where direct line of sight was achievable between devices.
-Just as a note, in typical deployment environments, WiFi signals do not require direct line of sight as they can travel through common building materials.
+Just as a note, in typical surface environments, WiFi signals do not require direct line of sight as they can travel through common building materials.
 However, the radio waves of WiFi signals cannot travel through substances like rock or concrete.
 This fact could render this technology difficult to use is very narrow and winding caves.
 We will discuss these experiments in Section~\ref{sec:WiFi Direct Range in a Cave}.
