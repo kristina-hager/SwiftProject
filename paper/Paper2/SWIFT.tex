@@ -28,6 +28,7 @@ University of Texas at Austin\\
 \thispagestyle{empty}
 
 \begin{abstract}
+	% TODO: KH consider rewording
 	A common problem scientists face when doing research in caves 
 	is retrieving information from data loggers far into the depths of these subsurface environments.
 	The most common method of retrieving data from these data loggers is via a human entering 
@@ -106,11 +107,11 @@ The ultimate goal of this initial application and the cave excursion is to deter
 The results of this initial testing showed that WiFi Direct had significant range in areas of the cave where direct line of sight was achievable between devices.
 Just as a note, in typical surface environments, WiFi signals do not require direct line of sight as they can travel through common building materials.
 However, the radio waves of WiFi signals cannot travel through substances like rock or concrete.
-This fact could render this technology difficult to use is very narrow and winding caves.
+Therefore, WiFi Direct signals will have short ranges in very narrow and winding cave sections.
 We will discuss these experiments in Section~\ref{sec:WiFi Direct Range in a Cave}.
 
 For the second phase of the project, we developed a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
-Ultimately the second application successfully demonstrates that passing data from peer to peer in an automated fashion is achievable using WiFi Direct. 
+Ultimately the second application successfully demonstrates that passing data from peer to peer automatically is achievable using WiFi Direct. 
 In the development of this application, we built code to manage a device's participation in multiple WiFi Direct groups.
 We also spent considerable effort managing timing, connection, and synchronization issues between the devices.
 We explain these issues later in the paper, and we consider these issues to indicate areas of future work for middleware solutions
@@ -209,9 +210,13 @@ Starting with Android 4.0 (API 14 and higher), Android provides three main areas
 \item Listeners 
 \item Intents
 \end{enumerate}
-The WiFi Manager class provides methods to allow you to interact with the WiFi hardware on your device.
-With the WiFi Manager you can do things like discover and connect to peers. 
+The WiFi Manager class provides methods to allow an application to interact with the WiFi hardware on a device for tasks like discovering and connecting to peers. 
+% todo: Listeners notify which part of the app? I think Listeners are notified by xx of the success or failure
+% i propose to avoid 'you' in this case since the notification isn't really to a person
+% but to another part of the app
 Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
+% todo: here , trying to avoid the 'you' and instead identify the parts of the app
+% Intents notify which component or are notified by which component?
 Intents notify you of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer. 
 Actual data transfer between devices is handled by standard TCP/IP socket objects and I/O operations.
 Android devices making use of the WiFi Direct functionality are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
@@ -227,16 +232,22 @@ The peer to peer manager known as "WifiP2pManager" class will be instantiated in
 
 The peer to peer manager class instantiated in the application invokes the "discoverPeers()" method to discover peer devices.
 Discovery is asynchronous, so an Intent is used to notify the application when discovered peers are available.
+% todo: check that it's clear how/why/what receives notification
 Once the application receives notification of available peers, the broadcast receiver component can query the peer to peer manager instance for the list of available peers by calling the "requestPeers()" function.
 The "requestPeers()" function call is asynchronous.
 The function "onPeersAvailable()", which is implemented in the PeerListListener, is executed when the "requestPeers()" function succeeds. 
 The result is a list of WifiP2pDevice devices with which a WiFi Direct connection can be made. \cite{androidp2p}
 
-The application invokes the "connect()" function provided by the WiFi peer to peer manager to establish a connection to a selected device.
-The "connect()" function takes WifiP2pConfig object as a parameter which can include details from the WifiP2pDevice such as the device's address.
-The "connect()" function is another asynchronous call. 
+% todo: in some parts of this section, i'm tempted to specify which part of the app does what
+% and/or include a diagram of how a basic WifiP2P app is structured w.r.t. components
+% that said, I'd only mess with this if I have spare time, as I think the paper is solid as is
+The application invokes the the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
+The "connect()" function is annother asynchronous call which takes as a parameter a WifiP2pConfig object.
+The WifiP2pConfig object can include details from the WifiP2pDevice such as the device's address.
+% todo: passive voice - would be cool to specify what component invokes the onConnectionInfoAvail
+% The xx component is informed of a successful conection, or WiFi Direct group formation, when the ..
 An application is informed of a successful connection, or WiFi Direct group formation, when the "onConnectionInfoAvailable()" method is called.
-At this point, the WiFi Direct group has been formed, or reformed, and the device is ready to transfer data using socket objects and methods.
+At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods.
 
 \section{Experiments}
 
@@ -252,6 +263,7 @@ In a cave, none of these connections is usually possible, so I suspect most rese
 An example inexpensive logger is the HOBO U12 4-Channel External Data Logger equipped with 64K bytes of memory which is enough for 43,000 12-bit measurements \cite{logger}. 
 %Some data loggers do have larger memory capacities such as 4mb (todo: cite other logger).
 %Just commenting this until it is here, in case we forget the todo won't show in the final paper.
+%Leaving this line out of the final paper is fine, but the comment is fine to leave too in case I get to the 'todo'
 
 Based on the Wong paper and informal interviews with cave researchers, we learned that a cave research project will typically use one or a few similar sensors and attached data loggers.
 Researchers will attempt to gather their data balancing retrieval frequency so data loggers neither overfill nor are the cavers burdened by the overhead of excessive caving trips.
@@ -315,13 +327,14 @@ In the second phase of the project we designed and built an Android application 
 This project leveraged some of the WiFi Direct data transfer code from the range software and implemented a state machine to allow the application to execute in "Operate Mode" where data hops automatically from device to device. 
 To utilize Operate Mode, the user must configure each application instance to identify device roles and execute WPS to store credentials.
 During this project the application did not interface to an actual data logger.
-Instead, a datalogger was simulated with a pre-populated data file.
+Instead, a data logger was simulated with a pre-populated data file.
 The application was notified to intiatiate the transfer of the pre-populated data file via a button click on the user interface.
 
 SwiftDataHop has two modes of execution: Manual Mode and Operate Mode.
 Manual Mode has the same connect and transfer capability as described in the range experiment software.
 A user runs in Manual Mode to initiate WPS between devices eliminating the need for manual user intervention during Operate Mode to accept a connection.
-In this mode, devices are identified as upstream and/or downstream and this configuration can be viewed or reset if necessary.
+In this mode, the user also identifies the upstream and/or downstream devices, 
+and this configuration can be viewed or reset if necessary.
 A downstream device is a device from which a file is received, and an upstream device is a device to which a file is sent.
 
 A device can have one of three roles: 
@@ -386,7 +399,7 @@ The receiving device then will transition to the IDLE\_WAIT state if it is an en
 We found a relatively open field in north Austin to carry out some range experiments with our Nexus 7 devices.
 An open field, with no line of site obstructions and no other WiFi devices around, should be the most ideal setting for WiFi Direct ranges.
 We started our tests at 100' apart and increased the distance by 50' to 100' at a time.
-Our devices easily connected and transfered a sample data file at distances up to 300' (91meters). 
+Our devices easily connected and transferred a sample data file at distances up to 300' (91meters). 
 We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
 At times, the connection would take longer than usual.
 Also, the initial file transfer took multiple attempts.
@@ -420,7 +433,7 @@ Furthermore, since this passage was so narrow and filled with rubble, we had to 
 Please see Figure ~\ref{fig:whirlpool_map} for an illustration of the cave and where we performed our range experiments.
 
 Since the cave offers neiher larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
-We suspect that in a larger cave or with straighter passages longer range should be possible.
+We suspect that in a larger cave or one with straighter passages longer range should be possible.
 Moore, et al carried out WiFi range experiments in straight mine tunnels where they claim that signal loss attenuates there less quickly than in free space.
 We refer you to that work for details.
 We would like to state here that their work found that WiFi signals attenuated less quickly in a tunnel of 8' rough diameters versus a tunnel of 15' rough diameter, so we are optimistic about the range possibilities in longer cave passages. \cite{moore2012}.
@@ -432,7 +445,7 @@ Section~\ref{sec:Data Ferry Software} covered the design of the WiFi Direct data
 The data ferry software prototype demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
 During the course of this project, our four Nexus 7 tablets running Android 4.4.2 successfully and automatically executed the transfer of a data file.
 The project was limited to four devices simply by the number of available tablets.
-Additional devices could be added to achieve further distances or deal with a larger number of topology challenges in the cave that could prevent line of sight connectivity. 
+Additional devices could be added to achieve further distances or deal with topology challenges in the cave that prevent line of sight connectivity. 
 While the SwiftDataHop application executed the automated transfer across the devices, there are still several issues that need to be resolved before the application may be put to practical use.
 Timing was a key challenge in implementing Operate Mode, or the automated mode of this application.
 SwiftDataHop was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
@@ -442,9 +455,9 @@ Since the goal of the initial prototype was just to prove the feasibility of WiF
 In addition, the Android WiFi Direct APIs showed inconsistent behavior.
 These APIs are very sensitive to other operations being performed on the device and offer little in terms of visibility and debug into the lower level system functions taking place on the device.
 During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to reset the device either by manually disconnecting from all devices or by disabling and re-enabling wireless services on the mobile device.
-If we had additional time to dig into the source for the Android APIs, it is highly likely that the root cause of this issue could be found and overcome.
+If we had additional time to dig into the source for the Android APIs, it is highly likely that we would find the root cause of this issue.
 Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
-Disabling unrelated Wireless use would be a reasonable constraint in the cave environment as no other wireless infrastructure would be available.
+In a cave environment, there is rarely any need or infrastructure for wireless activity, so it is reasonable to require that the devices will disable all other wireless activity.
 In summary, this application was an effective prototype to prove that WiFi Direct could be used to leverage peer to peer connectivity in the absence of infrastructure to act as a ferry for data from in-cave loggers.
 
 \section{Conclusions and Future Work}
@@ -474,12 +487,12 @@ On these expeditions, cavers will survey and map the cave; specially trained cav
 The cavers will need to be underground for weeks at a time and stay in one or more of a handful of underground camps \cite{krub_it}.
 A communication system to coordinate re-supply, logistics, and, in the worst case, coordinate a rescue operation is almost a requirement for an expedition of this magnitude.
 While it is difficult to determine potential length of line of sight by looking at published photos and maps, 
-it certainly seems quite possible that this cave has many passages that would be great candidates for using WiFi Direct.
+it certainly appears that this cave has many passages that would be great candidates for using WiFi Direct.
 Published photos and maps show that the cave has some very long (100m) vertical drops in large, fairly straight passages and some similarly large and long horizontal passages \cite{krub_it}.
 Cavers train in specialized single rope techniques to ascend and descend such vertical passages.
 Even given extensive training and experience, it takes quite a long time (multiple hours) for a team of cavers to ascend or descend long vertical drops particularly since those cavers are usually carrying very heavy gear and supplies.
 Therefore, there is a great opportunity to ease the physical exertion and time burden if messages can be communicated at WiFi speed and bandwidth through such a passage.
-Between WiFi direct points, communication could even potentially be as high fidelity as voice and video such as between the top and bottom of a particular pit.
+Between WiFi Direct points, communication could even potentially be as high fidelity as voice and video such as between the top and bottom of a particular pit.
 Since this cave has several sections of very tight passage and underwater passages,
 a realistic system enabling communication throughout the cave such as from camp to camp to surface would most likely need to be hybrid:
 consisting of WiFi direct relays wherever practical to achieve distance with ease of installation, using single wire systems in winding passages, using underwater radio signals through sump passages (only passable by trained cave divers), and so on.
@@ -511,7 +524,8 @@ and a time schedule for all devices to awake to do a scheduled data transfer wou
 
 As noted in Section~\ref{sec:Data Ferry Experiment Results}, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
 In the prototype, we injected preconfigured delays based on our experiments to allow time for devices to complete known longer running tasks.
-In the future a design including handshake, acknowledge, and retry could allow us to determine for certain that a device is in the desired state and ready before operations are executed as opposed to injecting arbitrary delays.
+% todo: consider trying to reword the below to be a shorter sentence
+In the future, a design including handshake, acknowledge, and retry could allow us to determine for certain that a device is in the desired state and ready before operations are executed as opposed to injecting arbitrary delays.
 
 We did not connect to actual data loggers in our experiments although we did use example data logger output in our experiments.
 Given that all data loggers and data storage modules provide a way to connect to another device or to the internet, 
@@ -527,6 +541,10 @@ The Nexus 7 tablets used in this research are consumer devices and not designed 
 % environment specification...and the below sentence is definately not true.  I don't think I wrote the
 % sentence below, but if I did, I think we should take it out.
 % If smaller devices are used, it will be easier to harden them to the elements.
+% KH - it's much easier to harden smaller devices to the elements if only because the enclosures are less expensive :)
+% i.e. a small device could just be put in a small nalgene
+% it's also much easier to place small devices in a cave where they'd be out of the way
+% that said, this could be left out
 
 Further work could be done to improve WiFi Direct support and reliability in middleware platforms such as Android per the issues discussed in Section~\ref{sec:Data Ferry Experiment Results}.
 
