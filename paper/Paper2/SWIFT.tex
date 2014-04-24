@@ -56,9 +56,6 @@ These scientists are usually looking for information and variances within the ca
 For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
 
 Caves present a wide variety of sizes, shapes of passage, and climate. 
-% kh - Out of place.. might fit in better elsewhere - yeah, dunno how that
-% sentence on power got there, probably a copy paste accident or something
-% with a merge conflict...Cutting it.
 For example, Son Doong Cave in Thailand has a large room that is over five kilometers long, 200 meters high and 150 meters wide \cite{sondoong}.
 We visited Whirlpool cave in South Austin for our research.
 Here, most passages are just large enough to permit an adult to crawl through them, although a few rooms do provide ample clearance for an adult to stand. 
@@ -206,24 +203,19 @@ Therefore, the previous process of establishing authentication and manual user a
 We used the Android platform to evaluate WiFi Direct for the Swift use case.
 Starting with Android 4.0 (API 14 and higher), Android provides three main areas within their API to support WiFi Direct:
 \begin{enumerate}
-\item The Wifi Manager 
+\item The WifiP2pManager 
 \item Listeners 
 \item Intents
 \end{enumerate}
 The WiFi Manager class provides methods to allow an application to interact with the WiFi hardware on a device for tasks like discovering and connecting to peers. 
-% todo: Listeners notify which part of the app? I think Listeners are notified by xx of the success or failure
-% i propose to avoid 'you' in this case since the notification isn't really to a person
-% but to another part of the app
-Listeners allow you to be notified of the success or failure of WifiP2pManager method calls. 
-% todo: here , trying to avoid the 'you' and instead identify the parts of the app
-% Intents notify which component or are notified by which component?
-Intents notify you of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer. 
+Listeners implement functions which are called by the WifiP2pManager to notify the application of Wifi Direct events or information. 
+Intents notify the application of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer. 
 Actual data transfer between devices is handled by standard TCP/IP socket objects and I/O operations.
 Android devices making use of the WiFi Direct functionality are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
 
 An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
 The application must setup a broadcast receiver. 
-A broadcast receiver allows you to receive intents broadcast by the Android system. 
+A broadcast receiver allows you to receive intents broadcast by the Android system and WifiP2pManager. 
 In this case the application should respond to WiFi peer to peer intents.
 The broadcast receiver must implement the necessary function calls to handle these intents in the broadcast receiver's "onReceive()" method.
 The application will register the broadcast receiver and intent filter for the WiFi peer to peer events.
@@ -232,7 +224,6 @@ The peer to peer manager known as "WifiP2pManager" class will be instantiated in
 
 The peer to peer manager class instantiated in the application invokes the "discoverPeers()" method to discover peer devices.
 Discovery is asynchronous, so an Intent is used to notify the application when discovered peers are available.
-% todo: check that it's clear how/why/what receives notification
 Once the application receives notification of available peers, the broadcast receiver component can query the peer to peer manager instance for the list of available peers by calling the "requestPeers()" function.
 The "requestPeers()" function call is asynchronous.
 The function "onPeersAvailable()", which is implemented in the PeerListListener, is executed when the "requestPeers()" function succeeds. 
@@ -244,9 +235,7 @@ The result is a list of WifiP2pDevice devices with which a WiFi Direct connectio
 The application invokes the the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
 The "connect()" function is annother asynchronous call which takes as a parameter a WifiP2pConfig object.
 The WifiP2pConfig object can include details from the WifiP2pDevice such as the device's address.
-% todo: passive voice - would be cool to specify what component invokes the onConnectionInfoAvail
-% The xx component is informed of a successful conection, or WiFi Direct group formation, when the ..
-An application is informed of a successful connection, or WiFi Direct group formation, when the "onConnectionInfoAvailable()" method is called.
+The WifiP2pManager notifies the listener of a successful connection or WiFi Direct group formation by invoking the listener's "onConnectionInfoAvailable()" method.
 At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods.
 
 \section{Experiments}
@@ -383,8 +372,6 @@ Upon WiFi Direct Group Formation, the upstream device enters the RECEIVE\_FILE s
 Once a connection is received, the device reads the data file from the socket, closes the socket, and disconnects the WiFi Direct group.
 The receiving device then will transition to the IDLE\_WAIT state if it is an endpoint, or it will transition to the SEND\_FILE state in order to perform send operations if it has an upstream device.
 
-%This seems out of place here. I think this probably better suited to the results section. 
-%It is actually the timing and synchronization of the group formation, %subsequent socket connection, and file transfer that was the most tricky to %implement in the application.
 
 \section{Results}
 
@@ -469,7 +456,7 @@ In summary, this application was an effective prototype to prove that WiFi Direc
 \caption{Vertical passage in Krubera-Varonya \textit{Image found in article \cite{krub_blaze}}}
 \end{figure}
 We performed our WiFi Direct experiments in a cave easily accessible to us and fairly typical of caves in this part of central Texas.
-%This sentence seems redundant?
+%Possibly see if there is a way to make this sentence more clear?
 Cave systems around the world present with a wide variety of morphologies, and a given cave system will usually contain a wide variety of morphologies within it.
 Morphology examples include passages that are passable only to water and insects and, in contrast, passages that are the size of large buildings and navigable by commercial aircraft.
 Passages are horizontal, vertical, or any angle between the two.
@@ -525,7 +512,7 @@ and a time schedule for all devices to awake to do a scheduled data transfer wou
 As noted in Section~\ref{sec:Data Ferry Experiment Results}, it was difficult to get the timing of operations correct in the application due to the highly asynchronous nature of the required tasks.
 In the prototype, we injected preconfigured delays based on our experiments to allow time for devices to complete known longer running tasks.
 % todo: consider trying to reword the below to be a shorter sentence
-In the future, a design including handshake, acknowledge, and retry could allow us to determine for certain that a device is in the desired state and ready before operations are executed as opposed to injecting arbitrary delays.
+A design including handshake, acknowledge, and retry could allow us to determine for certain that a device is in the desired state and ready before operations are executed as opposed to injecting arbitrary delays.
 
 We did not connect to actual data loggers in our experiments although we did use example data logger output in our experiments.
 Given that all data loggers and data storage modules provide a way to connect to another device or to the internet, 
@@ -537,14 +524,6 @@ This final data retrieval could easily be done with WiFi Direct.
 
 In a deployment of electronic devices in a cave environment, the researcher must consider the exposure of the devices to environmental issues such as dust, humidity, and water.
 The Nexus 7 tablets used in this research are consumer devices and not designed for use in harsh, dirty, or wet environments.
-% I would take this out, size doesn't really have any correlation to industrial or harsh
-% environment specification...and the below sentence is definately not true.  I don't think I wrote the
-% sentence below, but if I did, I think we should take it out.
-% If smaller devices are used, it will be easier to harden them to the elements.
-% KH - it's much easier to harden smaller devices to the elements if only because the enclosures are less expensive :)
-% i.e. a small device could just be put in a small nalgene
-% it's also much easier to place small devices in a cave where they'd be out of the way
-% that said, this could be left out
 
 Further work could be done to improve WiFi Direct support and reliability in middleware platforms such as Android per the issues discussed in Section~\ref{sec:Data Ferry Experiment Results}.
 
