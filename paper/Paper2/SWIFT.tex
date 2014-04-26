@@ -433,19 +433,23 @@ The data ferry software prototype demonstrated that WiFi Direct could be used to
 During the course of this project, our four Nexus 7 tablets running Android 4.4.2 successfully and automatically executed the transfer of a data file.
 The project was limited to four devices simply by the number of available tablets.
 Additional devices could be added to achieve further distances or deal with topology challenges in the cave that prevent line of sight connectivity. 
-While the SwiftDataHop application executed the automated transfer across the devices, there are still several issues that need to be resolved before the application may be put to practical use.
+
+While the SwiftDataHop application executed the automated transfer across the devices, there are still several issues that should to be investigated further.
 Timing was a key challenge in implementing Operate Mode, or the automated mode of this application.
 SwiftDataHop was tuned for our experiment with delays to allow for connection time, disconnect time, and file transfer completion.
 For example, once the first phase of creating the WiFi Direct group was completed, the sending device would receive notification that the group was established.  
 If the sending device opened its socket to the upstream device before the upstream device had time to open a socket and wait for connections, connectivity might fail.
 Since the goal of the initial prototype was just to prove the feasibility of WiFi Direct technology in this type of application, there are likely better solutions such as implementing an acknowledgement mechanism or retries as opposed to injecting arbitrary delays into the process. 
+
 In addition, the Android WiFi Direct APIs showed inconsistent behavior.
 These APIs are very sensitive to other operations being performed on the device and offer little in terms of visibility and debug into the lower level system functions taking place on the device.
 During the experiments for this project, the application could only execute a single automated transfer and then user intervention would be required to reset the device either by manually disconnecting from all devices or by disabling and re-enabling wireless services on the mobile device.
 If we had additional time to dig into the source for the Android APIs, it is highly likely that we would find the root cause of this issue.
 Behavior of the APIs became more predictable when all other wireless activity was disabled on the tablets.
 In a cave environment, there is rarely any need or infrastructure for wireless activity, so it is reasonable to require that the devices will disable all other wireless activity.
+
 In summary, this application was an effective prototype to prove that WiFi Direct could be used to leverage peer to peer connectivity in the absence of infrastructure to act as a ferry for data from in-cave loggers.
+Please view a video of our application in action on four devices here: \url{https://dl.dropboxusercontent.com/u/25991795/SWIFT%20video/swift_in_operation.mp4}.
 
 \section{Conclusions and Future Work}
 
