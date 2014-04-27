@@ -37,7 +37,6 @@ University of Texas at Austin\\
 	Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
 	We outline here the Wifi Direct technology, Android support for the former, our range experiments, Android application experiments, and results.
 	We show that WiFi Direct has good potential for easing the burden of data retrieval from sensors in a cave.
-	% kh, skip: Further work is required to fully implement an end to end solution including the data logger interface, methods to deal with harsh environments, and improved timing and synchronization for the automatic transfers. 
 \end{abstract}
 
 \tableofcontents
@@ -56,10 +55,12 @@ We visited Whirlpool cave in South Austin for our research.
 Here, most passages are just large enough to permit an adult to crawl through them although a few rooms do provide ample clearance for an adult to stand. 
 
 Many caves are difficult and dangerous to travel through and data loggers are often placed deep in the cave.
-Researchers expend a great deal of time, logistics, and even risk to their lives when they need to access sensors and their data loggers.
+Researchers expend a great deal of time, logistics, and even risk to their lives when they need to access sensors and attached data loggers.
+
 Most cave climates have nearly 100\% humidity at all times and some caves flood or have conditions that make sensors and data loggers prone to failure.
 When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
-Therefore, cave researchers are interested in mechanisms that would make their data easier to access.
+
+For all of these reasons cave researchers are interested in mechanisms that would make their data easier to access.
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{cavewifi2}
@@ -68,23 +69,24 @@ Therefore, cave researchers are interested in mechanisms that would make their d
 
 \subsection{Outline of WiFi Direct Investigation}
 \label{sec:Outline}
-We propose an application using WiFi Direct enabled devices to automatically ferry data collected by sensors from within a cave back to the surface.
+We propose using WiFi Direct enabled devices to automatically ferry data collected by sensors from within a cave back to the surface.
 An automated data ferry application would be a far more convenient, effective, and safe mechanism for data retrieval versus current techniques.  
 The WiFi Direct standard provides infrastructure mechanisms for discovery, addressing, and security. 
 This infrastructure allows applications a simple and power effective means of setting up the network and transferring data. 
 
 We will focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
 \begin{enumerate}
-\item Does WiFi Direct provide an effective range in a cave environment?
-\item Can WiFi Direct, as provided by the Android platform, be used to form and disolve connections automatically to ferry data files from device to device.
+\item What is a typical range for Wifi Direct on the surface, and what will impact the range of Wifi Direct in a cave environment?
+\item Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
 \end{enumerate} 
-WiFi Direct theoretically provides a range of up to 200m, which is greater than that of Bluetooth technology. 
-We would like to determine the potential range of WiFi Direct specifically in a cave environment.
-A cave environment is distincly different from a usual surface environment in that there are significantly more obstructions between devices. 
+
+WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology.
+We will experimentally evaluate the range of Wifi Direct using Android Nexus 7 devices both on the surface and in a cave environment.
+% A cave environment is distinctly different from a common surface environment in that there are significantly more obstructions between devices. 
 
 The still nascent implementation of the WiFi Direct standard poses some potential limitations for our use case.
-Since the data will need to travel from device to device beyond the range of a single WiFi Direct group, 
-each device will need to participate in one or two groups. 
+The data will need to travel from device to device beyond the range of a single WiFi Direct group, 
+so each device will need to participate in one or two groups. 
 The current implementation of WiFi Direct on Android devices does not allow a device to be simultaneously connected to two WiFi Direct groups.
 Therefore, our prototype application will manage the disconnection from one group and connection to the next group automatically.
 
@@ -102,8 +104,8 @@ However, the radio waves of WiFi signals cannot travel through substances like r
 Therefore, WiFi Direct signals will have short ranges in very narrow and winding cave sections.
 We will discuss these experiments in Section~\ref{sec:WiFi Direct Range in a Cave}.
 
-For the second phase of the project, we developed a second Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
-Ultimately the second application successfully demonstrates that passing data from peer to peer automatically is achievable using WiFi Direct. 
+For the second phase of the project, we developed another Android application to demonstrate how to pass a sample data file from device to device in a manner similar to how data would be ferried out of a cave.
+Ultimately the second application successfully demonstrates that it is possible to automatically pass data from peer to peer using WiFi Direct. 
 In the development of this application, we built code to manage a device's participation in multiple WiFi Direct groups.
 We also spent considerable effort managing timing, connection, and synchronization issues between the devices.
 We explain these issues later in the paper, and we consider these issues to indicate areas of future work for middleware solutions
