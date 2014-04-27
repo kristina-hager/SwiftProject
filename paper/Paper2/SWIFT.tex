@@ -28,21 +28,16 @@ University of Texas at Austin\\
 \thispagestyle{empty}
 
 \begin{abstract}
-	% TODO: KH consider rewording
-	A common problem scientists face when doing research in caves 
-	is retrieving information from data loggers far into the depths of these subsurface environments.
-	The most common method of retrieving data from these data loggers is via a human entering 
-	the cave, traveling to the collection site, and manually retrieving it. 
-	This method is very slow, inconvenient, and sometimes dangerous.
-	We propose a new means of data retrieval from cave sensors which is to automatically 
-	ferry data back to the surface using WiFi Direct enabled devices. 
-	We focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
-	First, we created an application to determine the achievable range of the WiFi Direct technology in a cave environment.
-	Next, we created a prototype application for ferrying data using WiFi Direct as provided by the Android platform. 
-	We outline the implementation of both applications and describe any nuances associated with the current Android 
-	support for WiFi Direct.
-	Our results indicate that using WiFi Direct is a feasible solution for the data retrieval problem, as range and automatic transfers were achievable using this technology.
-	Further work is required to fully implement an end to end solution including the data logger interface, methods to deal with harsh environments, and improved timing and synchronization for the automatic transfers. 
+	Scientists who research caves frequently need to install sensors with attached data loggers at varying depths in a cave system.
+	Typically, these researchers must retrieve data from these data loggers by entering the cave and travelling to the installation site.
+	Travel in caves is slow, inconvenient, and often dangerous.
+	We propose a a more efficient, safe, and automatic means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
+	We focus on two key questions in this paper regarding the potential of the WiFi Direct technology for sensor data retrieval:
+	What is a typical range for Wifi Direct on the surface, and what will impact the range of Wifi Direct in a cave environment?
+	Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
+	We outline here the Wifi Direct technology, Android support for the former, our range experiments, Android application experiments, and results.
+	We show that WiFi Direct has good potential for easing the burden of data retrieval from sensors in a cave.
+	% kh, skip: Further work is required to fully implement an end to end solution including the data logger interface, methods to deal with harsh environments, and improved timing and synchronization for the automatic transfers. 
 \end{abstract}
 
 \tableofcontents
@@ -51,14 +46,14 @@ University of Texas at Austin\\
 
 \subsection{Usage of Sensors and Data Loggers in Caves}
 \label{sec:Usage of Sensors and Data Loggers in Caves}
-Many types of scientists such as geologists, hydrogeologists, climatologists and more conduct research in the interior of caves. 
-These scientists are usually looking for information and variances within the cave's microclimate. 
+Many types of scientists such as geologists, hydrogeologists, and climatologists conduct research in the interior of caves. 
+These scientists are usually looking for information about and variances within the cave's microclimate. 
 For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
 
 Caves present a wide variety of sizes, shapes of passage, and climate. 
 For example, Son Doong Cave in Thailand has a large room that is over five kilometers long, 200 meters high and 150 meters wide \cite{sondoong}.
 We visited Whirlpool cave in South Austin for our research.
-Here, most passages are just large enough to permit an adult to crawl through them, although a few rooms do provide ample clearance for an adult to stand. 
+Here, most passages are just large enough to permit an adult to crawl through them although a few rooms do provide ample clearance for an adult to stand. 
 
 Many caves are difficult and dangerous to travel through and data loggers are often placed deep in the cave.
 Researchers expend a great deal of time, logistics, and even risk to their lives when they need to access sensors and their data loggers.
@@ -428,7 +423,7 @@ We would like to state here that their work found that WiFi signals attenuated l
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{swift_123}
-\caption{SWIFT: Our data ferry application}
+\caption{SWIFT: Our data ferry application in action: \textit{File is being transferred automatically from rightmost device towards the left.}}
 \label{fig:dataferry123}
 \end{figure*}
 
