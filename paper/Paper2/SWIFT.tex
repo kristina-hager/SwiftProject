@@ -29,7 +29,7 @@ University of Texas at Austin\\
 
 \begin{abstract}
 	Scientists who research caves frequently need to install sensors with attached data loggers at varying depths in a cave system.
-	Typically, these researchers must retrieve data from these data loggers by entering the cave and travelling to the installation site.
+	Typically, these researchers must retrieve data from these data loggers by entering the cave and traveling to the installation site.
 	Travel in caves is slow, inconvenient, and often dangerous.
 	We propose a a more efficient and safe means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
 	We focus on two key questions in this paper regarding the potential of the WiFi Direct technology for sensor data retrieval:
@@ -227,7 +227,7 @@ The result is a list of WifiP2pDevice devices with which a WiFi Direct connectio
 % and/or include a diagram of how a basic WifiP2P app is structured w.r.t. components
 % that said, I'd only mess with this if I have spare time, as I think the paper is solid as is
 The application invokes the the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
-The "connect()" function is annother asynchronous call which takes as a parameter a WifiP2pConfig object.
+The "connect()" function is another asynchronous call which takes as a parameter a WifiP2pConfig object.
 The WifiP2pConfig object can include details from the WifiP2pDevice such as the device's address.
 The WifiP2pManager notifies the listener of a successful connection or WiFi Direct group formation by invoking the listener's "onConnectionInfoAvailable()" method.
 At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods.
@@ -312,7 +312,7 @@ This project leveraged some of the WiFi Direct data transfer code from the range
 To utilize Operate Mode, the user must configure each application instance to identify device roles and execute WPS to store credentials.
 During this project the application did not interface to an actual data logger.
 Instead, a data logger was simulated with a pre-populated data file.
-The application was notified to intiatiate the transfer of the pre-populated data file via a button click on the user interface.
+The application was notified to initiate the transfer of the pre-populated data file via a button click on the user interface.
 
 SwiftDataHop has two modes of execution: Manual Mode and Operate Mode.
 Manual Mode has the same connect and transfer capability as described in the range experiment software.
@@ -412,9 +412,9 @@ Our Nexus devices successfully connected at 8' and 28' feet apart.
 After 28' apart, the passage starts to turn making line of sight was impossible to maintain, so our devices could not connect.
 Furthermore, since this passage was so narrow and filled with rubble, we had to take great care to maintain a line of sight between the devices.
 
-Please see Figure ~\ref{fig:whirlpool_map} for an illustration of the cave and where we performed our range experiments.
+Please see Figure~\ref{fig:whirlpool_map} for an illustration of the cave and where we performed our range experiments.
 
-Since the cave offers neiher larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
+Since the cave offers neither larger rooms nor longer passages, we had to cease our experiments in Whirlpool cave at that point.
 We suspect that in a larger cave or one with straighter passages longer range should be possible.
 Moore, et al carried out WiFi range experiments in straight mine tunnels where they claim that signal loss attenuates there less quickly than in free space.
 We refer you to that work for details.
