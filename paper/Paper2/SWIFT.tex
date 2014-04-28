@@ -31,7 +31,7 @@ University of Texas at Austin\\
 	Scientists who research caves frequently need to install sensors with attached data loggers at varying depths in a cave system.
 	Typically, these researchers must retrieve data from these data loggers by entering the cave and travelling to the installation site.
 	Travel in caves is slow, inconvenient, and often dangerous.
-	We propose a a more efficient, safe, and automatic means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
+	We propose a a more efficient and safe means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
 	We focus on two key questions in this paper regarding the potential of the WiFi Direct technology for sensor data retrieval:
 	What is a typical range for Wifi Direct on the surface, and what will impact the range of Wifi Direct in a cave environment?
 	Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
@@ -141,31 +141,30 @@ Therefore, their experiments with WiFi signal attenuation in the tunnel environm
 \subsection{WiFi Direct Overview}
 \label{sec:WiFiD Overview}
 Today, wireless connectivity is largely taken for granted. 
-There are still a few circumstances that remind us that the Internet and general network connectivity are not guaranteed. 
-Occasionally device connectivity to the broader Internet cannot be achieved due to physical, environmental, or technological constraints.
-The WiFi Direct standard is one means of potentially filling that gap. 
-In some use cases, broader connectivity to infrastructure is not required and there is value to simple device to device communication. 
-This is WiFi Direct's niche, those circumstances where a broader infrastructure is either unavailable or unnecessary, and device to device communication is needed.
+However, there are still a few circumstances when connectivity to the broader Internet cannot be achieved due to physical, environmental, or technological constraints.
+In some use cases, broader connectivity to infrastructure is not required, and there is value to simple device to device communication. 
+This is WiFi Direct's niche.
 
 WiFi Direct is a standard developed by the WiFi Alliance which provides a mechanism for peer to peer communication in the absence of a dedicated wireless infrastructure. 
-This standard has several benefits, first and foremost being that it does not require a dedicated wireless access point \cite{whywifid}, therefore users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
-In addition, this standard runs on typical wireless hardware found in all mobile devices, and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
+This standard has several benefits.
+The first and foremost benefit is that it does not require a dedicated wireless access point \cite{whywifid}, so users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
+In addition, this standard runs on typical wireless hardware found in all mobile devices and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
 Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbps and up to 200 meters depending on the environment. 
 WiFi direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi Direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits make WiFi Direct an ideal selection as the technology for ferrying data from an underground cave.
 
-The basic concepts of WiFi Direct are as follows. 
+% The basic concepts of WiFi Direct are as follows. 
 The WiFi Direct Group is a core component of WiFi Direct. 
 The WiFi Direct group functions as an infrastructure basic service set (BSS). 
 All components that can connect into a wireless medium in a network are referred to as stations. 
 The BSS is a set of all stations that can communicate with each other. 
 An infrastructure BSS includes both access points and stations in a wireless connection scenario \cite{wirelesslanwiki}.
 All WiFi Direct devices must be capable of becoming the group owner. 
-Within a group, a single device takes on this role.
+However, within a group, only a single device takes on this role.
  
-The Group Owner is responsible for controlling which devices are allowed to join a group, when the group is started and terminated, BSS functionality, WPS Internal Registrar functionality, and communication between Clients in the Group. 
-The Group owner decides if the group is temporary or persistent. 
+The Group Owner is responsible for many tasks such as: which devices are allowed to join a group, when the group is started and terminated, BSS functionality, WPS Internal Registrar functionality, and communication between Clients in the Group. 
+The Group owner determines if the group is temporary or persistent. 
 A persistent group may be formed again without reinitiating WPS.
 Group owners may optionally provide features such as simultaneous (concurrent) connection with an infrastructure network and sharing of that infrastructure connection. 
 
@@ -436,6 +435,7 @@ Section~\ref{sec:Data Ferry Software} covered the design of the WiFi Direct data
 
 The data ferry software prototype demonstrated that WiFi Direct could be used to pass data from device to device in an automated fashion. 
 During the course of this project, our four Nexus 7 tablets running Android 4.4.2 successfully and automatically executed the transfer of a data file.
+Please see Figure~\ref{fig:dataferry123} for a screenshot of our application in action on our four devices.
 The project was limited to four devices simply by the number of available tablets.
 Additional devices could be added to achieve further distances or deal with topology challenges in the cave that prevent line of sight connectivity. 
 
@@ -463,30 +463,37 @@ Please view a video of our application in action on four devices here: \url{http
 \begin{figure}
 \includegraphics[width=\columnwidth]{krubera_pit_dark}
 \caption{Vertical passage in Krubera-Varonya \textit{Image found in article \cite{krub_blaze}}}
+\label{fig:krub_drop}
 \end{figure}
-We performed our WiFi Direct experiments in a cave easily accessible to us and fairly typical of caves in this part of central Texas.
+
+WiFi Direct has several advantages over existing cave communication systems including bandwidth, range, weight, and ease of deployment as we covered in Related Work, Section~\ref{sec:Related}.
+It is important to note that WiFi Direct signals only work in caves when a direct line of sight is available, and the devices require a consistent source of energy.
+We would like to theorize further about how our research might generalize to other caves and where this technology will have the greatest value.
+
+% We performed our WiFi Direct experiments in a cave easily accessible to us and fairly typical of caves in this part of central Texas.
 %Possibly see if there is a way to make this sentence more clear?
 Cave systems around the world present with a wide variety of morphologies, and a given cave system will usually contain a wide variety of morphologies within it.
-Morphology examples include passages that are passable only to water and insects and, in contrast, passages that are the size of large buildings and navigable by commercial aircraft.
+Morphology examples include passages that are passable only to water and insects and, in contrast, passages that are the size of large buildings.
 Passages are horizontal, vertical, or any angle between the two.
 Some passages can be adequately described as enclosed, underground "rooms" or "pits" where the top is open to the sky.
 
-We would like to theorize further about how our research might generalize to other caves and where this technology will have the greatest value.
-WiFi Direct has several advantages including bandwidth, range, weight, and ease of deployment as we covered in Related Work, Section~\ref{sec:Related}.
-It is important to note, that WiFi Direct signals only work in caves when a direct line of sight is available, and the devices require a consistent source of energy.
-Therefore, we propose a few example scenarios where WiFi Direct could be particularly useful as part of an in-cave communication system.
-
 The cave Krubera-Varonya in West Caucasus in Abkhazia, Georgia is presently the world's deepest cave system with a depth of nearly 2200m and with 13.4km of passage. 
-Speleologists, cavers and cave divers have been exploring and mapping this cave since at least 1982.
+% Speleologists, cavers and cave divers have been exploring and mapping this cave since at least 1982.
 Expeditions in this cave are complex operations where an example cave exploration trip will span multiple weeks with at least 19 people including cavers and cave divers.
-On these expeditions, cavers will survey and map the cave; specially trained cave divers will proceed through and map underwater passages, place data loggers to measure water levels, and more.
+On these expeditions, cavers will survey and map the cave; specially trained cave divers will proceed through and map underwater passages and place sensors with attached data loggers to measure water levels.
 The cavers will need to be underground for weeks at a time and stay in one or more of a handful of underground camps \cite{krub_it}.
-A communication system to coordinate re-supply, logistics, and, in the worst case, coordinate a rescue operation is almost a requirement for an expedition of this magnitude.
+
+A communication system to coordinate re-supply, logistics, and, in the worst case, a rescue operation is almost a requirement for an expedition of this magnitude.
 While it is difficult to determine potential length of line of sight by looking at published photos and maps, 
 it certainly appears that this cave has many passages that would be great candidates for using WiFi Direct.
-Published photos and maps show that the cave has some very long (100m) vertical drops in large, fairly straight passages and some similarly large and long horizontal passages \cite{krub_it}.
-Cavers train in specialized single rope techniques to ascend and descend such vertical passages.
+Published photos and maps show that the cave has some very long (100m) vertical drops in large, fairly straight passages 
+%and some similarly large and long horizontal passages 
+\cite{krub_it}.
+% Cavers train in specialized single rope techniques to ascend and descend such vertical passages.
 Even given extensive training and experience, it takes quite a long time (multiple hours) for a team of cavers to ascend or descend long vertical drops particularly since those cavers are usually carrying very heavy gear and supplies.
+Please see Figure~\ref{fig:krub_drop} for a photo of a vertical passage in Krubera-Varonya.
+
+
 Therefore, there is a great opportunity to ease the physical exertion and time burden if messages can be communicated at WiFi speed and bandwidth through such a passage.
 Between WiFi Direct points, communication could even potentially be as high fidelity as voice and video such as between the top and bottom of a particular pit.
 Since this cave has several sections of very tight passage and underwater passages,
@@ -513,7 +520,7 @@ Specifically, large screens consume a lot of power, so realistic implementations
 
 Another area of future research will be to better coordinate the timing of data exchange in the interests of reducing power.
 For example, data transfer does not usually need to be continuous or too frequent in our target use case.
-The upstream devices in our implementation do not have any way to know when a downstream device might make a connection, so all devices remain active at all times.
+However, the upstream devices in our implementation do not have any way to know when a downstream device might make a connection, so all devices remain active at all times.
 In a realistic deployment, data transfer could take place on a relatively infrequent, such as daily or weekly, basis.
 Therefore, a mechanism to incorporate preprogrammed periods for the devices to be inactive
 and a time schedule for all devices to awake to do a scheduled data transfer would reduce power consumption.
