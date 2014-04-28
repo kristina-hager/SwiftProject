@@ -33,9 +33,9 @@ University of Texas at Austin\\
 	Travel in caves is slow, inconvenient, and often dangerous.
 	We propose a a more efficient and safe means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
 	We focus on two key questions in this paper regarding the potential of the WiFi Direct technology for sensor data retrieval:
-	What is a typical range for Wifi Direct on the surface, and what will impact the range of Wifi Direct in a cave environment?
+	What is a typical range for WiFi Direct on the surface, and what will impact the range of WiFi Direct in a cave environment?
 	Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
-	We outline here the Wifi Direct technology, Android support for the former, our range experiments, Android application experiments, and results.
+	We outline here the WiFi Direct technology, Android support for the former, our range experiments, Android application experiments, and results.
 	We show that WiFi Direct has good potential for easing the burden of data retrieval from sensors in a cave.
 \end{abstract}
 
@@ -76,12 +76,12 @@ This infrastructure allows applications a simple and power effective means of se
 
 We will focus on two key questions in this paper regarding the potential of the WiFi Direct technology for this application.
 \begin{enumerate}
-\item What is a typical range for Wifi Direct on the surface, and what will impact the range of Wifi Direct in a cave environment?
+\item What is a typical range for WiFi Direct on the surface, and what will impact the range of WiFi Direct in a cave environment?
 \item Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
 \end{enumerate} 
 
 WiFi Direct theoretically provides a range of up to 200m which is greater than that of Bluetooth technology.
-We will experimentally evaluate the range of Wifi Direct using Android Nexus 7 devices both on the surface and in a cave environment.
+We will experimentally evaluate the range of WiFi Direct using Android Nexus 7 devices both on the surface and in a cave environment.
 % A cave environment is distinctly different from a common surface environment in that there are significantly more obstructions between devices. 
 
 The still nascent implementation of the WiFi Direct standard poses some potential limitations for our use case.
@@ -150,7 +150,7 @@ This standard has several benefits.
 The first and foremost benefit is that it does not require a dedicated wireless access point \cite{whywifid}, so users don't have worry about a DHCP server or other infrastructure pieces to enable their communication. 
 In addition, this standard runs on typical wireless hardware found in all mobile devices and is supported by most of the major mobile platforms such as Android 4.0, IOS 7, Blackberry, Windows 8, and even Xbox. 
 Speed and range for WiFi Direct are those of typical WiFi devices and can operate at 250 Mbps and up to 200 meters depending on the environment. 
-WiFi direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
+WiFi Direct utilizes WPS and WPA-2 to ensure security of the communications over the peer to peer network. 
 Since power management is especially important for mobile devices WiFi Direct includes power management mechanisms that can reduce power consumption for devices regardless of role.
 All of these benefits make WiFi Direct an ideal selection as the technology for ferrying data from an underground cave.
 
@@ -199,18 +199,16 @@ Therefore, the previous process of establishing authentication and manual user a
 We used the Android platform to evaluate WiFi Direct for the Swift use case.
 Starting with Android 4.0 (API 14 and higher), Android provides three main areas within their API to support WiFi Direct:
 \begin{enumerate}
-\item The WifiP2pManager 
-\item Listeners 
-\item Intents
-\end{enumerate}
-The WiFi Manager class provides methods to allow an application to interact with the WiFi hardware on a device for tasks like discovering and connecting to peers. 
-Listeners implement functions which are called by the WifiP2pManager to notify the application of Wifi Direct events or information. 
-Intents notify the application of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer. 
+\item The WifiP2pManager : allow an application to interact with the WiFi hardware on a device for tasks like discovering and connecting to peers
+\item Listeners : called by the WifiP2pManager to notify the application of WiFi Direct events or information
+\item Intents : notify the application of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer
+\end{enumerate} 
+
 Actual data transfer between devices is handled by standard TCP/IP socket objects and I/O operations.
 Android devices making use of the WiFi Direct functionality are required to request application permissions for: ACCESS\_WIFI\_STATE, CHANGE\_WIFI\_STATE, ACCESS\_NETWORK\_STATE, CHANGE\_NETWORK\_STATE, and INTERNET. \cite{androidoverview}
 
 An application wishing to utilize WiFi Direct should implement several components to handle discovery and connectivity to peer devices.
-The application must setup a broadcast receiver. 
+The application must set up a broadcast receiver. 
 A broadcast receiver allows you to receive intents broadcast by the Android system and WifiP2pManager. 
 In this case the application should respond to WiFi peer to peer intents.
 The broadcast receiver must implement the necessary function calls to handle these intents in the broadcast receiver's "onReceive()" method.
@@ -286,10 +284,11 @@ Last, we disconnected the device, and moved to a new position for the next exper
 \label{sec:Range Experiment Software}
 Using the WiFi Direct example provided by the Android SDK, 
 we developed an Android application to perform the range experiments in a cave.
-Using this application we tested distances that could be achieved by WiFi Direct on a mobile device.
+% Using this application we tested distances that could be achieved by WiFi Direct on a mobile device.
 This example application taught us how to create the necessary WiFi Direct components and how the significant asynchronous function calls operate together.
 To perform the range experiments, we modified the example to open a connection to another device, load a data file from the device, and send the data file. 
 The example application and our derived application followed the architecture described in Section~\ref{sec:Android APIs For WiFi Direct} for creating peer to peer connections. 
+
 Either application presents a simple GUI interface allowing the user to kick off discovery of peer devices. 
 Upon completion of discovery the GUI displays a list of available peers.
 The user can then select a device from the list of available devices which brings up a menu to connect to that device.
@@ -498,10 +497,10 @@ Therefore, there is a great opportunity to ease the physical exertion and time b
 Between WiFi Direct points, communication could even potentially be as high fidelity as voice and video such as between the top and bottom of a particular pit.
 Since this cave has several sections of very tight passage and underwater passages,
 a realistic system enabling communication throughout the cave such as from camp to camp to surface would most likely need to be hybrid:
-consisting of WiFi direct relays wherever practical to achieve distance with ease of installation, using single wire systems in winding passages, using underwater radio signals through sump passages (only passable by trained cave divers), and so on.
+consisting of WiFi Direct relays wherever practical to achieve distance with ease of installation, using single wire systems in winding passages, using underwater radio signals through sump passages (only passable by trained cave divers), and so on.
 In such a hybrid system, our prototype application which can automatically transfer messages from device to device would be particularly helpful.
 
-We can envision a purely WiFi direct cave system being used to enable communication in certain cases such as from a pit bottom to the surface.
+We can envision a purely WiFi Direct cave system being used to enable communication in certain cases such as from a pit bottom to the surface.
 WiFi Direct could also play a key role in a hybrid scenarios enabling communication through other extensive cave systems that are similar to Krubera-Varonya in size and complexity. 
 
 \subsection{Future Work}
