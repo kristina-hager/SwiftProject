@@ -226,13 +226,15 @@ The result is a list of WifiP2pDevice devices with which a WiFi Direct connectio
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{AndroidWifiAPI}
 \caption{WiFi Direct API function and intent call flow.}
+\label{fig:androidwifiapi}
 \end{figure*}
 
 The application invokes the the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
 The "connect()" function is another asynchronous call which takes as a parameter a WifiP2pConfig object.
 The WifiP2pConfig object can include details from the WifiP2pDevice such as the device's address.
 The WifiP2pManager notifies the listener of a successful connection or WiFi Direct group formation by invoking the listener's "onConnectionInfoAvailable()" method.
-At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods. Figure 2 shows the complete call flow for the Android WiFi Direct API peer to peer manager calls, listeners, and intents.
+At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods.
+Figure~\ref{fig:androidwifiapi} shows the complete call flow for the Android WiFi Direct API peer to peer manager calls, listeners, and intents.
 
 \section{Experiments}
 
