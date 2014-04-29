@@ -45,7 +45,7 @@ University of Texas at Austin\\
 
 \subsection{Usage of Sensors and Data Loggers in Caves}
 \label{sec:Usage of Sensors and Data Loggers in Caves}
-Many types of scientists such as geologists, hydrogeologists, and climatologists conduct research in the interior of caves. 
+Many types of scientists such as geologists, hydro geologists, and climatologists conduct research in the interior of caves. 
 These scientists are usually looking for information about and variances within the cave's microclimate. 
 For example, in \cite{wong2010}, the scientists are interested in monitoring changes in cave air CO$_2$ levels in response to brush clearing in areas above the cave. 
 
@@ -223,14 +223,16 @@ The "requestPeers()" function call is asynchronous.
 The function "onPeersAvailable()", which is implemented in the PeerListListener, is executed when the "requestPeers()" function succeeds. 
 The result is a list of WifiP2pDevice devices with which a WiFi Direct connection can be made. \cite{androidp2p}
 
-% todo: in some parts of this section, i'm tempted to specify which part of the app does what
-% and/or include a diagram of how a basic WifiP2P app is structured w.r.t. components
-% that said, I'd only mess with this if I have spare time, as I think the paper is solid as is
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{AndroidWifiAPI}
+\caption{WiFi Direct API function and intent call flow.}
+\end{figure*}
+
 The application invokes the the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
 The "connect()" function is another asynchronous call which takes as a parameter a WifiP2pConfig object.
 The WifiP2pConfig object can include details from the WifiP2pDevice such as the device's address.
 The WifiP2pManager notifies the listener of a successful connection or WiFi Direct group formation by invoking the listener's "onConnectionInfoAvailable()" method.
-At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods.
+At this point, the application has formed, or reformed, the WiFi Direct group and is ready to transfer data using socket objects and methods. Figure 2 shows the complete call flow for the Android WiFi Direct API peer to peer manager calls, listeners, and intents.
 
 \section{Experiments}
 
@@ -260,7 +262,7 @@ We used this data file in all of our experiments and have included a copy of it 
 
 \subsection{Methodology for Measuring Range and Connectivity}
 \label{sec:Methodology}
-WiFi Direct operates on the same 2.4Ghz band as most 802.11 based WiFi deployments \cite{wifiwhitepaper}.
+WiFi Direct operates on the same 2.4 Ghz band as most 802.11 based WiFi deployments \cite{wifiwhitepaper}.
 Typical indoor deployments of 802.11[bg] have a range of 35m, and outdoor deployments can have a range up to 100m.
 802.11n deployments can have up to twice that range \cite{wikiwifi}.
 
