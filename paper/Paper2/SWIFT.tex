@@ -31,7 +31,7 @@ University of Texas at Austin\\
 	Scientists who research caves frequently need to install sensors with attached data loggers at varying depths in a cave system.
 	Typically, these researchers must retrieve data from these data loggers by entering the cave and traveling to the installation site.
 	Travel in caves is slow, inconvenient, and often dangerous.
-	We propose a a more efficient and safe means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
+	We propose a more efficient and safe means of data retrieval which is to automatically ferry data back to the surface using WiFi Direct enabled devices. 
 	We focus on two key questions in this paper regarding the potential of the WiFi Direct technology for sensor data retrieval:
 	What is a typical range for WiFi Direct on the surface, and what will impact the range of WiFi Direct in a cave environment?
 	Can we write an application using WiFi Direct as supported by the Android platform to automatically ferry data from device to device?
@@ -60,7 +60,7 @@ Researchers expend a great deal of time, logistics, and even risk to their lives
 Most cave climates have nearly 100\% humidity at all times and some caves flood or have conditions that make sensors and data loggers prone to failure.
 When a sensor or data logger fails, the scientist loses a great deal of data which adds to the difficulty of cave research.
 
-For all of these reasons cave researchers are interested in mechanisms that would make their data easier to access.
+For these entire reasons cave researchers are interested in mechanisms that would make their data easier to access.
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{cavewifi2}
@@ -199,9 +199,9 @@ Therefore, the previous process of establishing authentication and manual user a
 We used the Android platform to evaluate WiFi Direct for the Swift use case.
 Starting with Android 4.0 (API 14 and higher), Android provides three main areas within their API to support WiFi Direct:
 \begin{enumerate}
-\item The WifiP2pManager : allow an application to interact with the WiFi hardware on a device for tasks like discovering and connecting to peers
-\item Listeners : called by the WifiP2pManager to notify the application of WiFi Direct events or information
-\item Intents : notify the application of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer
+\item The WifiP2pManager: allow an application to interact with the WiFi hardware on a device for tasks like discovering and connecting to peers
+\item Listeners: called by the WifiP2pManager to notify the application of WiFi Direct events or information
+\item Intents: notify the application of specific events detected by the WiFi P2P framework such as a dropped connection or a newly discovered peer
 \end{enumerate} 
 
 Actual data transfer between devices is handled by standard TCP/IP socket objects and I/O operations.
@@ -229,7 +229,7 @@ The result is a list of WifiP2pDevice devices with which a WiFi Direct connectio
 \label{fig:androidwifiapi}
 \end{figure*}
 
-The application invokes the the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
+The application invokes the WiFi peer to peer manager "connect()" function to establish a connection to a selected device.
 The "connect()" function is another asynchronous call which takes as a parameter a WifiP2pConfig object.
 The WifiP2pConfig object can include details from the WifiP2pDevice such as the device's address.
 The WifiP2pManager notifies the listener of a successful connection or WiFi Direct group formation by invoking the listener's "onConnectionInfoAvailable()" method.
@@ -331,7 +331,7 @@ A device can have one of three roles:
 \item Sender-receiver
 \item Endpoint
 \end{enumerate}
-A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device are set.
+A device's role is determined by whether a single upstream, a single downstream, or both an upstream and downstream device is set.
 A device with no downstream device set is a data file initiator and will have the capability to initiate the file transfer of the data file in Operate Mode.
 A device with both an upstream and downstream device is a sender-receiver and will wait for a connection from a downstream device, receive a file, disconnect from the downstream device, connect to an upstream device, and then send the received file.
 A device with no upstream device is an endpoint, and will display the file received and location to which it is copied on the file system.
@@ -396,7 +396,7 @@ Our devices easily connected and transferred a sample data file at distances up 
 We were able to connect and send the sample file at 350', 400', 500', and 600' (183m) with moderate success. 
 At times, the connection would take longer than usual.
 Also, the initial file transfer took multiple attempts.
-Once the initial file was received, then subsequent transfers went much better.
+Once the initial file was received, then subsequent transfers went well.
 However, at 650' (198m) the devices had a lot of trouble connecting, so we stopped measurements at that point.
 This is very close to the claimed range of 200' meters.
 
@@ -484,7 +484,7 @@ Expeditions in this cave are complex operations where an example cave exploratio
 On these expeditions, cavers will survey and map the cave; specially trained cave divers will proceed through and map underwater passages and place sensors with attached data loggers to measure water levels.
 The cavers will need to be underground for weeks at a time and stay in one or more of a handful of underground camps \cite{krub_it}.
 
-A communication system to coordinate re-supply, logistics, and, in the worst case, a rescue operation is almost a requirement for an expedition of this magnitude.
+A communication system to coordinate re-supplies, logistics, and, in the worst case, a rescue operation is almost a requirement for an expedition of this magnitude.
 While it is difficult to determine potential length of line of sight by looking at published photos and maps, 
 it certainly appears that this cave has many passages that would be great candidates for using WiFi Direct.
 Published photos and maps show that the cave has some very long (100m) vertical drops in large, fairly straight passages 
